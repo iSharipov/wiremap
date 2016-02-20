@@ -1,0 +1,20 @@
+group 'wiremap'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'war'
+
+ext {
+    JUNIT_VERSION = "4.12.RELEASE"
+    emailNotification = "build@master.org"
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: + JUNIT_VERSION
+}
