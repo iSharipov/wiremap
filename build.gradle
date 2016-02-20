@@ -1,20 +1,45 @@
 group 'wiremap'
 version '1.0-SNAPSHOT'
 
+apply from: 'gretty.plugin'
 apply plugin: 'java'
 apply plugin: 'war'
 
 ext {
-    JUNIT_VERSION = "4.12.RELEASE"
-    emailNotification = "build@master.org"
+    JUNIT_VERSION = "4.12"
+    SPRING = "4.2.4.RELEASE"
+    HIBERNATE = "5.1.0.Final"
+    MYSQL = "5.1.38"
+    SPRING_DATA_JPA = "1.9.2.RELEASE"
+}
+compileJava{
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    options.encoding = "UTF-8"
 }
 
-sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: + JUNIT_VERSION
+    compile "org.hibernate:hibernate-entitymanager:$HIBERNATE"
+    compile "org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final"
+    compile "org.springframework.data:spring-data-jpa:$SPRING_DATA_JPA"
+    compile "javax.servlet:javax.servlet-api:3.1.0"
+    compile "org.springframework:spring-jdbc:$SPRING"
+    compile "org.springframework:spring-orm:$SPRING"
+    compile "org.springframework:spring-tx:$SPRING"
+    compile "org.springframework:spring-webmvc:$SPRING"
+    compile "org.hibernate:hibernate-core:$HIBERNATE"
+    compile "mysql:mysql-connector-java:$MYSQL"
+
+    testCompile "junit:$JUNIT_VERSION"
+}
+
+gretty {
+    port = 8080
+    contextPath = "/"
+    inplaceMode = "hard"
 }
