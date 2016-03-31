@@ -7,33 +7,55 @@ apply plugin: 'war'
 
 ext {
     JUNIT_VERSION = "4.12"
-    SPRING = "4.2.4.RELEASE"
+    SPRING = "4.2.5.RELEASE"
     HIBERNATE = "5.1.0.Final"
-    MYSQL = "5.1.38"
-    SPRING_DATA_JPA = "1.9.2.RELEASE"
+    MYSQL = "5.1.37"
+    SPRING_DATA_JPA = "1.9.4.RELEASE"
+    SPRING_SECURITY = "4.0.4.RELEASE"
+    THYMELEAF_VERSION = "3.0.0.BETA02"
+    JACKSON_VERSION = "2.7.3"
 }
-compileJava{
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+compileJava {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
     options.encoding = "UTF-8"
 }
 
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     compile "org.hibernate:hibernate-entitymanager:$HIBERNATE"
+    compile "org.hibernate:hibernate-core:$HIBERNATE"
+
     compile "org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final"
     compile "org.springframework.data:spring-data-jpa:$SPRING_DATA_JPA"
-    compile "javax.servlet:javax.servlet-api:3.1.0"
     compile "org.springframework:spring-jdbc:$SPRING"
     compile "org.springframework:spring-orm:$SPRING"
     compile "org.springframework:spring-tx:$SPRING"
     compile "org.springframework:spring-webmvc:$SPRING"
-    compile "org.hibernate:hibernate-core:$HIBERNATE"
-    compile "mysql:mysql-connector-java:$MYSQL"
+
+    compile "org.springframework.security:spring-security-core:$SPRING_SECURITY"
+    compile "org.springframework.security:spring-security-web:$SPRING_SECURITY"
+    compile "org.springframework.security:spring-security-config:$SPRING_SECURITY"
+
+    compile "com.fasterxml.jackson.core:jackson-databind:$JACKSON_VERSION"
+    compile "com.fasterxml.jackson.core:jackson-core:$JACKSON_VERSION"
+    compile "com.fasterxml.jackson.core:jackson-annotations:$JACKSON_VERSION"
+
+    compile 'ch.qos.logback:logback-classic:1.1.7'
+    compile 'org.slf4j:slf4j-api:1.7.20'
+
+    compile "org.thymeleaf:thymeleaf-spring4:$THYMELEAF_VERSION"
+    compile "org.thymeleaf:thymeleaf:$THYMELEAF_VERSION"
+    
+    providedCompile "javax.servlet:javax.servlet-api:3.1.0"
+    providedCompile "mysql:mysql-connector-java:$MYSQL"
+
+    compile 'com.mchange:c3p0:0.9.5.2'
 
     testCompile "junit:$JUNIT_VERSION"
 }
@@ -42,4 +64,6 @@ gretty {
     port = 8080
     contextPath = "/"
     inplaceMode = "hard"
+    fastReload = true
+    managedClassReload = true
 }

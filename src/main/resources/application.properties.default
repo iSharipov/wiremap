@@ -3,5 +3,7 @@ jdbc.driverClassName = com.mysql.jdbc.Driver
 jdbc.url = jdbc:mysql://localhost:3306/wiremap
 jdbc.username = root
 jdbc.password = 1234
+jdbc.reconnect.max_tries_count = 0
+jdbc.reconnect.timeout = 1000
 
 #Hiberante properties

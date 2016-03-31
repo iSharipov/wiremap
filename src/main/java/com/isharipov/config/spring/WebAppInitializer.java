@@ -1,5 +1,6 @@
-package com.isharipov.springconfig;
+package com.isharipov.config.spring;
 
+import com.isharipov.config.spring.security.SpringSecurityConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**
@@ -8,12 +9,12 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[]{PersistenceConfig.class};
+        return new Class<?>[]{AppConfig.class, PersistenceConfig.class, SpringSecurityConfig.class};
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class<?>[]{AppConfig.class};
+        return new Class<?>[]{WebConfig.class};
     }
 
     @Override
