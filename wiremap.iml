@@ -45,7 +45,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Gradle: javax.websocket:javax.websocket-api:1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.aspectj:aspectjrt:1.8.7" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.13" level="project" />
-    <orderEntry type="library" name="Gradle: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final" level="project" />
     <orderEntry type="library" name="Gradle: org.hibernate:hibernate-entitymanager:5.1.0.Final" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.data:spring-data-jpa:1.9.4.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-jdbc:4.2.5.RELEASE" level="project" />

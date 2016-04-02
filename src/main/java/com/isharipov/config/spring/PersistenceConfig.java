@@ -74,7 +74,7 @@ public class PersistenceConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) throws IOException {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setDataSource(dataSource);
-        emf.setPackagesToScan("com.isharipov");
+        emf.setPackagesToScan("com.isharipov.domain");
         emf.setPersistenceUnitName("txManager");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         emf.setJpaProperties(FileUtils.loadFileProperties(new ClassPathResource("hibernate.properties").getPath()));

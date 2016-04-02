@@ -29,9 +29,7 @@ compileJava {
 
 dependencies {
     compile "org.hibernate:hibernate-entitymanager:$HIBERNATE"
-    compile "org.hibernate:hibernate-core:$HIBERNATE"
 
-    compile "org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final"
     compile "org.springframework.data:spring-data-jpa:$SPRING_DATA_JPA"
     compile "org.springframework:spring-jdbc:$SPRING"
     compile "org.springframework:spring-orm:$SPRING"
