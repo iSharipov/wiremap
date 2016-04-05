@@ -1,6 +1,6 @@
 package com.isharipov.domain;
 
-import com.isharipov.Role;
+import com.isharipov.utils.Role;
 import lombok.Data;
 
 import javax.persistence.*;
