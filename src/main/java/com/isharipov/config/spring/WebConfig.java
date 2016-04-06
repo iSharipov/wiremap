@@ -1,5 +1,6 @@
 package com.isharipov.config.spring;
 
+import com.isharipov.config.spring.security.SpringSecurityConfig;
 import com.isharipov.config.thymeleaf.ThymeleafConfig;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  */
 @EnableWebMvc
 @Configuration
-@Import(ThymeleafConfig.class)
+@Import({ThymeleafConfig.class, SpringSecurityConfig.class})
 @ComponentScan("com.isharipov")
 public class WebConfig extends WebMvcConfigurerAdapter {
 

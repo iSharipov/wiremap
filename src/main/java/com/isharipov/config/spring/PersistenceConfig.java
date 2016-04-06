@@ -1,5 +1,6 @@
 package com.isharipov.config.spring;
 
+import com.isharipov.handler.DatabaseErrorHandler;
 import com.isharipov.utils.FileUtils;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,14 +101,14 @@ public class PersistenceConfig {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
-//    @Bean
-//    public DatabaseErrorHandler databaseErrorHandler() {
-//        DatabaseErrorHandler databaseErrorHandler = new DatabaseErrorHandler();
-//        databaseErrorHandler.setMaxTriesCount(maxTriesCount);
-//        databaseErrorHandler.setReconnectionTimeout(reconnectionTimeout);
-//        databaseErrorHandler.setTxManagerId("transactionManager");
-//        return databaseErrorHandler;
-//    }
+    @Bean
+    public DatabaseErrorHandler databaseErrorHandler() {
+        DatabaseErrorHandler databaseErrorHandler = new DatabaseErrorHandler();
+        databaseErrorHandler.setMaxTriesCount(maxTriesCount);
+        databaseErrorHandler.setReconnectionTimeout(reconnectionTimeout);
+        databaseErrorHandler.setTxManagerId("transactionManager");
+        return databaseErrorHandler;
+    }
 
 
 }
