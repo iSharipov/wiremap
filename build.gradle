@@ -67,5 +67,5 @@ gretty {
     contextPath = "/"
     inplaceMode = "hard"
     fastReload = true
-    managedClassReload=true
+//    managedClassReload=true
 }
