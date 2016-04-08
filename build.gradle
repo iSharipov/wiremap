@@ -6,7 +6,6 @@ apply plugin: 'java'
 apply plugin: 'war'
 
 ext {
-    JUNIT_VERSION = "4.12"
     SPRING = "4.2.5.RELEASE"
     HIBERNATE = "5.1.0.Final"
     MYSQL = "5.1.37"
@@ -37,6 +36,8 @@ dependencies {
     compile "org.springframework:spring-orm:$SPRING"
     compile "org.springframework:spring-tx:$SPRING"
     compile "org.springframework:spring-webmvc:$SPRING"
+    compile "org.springframework:spring-test:$SPRING"
+
 
     compile "org.springframework.security:spring-security-core:$SPRING_SECURITY"
     compile "org.springframework.security:spring-security-web:$SPRING_SECURITY"
@@ -64,7 +65,8 @@ dependencies {
     compile 'org.webjars:html5shiv:3.7.0'
     compile 'org.webjars:respond:1.4.2'
 
-    testCompile "junit:$JUNIT_VERSION"
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:2.0.44-beta'
 }
 
 gretty {
