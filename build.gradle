@@ -59,6 +59,11 @@ dependencies {
 
     compile 'com.mchange:c3p0:0.9.5.2'
 
+    compile 'org.webjars:bootstrap:3.3.5'
+    compile 'org.webjars:jquery-backstretch:2.0.4'
+    compile 'org.webjars:html5shiv:3.7.0'
+    compile 'org.webjars:respond:1.4.2'
+
     testCompile "junit:$JUNIT_VERSION"
 }
 

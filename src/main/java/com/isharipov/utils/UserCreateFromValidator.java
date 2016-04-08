@@ -23,6 +23,8 @@ public class UserCreateFromValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         UserCreateForm form = (UserCreateForm) target;
+        validatePasswords(errors, form);
+        validateEmail(errors, form);
     }
 
     private void validatePasswords(Errors errors, UserCreateForm form) {
@@ -32,7 +34,7 @@ public class UserCreateFromValidator implements Validator {
     }
 
     private void validateEmail(Errors errors, UserCreateForm form) {
-        if(userService.getUserByEmail(form.getEmail()).isPresent()){
+        if (userService.getUserByEmail(form.getEmail()).isPresent()) {
             errors.reject("email.exists", "User with this email already exists");
         }
     }

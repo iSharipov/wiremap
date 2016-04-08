@@ -81,5 +81,10 @@
     <orderEntry type="library" name="Gradle: org.hibernate:hibernate-validator:5.3.0.Alpha1" level="project" />
     <orderEntry type="library" name="Gradle: javax.validation:validation-api:1.1.0.Final" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.projectlombok:lombok:1.16.8" level="project" />
+    <orderEntry type="library" name="Gradle: org.webjars:bootstrap:3.3.5" level="project" />
+    <orderEntry type="library" name="Gradle: org.webjars:jquery:1.11.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.webjars:jquery-backstretch:2.0.4" level="project" />
+    <orderEntry type="library" name="Gradle: org.webjars:html5shiv:3.7.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.webjars:respond:1.4.2" level="project" />
   </component>
 </module>
