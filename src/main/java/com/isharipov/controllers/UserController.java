@@ -50,6 +50,7 @@ public class UserController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String handleUserCreateForm(@Valid @ModelAttribute("form") UserCreateForm form, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
+            log.info("Binding failed with errors: {}", bindingResult.getErrorCount());
             return "register";
         }
         try {
