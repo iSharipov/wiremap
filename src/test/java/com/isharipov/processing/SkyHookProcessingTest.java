@@ -9,7 +9,7 @@ import com.isharipov.domain.skyhook.AccessPoint;
 import com.isharipov.domain.skyhook.AuthenticationParameters;
 import com.isharipov.domain.skyhook.Simple;
 import com.isharipov.domain.skyhook.SkyhookLocationRq;
-import com.isharipov.domain.yandex.locator.request.*;
+import com.isharipov.domain.yandex.locator.*;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
@@ -120,7 +120,7 @@ public class SkyHookProcessingTest {
         // output pretty printed
         jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         StringWriter sw = new StringWriter();
-        jaxbMarshaller.marshal(skyhookLocationRq,sw);
+        jaxbMarshaller.marshal(skyhookLocationRq, sw);
         String xmkString = sw.toString();
         log.info(xmkString);
 

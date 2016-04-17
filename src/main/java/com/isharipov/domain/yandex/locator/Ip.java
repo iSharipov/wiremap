@@ -1,4 +1,4 @@
-package com.isharipov.domain.yandex.locator.request;
+package com.isharipov.domain.yandex.locator;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
