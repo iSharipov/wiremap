@@ -1,22 +1,22 @@
 package com.isharipov.processing;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isharipov.config.spring.AppConfig;
 import com.isharipov.config.spring.PersistenceConfig;
 import com.isharipov.config.spring.WebConfig;
+import com.isharipov.domain.YandexLocatorRq;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -27,6 +27,10 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Илья on 11.04.2016.
@@ -40,7 +44,8 @@ public class SkyHookProcessingTest {
     private static final String SITE_ADDR =
             "https://api.skyhookwireless.com/wps2/location";
 
-    private RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     public void getLocation() throws IOException {
@@ -55,7 +60,7 @@ public class SkyHookProcessingTest {
             for (int i = 0; i < mac.length; i++) {
                 sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
             }
-            macAddress = sb.toString();
+            macAddress = "24:b6:57:b5:59:06";//sb.toString();
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (SocketException e) {
@@ -71,7 +76,7 @@ public class SkyHookProcessingTest {
                 "</simple>\n" +
                 "</authentication> \n" +
                 "<access-point> \n" +
-                "<mac>" + "a0-f3-c1-33-8f-bc"+ "</mac> \n" +
+                "<mac>" + "d4:d7:48:0c:0a:df" + "</mac> \n" +
                 "<signal-strength>" + signalStrength +
                 "</signal-strength>\n" +
                 "<age>7984</age>\n" +
@@ -89,4 +94,29 @@ public class SkyHookProcessingTest {
         System.out.println(result);
 
     }
+    @Test
+    public void getYandexLocation() {
+        YandexLocatorRq yandexLocatorRq = new YandexLocatorRq();
+        List<HashMap<String, String>> common= new ArrayList<>();
+//        common.add(new HashMap<>().put("version", "1.0"));
+        Map<String, String> commonMap = new HashMap<>();
+        Map<String, Integer> gsmCells = new HashMap<>();
+        Map<String, Integer> wifiNetworks = new HashMap<>();
+        commonMap.put("version", "1.0");
+        gsmCells.put("countrycode", 250);
+        gsmCells.put("operatorid", 99);
+        gsmCells.put("cellid", 42332);
+        gsmCells.put("lac", 36002);
+        gsmCells.put("signal_strength", -80);
+        gsmCells.put("age", 5555);
+       yandexLocatorRq.setCommon(commonMap);
+        try {
+            String s = objectMapper.writeValueAsString(yandexLocatorRq);
+            System.out.println(s);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
+
