@@ -7,3 +7,13 @@ jdbc.reconnect.max_tries_count = 0
 jdbc.reconnect.timeout = 1000
 
 #Hiberante properties
+
+#Remote systems properties
+#Skyhook
+skyhook.site.address = https://api.skyhookwireless.com/wps2/location
+skyhook.email = isharipov.com@mail.ru
+skyhook.apikey = eJwVwckNACAIALC3w5CAHOJTIixl3N3YUiP8VFHa2UZilBN8IENIOrB2hr7CS2pn5LwPDVgLKw
+
+#Yandex Locator
+yandexlocator.site.address = http://api.lbs.yandex.net/geolocation
+yandexlocator.apikey = AHrj7lYBAAAAUTkMHwIA6MuvduXQTrnv_pLH4lRYhJ2RxDsAAAAAAAAAAACTHacV8CkBA_xGvIdLhRGynl8dGw==

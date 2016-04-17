@@ -47,6 +47,10 @@ dependencies {
     compile "com.fasterxml.jackson.core:jackson-core:$JACKSON_VERSION"
     compile "com.fasterxml.jackson.core:jackson-annotations:$JACKSON_VERSION"
 
+   compile 'com.fasterxml:jackson-xml-databind:0.6.2'
+  compile 'org.json:json:20160212'
+
+
     compile 'ch.qos.logback:logback-classic:1.1.7'
     compile 'org.slf4j:slf4j-api:1.7.20'
 
