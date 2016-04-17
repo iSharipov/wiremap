@@ -11,7 +11,7 @@ import java.util.Map;
  */
 @Data
 @JsonIgnoreProperties
-public class YandexLocatorRs {
+public class CommonRs {
     private Map<String, String> position;
     private Map<String, String> error;
     @JsonProperty("LocationRS")

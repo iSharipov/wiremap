@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isharipov.config.spring.AppConfig;
 import com.isharipov.config.spring.WebConfig;
-import com.isharipov.domain.common.YandexLocatorRs;
+import com.isharipov.domain.common.CommonRs;
 import com.isharipov.domain.skyhook.AccessPoint;
 import com.isharipov.domain.skyhook.AuthenticationParameters;
 import com.isharipov.domain.skyhook.Simple;
@@ -132,7 +132,7 @@ public class SkyHookProcessingTest {
         JSONObject xmlJsonObject = XML.toJSONObject(result);
         String prettyPrintJson = xmlJsonObject.toString(4);
 
-        YandexLocatorRs commonRequest = objectMapper.readValue(prettyPrintJson, YandexLocatorRs.class);
+        CommonRs commonRequest = objectMapper.readValue(prettyPrintJson, CommonRs.class);
     }
 
     @Test
@@ -177,7 +177,7 @@ public class SkyHookProcessingTest {
             request.setEntity(new UrlEncodedFormEntity(urlParameters));
             HttpResponse response = client.execute(request);
             String result = EntityUtils.toString(response.getEntity());
-            YandexLocatorRs commonRequest = objectMapper.readValue(result, YandexLocatorRs.class);
+            CommonRs commonRequest = objectMapper.readValue(result, CommonRs.class);
             log.info(commonRequest.toString());
             log.info(result);
         } catch (IOException e) {
