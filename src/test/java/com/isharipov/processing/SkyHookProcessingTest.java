@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isharipov.config.spring.AppConfig;
 import com.isharipov.config.spring.WebConfig;
 import com.isharipov.domain.common.CommonRs;
+import com.isharipov.domain.google.loc.GoogleRq;
+import com.isharipov.domain.google.loc.WifiAccessPoint;
 import com.isharipov.domain.skyhook.AccessPoint;
 import com.isharipov.domain.skyhook.AuthenticationParameters;
 import com.isharipov.domain.skyhook.Simple;
@@ -175,6 +177,35 @@ public class SkyHookProcessingTest {
         urlParameters.add(new BasicNameValuePair("json", yandexLocatorRqJsonString));
         try {
             request.setEntity(new UrlEncodedFormEntity(urlParameters));
+            HttpResponse response = client.execute(request);
+            String result = EntityUtils.toString(response.getEntity());
+            CommonRs commonRequest = objectMapper.readValue(result, CommonRs.class);
+            log.info(commonRequest.toString());
+            log.info(result);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void getGoogleLocation() throws JsonProcessingException {
+        WifiAccessPoint wifiAccessPoint = new WifiAccessPoint();
+        wifiAccessPoint.setMacAddress("01:23:45:67:89:AB");
+        wifiAccessPoint.setSignalStrength(-60);
+        wifiAccessPoint.setAge(0);
+
+        List<WifiAccessPoint> wifiAccessPointsList = new ArrayList<>();
+        wifiAccessPointsList.add(wifiAccessPoint);
+        GoogleRq googleRq = GoogleRq.builder().wifiAccessPoints(wifiAccessPointsList).build();
+        String googleLocatorRqJsonString = objectMapper.writeValueAsString(googleRq);
+
+        HttpClient client = HttpClientBuilder.create().build();
+        HttpPost request = new HttpPost("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyA5wmyolsBqJfbZp4jTJOAqAqyUUmeJPKo");
+        request.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+        List<NameValuePair> urlParameters = new ArrayList<>();
+//        urlParameters.add(new BasicNameValuePair("json", googleLocatorRqJsonString));
+        try {
+//            request.setEntity(new UrlEncodedFormEntity(urlParameters));
+            HttpEntity entity = new ByteArrayEntity(googleLocatorRqJsonString.getBytes("UTF-8"));
             HttpResponse response = client.execute(request);
             String result = EntityUtils.toString(response.getEntity());
             CommonRs commonRequest = objectMapper.readValue(result, CommonRs.class);

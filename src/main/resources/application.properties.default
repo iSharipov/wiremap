@@ -17,3 +17,7 @@ skyhook.apikey = eJwVwckNACAIALC3w5CAHOJTIixl3N3YUiP8VFHa2UZilBN8IENIOrB2hr7CS2p
 #Yandex Locator
 yandexlocator.site.address = http://api.lbs.yandex.net/geolocation
 yandexlocator.apikey = AHrj7lYBAAAAUTkMHwIA6MuvduXQTrnv_pLH4lRYhJ2RxDsAAAAAAAAAAACTHacV8CkBA_xGvIdLhRGynl8dGw==
+
+#Google Location
+google.loc.site.address = https://www.googleapis.com/geolocation/v1/geolocate?key=
+google.loc.apikey = AIzaSyA5wmyolsBqJfbZp4jTJOAqAqyUUmeJPKo

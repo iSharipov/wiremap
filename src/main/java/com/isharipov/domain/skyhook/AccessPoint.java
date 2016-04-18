@@ -1,5 +1,6 @@
 package com.isharipov.domain.skyhook;
 
+import com.isharipov.domain.common.CommonRq;
 import lombok.Data;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -11,9 +12,7 @@ import javax.xml.bind.annotation.XmlElement;
  */
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AccessPoint {
-    private String mac;
+public class AccessPoint extends CommonRq{
     @XmlElement(name = "signal-strength")
     private String signalStrength;
-    private String age;
 }
