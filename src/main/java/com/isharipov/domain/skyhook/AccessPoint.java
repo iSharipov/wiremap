@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlElement;
  */
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AccessPoint extends CommonRq{
+public class AccessPoint extends CommonRq {
     @XmlElement(name = "signal-strength")
     private String signalStrength;
 }
