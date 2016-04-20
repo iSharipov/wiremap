@@ -9,7 +9,7 @@ import com.isharipov.domain.google.loc.GoogleRq;
 import com.isharipov.domain.google.loc.WifiAccessPoint;
 import com.isharipov.domain.skyhook.AccessPoint;
 import com.isharipov.domain.skyhook.AuthenticationParameters;
-import com.isharipov.domain.skyhook.Simple;
+import com.isharipov.domain.skyhook.Key;
 import com.isharipov.domain.skyhook.SkyhookLocationRq;
 import com.isharipov.domain.yandex.locator.*;
 import org.apache.http.HttpEntity;
@@ -20,8 +20,12 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
+import org.apache.http.impl.nio.client.HttpAsyncClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.nio.client.HttpAsyncClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.json.XML;
@@ -30,6 +34,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.client.AsyncClientHttpRequestFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -45,6 +50,8 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * Created by Илья on 11.04.2016.
@@ -101,20 +108,20 @@ public class SkyHookProcessingTest {
         HttpPost post = new HttpPost(SITE_ADDR);
         String xml = xmlQuery;
         SkyhookLocationRq skyhookLocationRq = new SkyhookLocationRq();
-        Simple simple = new Simple();
-        simple.setUsername("beta");
-        simple.setRealm("js.loki.com");
+        Key key = new Key();
+        key.setKey("eJwVwckNACAIALC3w5CIgIYncixl3N3YYsP-CU9sR62rD2OooAQSnRBsCbvEi3Qvw3EfFHoLVA");
+        key.setUsername("prohodka67@gmail.com");
         AuthenticationParameters authenticationParameters = new AuthenticationParameters();
-        authenticationParameters.setSimple(simple);
-        authenticationParameters.setVersion("2.0");
+        authenticationParameters.setKey(key);
+        authenticationParameters.setVersion("2.2");
 
         skyhookLocationRq.setAuthentication(authenticationParameters);
-        skyhookLocationRq.setVersion("2.10");
+        skyhookLocationRq.setVersion("2.24");
         skyhookLocationRq.setStreetAddressLookup("full");
         AccessPoint accessPoint = new AccessPoint();
-        accessPoint.setMac("EC-55-F9-17-53-28");
+        accessPoint.setMac("EC55F9175328");
+        accessPoint.setSsid("");
         accessPoint.setSignalStrength("-70");
-        accessPoint.setAge("0");
         skyhookLocationRq.setAccessPoint(accessPoint);
         JAXBContext jaxbContext = JAXBContext.newInstance(SkyhookLocationRq.class);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -135,6 +142,7 @@ public class SkyHookProcessingTest {
         String prettyPrintJson = xmlJsonObject.toString(4);
 
         CommonRs commonRequest = objectMapper.readValue(prettyPrintJson, CommonRs.class);
+        System.out.println(commonRequest);
     }
 
     @Test
@@ -186,6 +194,7 @@ public class SkyHookProcessingTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void getGoogleLocation() throws JsonProcessingException {
         WifiAccessPoint wifiAccessPoint = new WifiAccessPoint();
@@ -212,6 +221,22 @@ public class SkyHookProcessingTest {
             log.info(commonRequest.toString());
             log.info(result);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+    @Test
+    public void asyncTest(){
+        CloseableHttpAsyncClient client = HttpAsyncClients.createDefault();
+        client.start();
+        HttpPost request = new HttpPost("https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyA5wmyolsBqJfbZp4jTJOAqAqyUUmeJPKo");
+        Future<HttpResponse> responseFuture = client.execute(request,null);
+        try {
+            HttpResponse response = responseFuture.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
             e.printStackTrace();
         }
     }

@@ -11,10 +11,13 @@ jdbc.reconnect.timeout = 1000
 #Remote systems properties
 #Skyhook
 skyhook.site.address = https://api.skyhookwireless.com/wps2/location
-skyhook.email = isharipov.com@mail.ru
-skyhook.apikey = eJwVwckNACAIALC3w5CAHOJTIixl3N3YUiP8VFHa2UZilBN8IENIOrB2hr7CS2pn5LwPDVgLKw
+skyhook.email = prohodka67@gmail.com
+skyhook.apikey = eJwVwckNACAIALC3w5CIgIYncixl3N3YYsP-CU9sR62rD2OooAQSnRBsCbvEi3Qvw3EfFHoLVA
+skyhook.authentiication.version = 2.2
+skyhook.version = 2.24
 
 #Yandex Locator
+yandexlocator.version = 1.0
 yandexlocator.site.address = http://api.lbs.yandex.net/geolocation
 yandexlocator.apikey = AHrj7lYBAAAAUTkMHwIA6MuvduXQTrnv_pLH4lRYhJ2RxDsAAAAAAAAAAACTHacV8CkBA_xGvIdLhRGynl8dGw==
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -15,7 +16,7 @@ public class CommonRs {
     private Map<String, String> position;
     private Map<String, String> error;
     @JsonProperty("LocationRS")
-    private Map<String, String> locationRs;
+    private Map<String, Object> locationRs;
     private Map<String, String> location;
     private Float accuracy;
 }

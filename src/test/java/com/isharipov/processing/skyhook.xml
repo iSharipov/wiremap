@@ -1,16 +1,11 @@
-<?xml version='1.0'?>
-<LocationRQ xmlns='http://skyhookwireless.com/wps/2005'
-            version='2.10' street-address-lookup='full'>
-    <authentication version='2.0'>
-        <simple>
-            <username></username>
-            <realm></realm>
-        </simple>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<LocationRQ version="2.24" street-address-lookup="full" xmlns="http://skyhookwireless.com/wps/2005">
+    <authentication version="2.2">
+        <key key="eJwVwckNACAIALC3w5CIgIYncixl3N3YYsP-CU9sR62rD2OooAQSnRBsCbvEi3Qvw3EfFHoLVA" username="prohodka67@gmail.com"/>
     </authentication>
     <access-point>
-        <mac></mac>
-        <signal-strength>
-        </signal-strength>
-        <age></age>
+        <signal-strength>-70</signal-strength>
+        <ssid>SkyFi-Corp</ssid>
+        <mac>EC55F9175328</mac>
     </access-point>
 </LocationRQ>
