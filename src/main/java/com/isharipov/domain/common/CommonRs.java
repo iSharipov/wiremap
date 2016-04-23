@@ -11,12 +11,10 @@ import java.util.Map;
  * Created by Илья on 17.04.2016.
  */
 @Data
-@JsonIgnoreProperties
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CommonRs {
     private Map<String, String> position;
-    private Map<String, String> error;
-    @JsonProperty("LocationRS")
-    private Map<String, Object> locationRs;
-    private Map<String, String> location;
+    private Object error;
+    private Map<String, Object> location;
     private Float accuracy;
 }

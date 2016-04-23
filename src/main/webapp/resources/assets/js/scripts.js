@@ -1,10 +1,9 @@
-
 jQuery(document).ready(function() {
 	
     /*
         Fullscreen background
     */
-    $.backstretch("/resources/assets/img/backgrounds/1.jpg");
+    $.backstretch("/resources/assets/img/backgrounds/map.jpg");
     
     /*
         Login form validation
@@ -24,7 +23,6 @@ jQuery(document).ready(function() {
     			$(this).removeClass('input-error');
     		}
     	});
-    	
     });
     
     /*
@@ -45,8 +43,5 @@ jQuery(document).ready(function() {
     			$(this).removeClass('input-error');
     		}
     	});
-    	
     });
-    
-    
 });

@@ -199,8 +199,8 @@ public class SkyHookProcessingTest {
     public void getGoogleLocation() throws JsonProcessingException {
         WifiAccessPoint wifiAccessPoint = new WifiAccessPoint();
         wifiAccessPoint.setMacAddress("01:23:45:67:89:AB");
-        wifiAccessPoint.setSignalStrength(-60);
-        wifiAccessPoint.setAge(0);
+        wifiAccessPoint.setSignalStrength("-60");
+        wifiAccessPoint.setAge("");
 
         List<WifiAccessPoint> wifiAccessPointsList = new ArrayList<>();
         wifiAccessPointsList.add(wifiAccessPoint);

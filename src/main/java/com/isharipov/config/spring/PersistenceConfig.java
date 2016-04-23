@@ -109,6 +109,4 @@ public class PersistenceConfig {
         databaseErrorHandler.setTxManagerId("transactionManager");
         return databaseErrorHandler;
     }
-
-
 }

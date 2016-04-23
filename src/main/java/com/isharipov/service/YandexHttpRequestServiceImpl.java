@@ -1,28 +1,34 @@
 package com.isharipov.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.isharipov.domain.common.CommonRs;
 import com.isharipov.domain.yandex.locator.*;
-import org.apache.http.HttpRequest;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.message.BasicNameValuePair;
+import com.isharipov.utils.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 /**
  * Created by Илья on 20.04.2016.
  */
-@Service
+@Service("yandexHttpRequestService")
 public class YandexHttpRequestServiceImpl implements HttpRequestService {
-
+    private final Logger log = LoggerFactory.getLogger(getClass());
     @Autowired
-    private ObjectMapper objectMapper;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Value("${yandexlocator.version}")
     private String version;
@@ -33,8 +39,9 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
     @Value("${yandexlocator.site.address}")
     private String siteAddress;
 
+    @Async
     @Override
-    public HttpRequest createHttpRequest(Map<String, String> params) {
+    public Future<CommonRs> createHttpRequest(Map<String, String> params) {
         /*GSM Cells*/
         String countryCode = params.get("ccode");
         String operatorId = params.get("opid");
@@ -43,12 +50,11 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
         String signalStrengthCell = params.get("sstrc");
         String ageCell = params.get("agec");
         /*Wifi Networks*/
-        String mac = params.get("mac");
+        String mac = StringUtils.getMac(params.get("bssid"),"-");
         String signalStrengthWifi = params.get("sstrw");
         String ageWifi = params.get("agew");
         /*Ip*/
         String addressV4 = params.get("ip");
-
         Common common = new Common();
         common.setVersion(version);
         common.setApiKey(apiKey);
@@ -79,18 +85,18 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
                 .ip(ip)
                 .build();
 
+        String yandexLocatorRqJsonString = null;
         try {
-            String yandexLocatorRqJsonString = objectMapper.writeValueAsString(yandexLocatorRq);
-
-            HttpPost request = new HttpPost(siteAddress);
-            List<NameValuePair> urlParameters = new ArrayList<>();
-            urlParameters.add(new BasicNameValuePair("json", yandexLocatorRqJsonString));
-
-            request.setEntity(new UrlEncodedFormEntity(urlParameters));
-            return request;
-        } catch (Exception e) {
+            yandexLocatorRqJsonString = objectMapper.writeValueAsString(yandexLocatorRq);
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return null;
+        RestTemplate restTemplate = new RestTemplate();
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("json", yandexLocatorRqJsonString);
+
+        CommonRs exchange = restTemplate.postForObject(siteAddress, map, CommonRs.class);
+        log.info("yandex: {}", exchange);
+        return new AsyncResult<>(exchange);
     }
 }

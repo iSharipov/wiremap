@@ -96,11 +96,13 @@
     <orderEntry type="library" name="Gradle: com.fasterxml:jackson-xml-databind:0.6.2" level="project" />
     <orderEntry type="library" name="Gradle: org.codehaus.jackson:jackson-mapper-asl:1.9.2" level="project" />
     <orderEntry type="library" name="Gradle: org.codehaus.jackson:jackson-xc:1.9.2" level="project" />
-    <orderEntry type="library" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.codehaus.jackson:jackson-core-asl:1.9.2" level="project" />
-    <orderEntry type="library" name="Gradle: javax.xml.stream:stax-api:1.0-2" level="project" />
     <orderEntry type="library" name="Gradle: org.json:json:20160212" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.httpcomponents:httpasyncclient:4.1.1" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.httpcomponents:httpcore-nio:4.4.4" level="project" />
+    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.7.3" level="project" />
+    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.7.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.commons:commons-csv:1.1" level="project" />
   </component>
 </module>

@@ -48,7 +48,9 @@ dependencies {
     compile "com.fasterxml.jackson.core:jackson-annotations:$JACKSON_VERSION"
 
    compile 'com.fasterxml:jackson-xml-databind:0.6.2'
-  compile 'org.json:json:20160212'
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.7.3'
+
+    compile 'org.json:json:20160212'
 
 
     compile 'ch.qos.logback:logback-classic:1.1.7'
@@ -75,6 +77,8 @@ dependencies {
     compile 'javax.el:javax.el-api:3.0.1-b04'
     compile 'org.apache.httpcomponents:httpclient:4.5.2'
     compile 'org.apache.httpcomponents:httpasyncclient:4.1.1'
+    compile 'org.apache.commons:commons-csv:1.1'
+
 
 }
 
