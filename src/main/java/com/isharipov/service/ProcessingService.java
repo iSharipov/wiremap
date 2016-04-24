@@ -33,6 +33,9 @@ public class ProcessingService {
     @Autowired
     @Qualifier("skyHookHttpRequestService")
     private HttpRequestService skyHookHttpRequestService;
+    @Autowired
+    @Qualifier("combainHttpRequestService")
+    private HttpRequestService combainHttpRequestService;
 
     @Autowired
     private ResponseResolver responseResolver;
@@ -41,17 +44,19 @@ public class ProcessingService {
         for (String mac : StringUtils.macList()) {
             Map<String, String> maps = new HashMap<>();
             maps.put("bssid", StringUtils.replaceSpecialsSymbolsAndUpperCase(mac));
-            maps.put("sstrw", "");
-            maps.put("agew", "");
+            maps.put("sstrw", params.get("sstrw"));
+            maps.put("agew", params.get("agew"));
             Future<CommonRs> yandexCommonRs = yandexHttpRequestService.createHttpRequest(maps);
             Future<CommonRs> googleCommonRs = googleHttpRequestService.createHttpRequest(maps);
             Future<CommonRs> skyHookCommonRs = skyHookHttpRequestService.createHttpRequest(maps);
+            Future<CommonRs> combainCommonRs = combainHttpRequestService.createHttpRequest(maps);
 
-            List<CommonRs> commons = new ArrayList<>();
+            Map<String, CommonRs> commons = new HashMap<>();
             try {
-                commons.add(yandexCommonRs.get());
-                commons.add(googleCommonRs.get());
-                commons.add(skyHookCommonRs.get());
+                commons.put("yandexCommonRs", yandexCommonRs.get());
+                commons.put("googleCommonRs", googleCommonRs.get());
+                commons.put("skyhookCommonRs", skyHookCommonRs.get());
+                commons.put("combainCommonRs", combainCommonRs.get());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {

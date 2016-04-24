@@ -19,5 +19,4 @@ public class YandexLocatorRq {
     private List<WifiNetworks> wifiNetworks;
     @JsonProperty("gsm_cells")
     private List<GsmCells> gsmCells;
-    private Ip ip;
 }

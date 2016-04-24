@@ -12,6 +12,9 @@ import java.util.List;
 @Service
 public class ResponseResolver {
     public Response resolve(List<CommonRs> commons){
+        for (CommonRs commonRs : commons){
+
+        }
         Response response = new Response();
         response.setName("Hello");
         response.setSirname("From Controller");

@@ -36,6 +36,8 @@ dependencies {
     compile "org.springframework:spring-orm:$SPRING"
     compile "org.springframework:spring-tx:$SPRING"
     compile "org.springframework:spring-webmvc:$SPRING"
+    compile "org.springframework:spring-oxm:$SPRING"
+
     compile "org.springframework:spring-test:$SPRING"
 
 

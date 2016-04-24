@@ -24,3 +24,7 @@ yandexlocator.apikey = AHrj7lYBAAAAUTkMHwIA6MuvduXQTrnv_pLH4lRYhJ2RxDsAAAAAAAAAA
 #Google Location
 google.loc.site.address = https://www.googleapis.com/geolocation/v1/geolocate?key=
 google.loc.apikey = AIzaSyA5wmyolsBqJfbZp4jTJOAqAqyUUmeJPKo
+
+#Combain Location
+combain.site.address = https://cps.combain.com?key=
+combain.apikey = qjobre8gva0rfbyr9wdy

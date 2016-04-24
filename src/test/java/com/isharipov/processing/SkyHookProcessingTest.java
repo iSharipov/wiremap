@@ -119,9 +119,9 @@ public class SkyHookProcessingTest {
         skyhookLocationRq.setVersion("2.24");
         skyhookLocationRq.setStreetAddressLookup("full");
         AccessPoint accessPoint = new AccessPoint();
-        accessPoint.setMac("EC55F9175328");
-        accessPoint.setSsid("");
-        accessPoint.setSignalStrength("-70");
+        accessPoint.setMac("E01C413BD514");
+//        accessPoint.setSsid("");
+//        accessPoint.setSignalStrength("-70");
         skyhookLocationRq.setAccessPoint(accessPoint);
         JAXBContext jaxbContext = JAXBContext.newInstance(SkyhookLocationRq.class);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -198,9 +198,9 @@ public class SkyHookProcessingTest {
     @Test
     public void getGoogleLocation() throws JsonProcessingException {
         WifiAccessPoint wifiAccessPoint = new WifiAccessPoint();
-        wifiAccessPoint.setMacAddress("01:23:45:67:89:AB");
-        wifiAccessPoint.setSignalStrength("-60");
-        wifiAccessPoint.setAge("");
+        wifiAccessPoint.setMacAddress("E01C413BD514");
+//        wifiAccessPoint.setSignalStrength("-60");
+//        wifiAccessPoint.setAge("");
 
         List<WifiAccessPoint> wifiAccessPointsList = new ArrayList<>();
         wifiAccessPointsList.add(wifiAccessPoint);

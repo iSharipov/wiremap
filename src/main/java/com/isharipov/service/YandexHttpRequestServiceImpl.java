@@ -4,13 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isharipov.domain.common.CommonRs;
 import com.isharipov.domain.yandex.locator.*;
+import com.isharipov.utils.ResponseUtil;
 import com.isharipov.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -29,6 +30,9 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
     private final Logger log = LoggerFactory.getLogger(getClass());
     @Autowired
     private ObjectMapper objectMapper = new ObjectMapper();
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Value("${yandexlocator.version}")
     private String version;
@@ -50,11 +54,10 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
         String signalStrengthCell = params.get("sstrc");
         String ageCell = params.get("agec");
         /*Wifi Networks*/
-        String mac = StringUtils.getMac(params.get("bssid"),"-");
+        String mac = StringUtils.getMac(params.get("bssid"), "-");
         String signalStrengthWifi = params.get("sstrw");
         String ageWifi = params.get("agew");
-        /*Ip*/
-        String addressV4 = params.get("ip");
+
         Common common = new Common();
         common.setVersion(version);
         common.setApiKey(apiKey);
@@ -65,24 +68,23 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
         wifiNetworks.setAge(ageWifi);
         List<WifiNetworks> wifiNetworksList = new ArrayList<>();
         wifiNetworksList.add(wifiNetworks);
-
-        GsmCells gsmCells = new GsmCells();
-        gsmCells.setCountryCode(countryCode);
-        gsmCells.setOperatorId(operatorId);
-        gsmCells.setCellId(cellId);
-        gsmCells.setLac(lac);
-        gsmCells.setSignalStrength(signalStrengthCell);
-        gsmCells.setAge(ageCell);
-        List<GsmCells> gsmCellsList = new ArrayList<>();
-        gsmCellsList.add(gsmCells);
-
-        Ip ip = new Ip();
-        ip.setAddressV4(addressV4);
+        GsmCells gsmCells;
+        List<GsmCells> gsmCellsList = null;
+        if (signalStrengthCell != null) {
+            gsmCells = new GsmCells();
+            gsmCells.setCountryCode(countryCode);
+            gsmCells.setOperatorId(operatorId);
+            gsmCells.setCellId(cellId);
+            gsmCells.setLac(lac);
+            gsmCells.setSignalStrength(signalStrengthCell);
+            gsmCells.setAge(ageCell);
+            gsmCellsList = new ArrayList<>();
+            gsmCellsList.add(gsmCells);
+        }
 
         YandexLocatorRq yandexLocatorRq = YandexLocatorRq.builder().common(common)
                 .gsmCells(gsmCellsList)
                 .wifiNetworks(wifiNetworksList)
-                .ip(ip)
                 .build();
 
         String yandexLocatorRqJsonString = null;
@@ -91,12 +93,10 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        RestTemplate restTemplate = new RestTemplate();
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("json", yandexLocatorRqJsonString);
-
-        CommonRs exchange = restTemplate.postForObject(siteAddress, map, CommonRs.class);
-        log.info("yandex: {}", exchange);
-        return new AsyncResult<>(exchange);
+        MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
+        requestParams.add("json", yandexLocatorRqJsonString);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(siteAddress, requestParams, String.class);
+        String responseBody = responseEntity.getBody();
+        return ResponseUtil.handleError(responseEntity, responseBody, objectMapper, log);
     }
 }

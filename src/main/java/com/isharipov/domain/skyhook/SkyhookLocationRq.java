@@ -19,7 +19,4 @@ public class SkyhookLocationRq {
 
     @XmlAttribute
     private String version;
-
-    @XmlAttribute(name = "street-address-lookup")
-    private String streetAddressLookup;
 }
