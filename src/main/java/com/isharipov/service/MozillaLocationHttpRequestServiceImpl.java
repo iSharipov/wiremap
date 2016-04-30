@@ -13,17 +13,17 @@ import java.util.Map;
 import java.util.concurrent.Future;
 
 /**
- * Created by Илья on 21.04.2016.
+ * Created by Илья on 30.04.2016.
  */
-@Service("googleHttpRequestService")
-public class GoogleHttpRequestServiceImpl implements HttpRequestService {
+@Service("mozillaLocationHttpReuqest")
+public class MozillaLocationHttpRequestServiceImpl implements HttpRequestService {
 
-    private Logger log = LoggerFactory.getLogger(getClass());
+    private static final Logger log = LoggerFactory.getLogger(MozillaLocationHttpRequestServiceImpl.class);
 
-    @Value("${google.loc.site.address}")
-    private String siteAddress;
+    @Value("${mozilla.location.site}")
+    private String site;
 
-    @Value("${google.loc.apikey}")
+    @Value("${mozilla.location.apikey}")
     private String apiKey;
 
     @Autowired
@@ -32,6 +32,6 @@ public class GoogleHttpRequestServiceImpl implements HttpRequestService {
     @Async
     @Override
     public Future<CommonRs> createHttpRequest(Map<String, String> params) {
-        return googleMozillaRequest.getRequest(params, siteAddress, apiKey, null, log);
+        return googleMozillaRequest.getRequest(params, site, apiKey, "gsm", log);
     }
 }

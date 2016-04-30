@@ -38,6 +38,23 @@ public class SkyHookProcessingTest {
     @Qualifier("yandexHttpRequestService")
     private HttpRequestService yandexHttpRequestService;
 
+    @Autowired
+    @Qualifier("skyHookHttpRequestService")
+    private HttpRequestService skyHookHttpRequestService;
+
+    @Autowired
+    @Qualifier("locationApiHttpRequest")
+    private HttpRequestService locationApiHttpRequest;
+
+    @Autowired
+    @Qualifier("mozillaLocationHttpReuqest")
+    private HttpRequestService mozillaLocationHttpRequest;
+
+    @Test
+    public void getSkyHookLocation() {
+        getLocation(skyHookHttpRequestService);
+    }
+
     @Test
     public void getYandexLocation() throws JsonProcessingException {
         getLocation(yandexHttpRequestService);
@@ -48,7 +65,18 @@ public class SkyHookProcessingTest {
         getLocation(googleHttpRequestService);
     }
 
+    @Test
+    public void getLocationApiLocation() {
+        getLocation(locationApiHttpRequest);
+    }
+
+    @Test
+    public void getLocationMozillaLocation() {
+        getLocation(mozillaLocationHttpRequest);
+    }
+
     private void getLocation(HttpRequestService httpRequestService) {
+        //SkyHook bssid E01C413BD514
         Map<String, String> wifiParams = new HashMap<>();
         wifiParams.put("bssid", "cc:5d:4e:50:8d:ac");
         Map<String, String> gsmParams = new HashMap<>();
@@ -72,7 +100,7 @@ public class SkyHookProcessingTest {
             }
             CommonRs commonRsWifi = httpRequestWifi.get();
             CommonRs commonRsGsm = httpRequestGsm.get();
-            CommonRs commonRsCommon = httpRequestGsm.get();
+            CommonRs commonRsCommon = httpRequestCommon.get();
             log.info("{}", "Elapsed time: " + (System.currentTimeMillis() - start));
             log.info("{}", commonRsWifi);
             log.info("{}", commonRsGsm);

@@ -22,7 +22,7 @@ import java.util.concurrent.Future;
 @Service
 public class ProcessingService {
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    private static final Logger log = LoggerFactory.getLogger(ProcessingService.class);
     @Autowired
     @Qualifier("yandexHttpRequestService")
     private HttpRequestService yandexHttpRequestService;
@@ -30,12 +30,18 @@ public class ProcessingService {
     @Autowired
     @Qualifier("googleHttpRequestService")
     private HttpRequestService googleHttpRequestService;
+
     @Autowired
     @Qualifier("skyHookHttpRequestService")
     private HttpRequestService skyHookHttpRequestService;
+
     @Autowired
     @Qualifier("combainHttpRequestService")
     private HttpRequestService combainHttpRequestService;
+
+    @Autowired
+    @Qualifier("mozillaLocationHttpReuqest")
+    private HttpRequestService mozillaHttpRequestService;
 
     @Autowired
     private ResponseResolver responseResolver;
@@ -43,20 +49,28 @@ public class ProcessingService {
     public Response process(Map<String, String> params) {
         for (String mac : StringUtils.macList()) {
             Map<String, String> maps = new HashMap<>();
-            maps.put("bssid", StringUtils.replaceSpecialsSymbolsAndUpperCase(mac));
-            maps.put("sstrw", params.get("sstrw"));
-            maps.put("agew", params.get("agew"));
+            maps.put("bssid", mac);
+            maps.put("signal", params.get("sstrw"));
+            maps.put("age", params.get("agew"));
             Future<CommonRs> yandexCommonRs = yandexHttpRequestService.createHttpRequest(maps);
             Future<CommonRs> googleCommonRs = googleHttpRequestService.createHttpRequest(maps);
             Future<CommonRs> skyHookCommonRs = skyHookHttpRequestService.createHttpRequest(maps);
             Future<CommonRs> combainCommonRs = combainHttpRequestService.createHttpRequest(maps);
+            Future<CommonRs> mozillaCommonRs = mozillaHttpRequestService.createHttpRequest(maps);
 
             Map<String, CommonRs> commons = new HashMap<>();
             try {
+                while (!(yandexCommonRs.isDone() && googleCommonRs.isDone()
+                        && skyHookCommonRs.isDone() && combainCommonRs.isDone()
+                        && mozillaCommonRs.isDone()
+                )) {
+
+                }
                 commons.put("yandexCommonRs", yandexCommonRs.get());
                 commons.put("googleCommonRs", googleCommonRs.get());
                 commons.put("skyhookCommonRs", skyHookCommonRs.get());
                 commons.put("combainCommonRs", combainCommonRs.get());
+                commons.put("mozillaCommonRs", mozillaCommonRs.get());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -65,13 +79,19 @@ public class ProcessingService {
         }
         Future<CommonRs> yandexCommonRs = yandexHttpRequestService.createHttpRequest(params);
         Future<CommonRs> googleCommonRs = googleHttpRequestService.createHttpRequest(params);
-        Future<CommonRs> skyHookCommonRs = skyHookHttpRequestService.createHttpRequest(params);
+        Future<CommonRs> skyHookCommonRs = null;
+        if (params.get("bssid") != null) {
+            skyHookCommonRs = skyHookHttpRequestService.createHttpRequest(params);
+        }
+
 
         List<CommonRs> commons = new ArrayList<>();
         try {
             commons.add(yandexCommonRs.get());
             commons.add(googleCommonRs.get());
-            commons.add(skyHookCommonRs.get());
+            if (skyHookCommonRs != null) {
+                commons.add(skyHookCommonRs.get());
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

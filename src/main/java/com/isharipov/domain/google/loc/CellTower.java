@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CellTower {
+    private String radioType;
     private String cellId;
     private String locationAreaCode;
     private String mobileCountryCode;

@@ -20,16 +20,16 @@ public class ResponseUtil {
         try {
             if (RestUtil.isError(responseEntity.getStatusCode())) {
                 if (responseEntity.getStatusCode().equals(HttpStatus.UNAUTHORIZED)) {
-                    log.info("code: {}", HttpStatus.UNAUTHORIZED);
+                    log.info("{}", "Not Authorized");
                 } else {
                     ErrorResponse errorResponse = objectMapper.readValue(responseBody, ErrorResponse.class);
-                    log.info("code: {}, message: {}", errorResponse.getError().getCode(), errorResponse.getError().getMessage());
                     CommonRs commonRs = objectMapper.readValue(responseBody, CommonRs.class);
+                    log.info("{}", commonRs);
                     return new AsyncResult<>(commonRs);
                 }
             } else {
                 CommonRs commonRs = objectMapper.readValue(responseBody, CommonRs.class);
-                log.info("response: {}", commonRs);
+                log.info("{}", commonRs);
                 return new AsyncResult<>(commonRs);
             }
         } catch (IOException e) {

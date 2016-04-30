@@ -28,3 +28,14 @@ google.loc.apikey = AIzaSyA5wmyolsBqJfbZp4jTJOAqAqyUUmeJPKo
 #Combain Location
 combain.site.address = https://cps.combain.com?key=
 combain.apikey = qjobre8gva0rfbyr9wdy
+
+#LocationApi.org
+location.api.token = 9579749a4e145a
+location.api.site.asia = https://ap1.unwiredlabs.com/v2/process.php
+location.api.site.europe = https://eu1.unwiredlabs.com/v2/process.php
+location.api.site.us.west = https://us2.unwiredlabs.com/v2/process.php
+location.api.site.us.east = https://us1.unwiredlabs.com/v2/process.php
+
+#MozillaLocationService
+mozilla.location.apikey = test
+mozilla.location.site =  https://location.services.mozilla.com/v1/geolocate?key=

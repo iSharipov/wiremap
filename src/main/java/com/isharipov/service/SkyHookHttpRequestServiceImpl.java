@@ -7,6 +7,7 @@ import com.isharipov.domain.skyhook.AuthenticationParameters;
 import com.isharipov.domain.skyhook.Key;
 import com.isharipov.domain.skyhook.SkyhookLocationRq;
 import com.isharipov.utils.ResponseUtil;
+import com.isharipov.utils.StringUtils;
 import org.json.XML;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,10 +58,12 @@ public class SkyHookHttpRequestServiceImpl implements HttpRequestService {
     @Override
     public Future<CommonRs> createHttpRequest(Map<String, String> params) {
         String bssid = params.get("bssid");
+        bssid = StringUtils.replaceSpecialsSymbolsAndUpperCase(bssid);
         String signal = params.get("signal");
         if (signal == null) {
             signal = "-60";
         }
+
         SkyhookLocationRq skyhookLocationRq = new SkyhookLocationRq();
         Key key = new Key();
         key.setKey(apiKey);
