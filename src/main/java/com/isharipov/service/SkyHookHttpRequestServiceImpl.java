@@ -13,8 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
-import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
-import org.springframework.http.converter.xml.MarshallingHttpMessageConverter;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -58,10 +56,11 @@ public class SkyHookHttpRequestServiceImpl implements HttpRequestService {
     @Async
     @Override
     public Future<CommonRs> createHttpRequest(Map<String, String> params) {
-        String mac = params.get("bssid");
-        String signalStrengthWifi = params.get("sstrw");
-        String ssidw = params.get("ssidw");
-
+        String bssid = params.get("bssid");
+        String signal = params.get("signal");
+        if (signal == null) {
+            signal = "-60";
+        }
         SkyhookLocationRq skyhookLocationRq = new SkyhookLocationRq();
         Key key = new Key();
         key.setKey(apiKey);
@@ -73,9 +72,8 @@ public class SkyHookHttpRequestServiceImpl implements HttpRequestService {
         skyhookLocationRq.setAuthentication(authenticationParameters);
         skyhookLocationRq.setVersion(version);
         AccessPoint accessPoint = new AccessPoint();
-        accessPoint.setMac("E01C413BD514");
-        accessPoint.setSignalStrength(signalStrengthWifi);
-        accessPoint.setSsid(ssidw);
+        accessPoint.setMac(bssid);
+        accessPoint.setSignalStrength(signal);
         skyhookLocationRq.setAccessPoint(accessPoint);
         JAXBContext jaxbContext;
         try {
@@ -89,7 +87,7 @@ public class SkyHookHttpRequestServiceImpl implements HttpRequestService {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.TEXT_XML);
             HttpEntity<String> entity = new HttpEntity<>(xmlString, headers);
-            ResponseEntity<String> responseEntity = restTemplate.exchange(siteAddress, HttpMethod.POST ,entity, String.class);
+            ResponseEntity<String> responseEntity = restTemplate.exchange(siteAddress, HttpMethod.POST, entity, String.class);
             String responseBody = XML.toJSONObject(responseEntity.getBody()).toString();
             return ResponseUtil.handleError(responseEntity, responseBody, objectMapper, log);
         } catch (JAXBException e) {

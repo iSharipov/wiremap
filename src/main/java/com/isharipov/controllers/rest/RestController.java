@@ -24,15 +24,50 @@ public class RestController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/mac")
     public Response processRequestMac(@RequestParam(value = "bssid", required = true) String bssid,
-                                      @RequestParam(value = "sstrw", required = false) String sstrw,
-                                      @RequestParam(value = "agew", required = false) String age
+                                      @RequestParam(value = "signal", required = false) String signal,
+                                      @RequestParam(value = "age", required = false) String age
     ) {
-        Map<String, String> map = new HashMap<>();
-        map.put("bssid", StringUtils.replaceSpecialsSymbolsAndUpperCase(bssid));
-        map.put("sstrw", sstrw);
-        map.put("agew", age);
+        final Map<String, String> map = new HashMap<>();
+        map.put("bssid", bssid);
+        map.put("signal", signal);
+        map.put("age", age);
 
         return processingService.process(map);
+    }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/cell")
+    public Response processRequestSsid(@RequestParam(value = "mcc", required = true) String mcc,
+                                       @RequestParam(value = "mnc", required = true) String mnc,
+                                       @RequestParam(value = "lac", required = true) String lac,
+                                       @RequestParam(value = "cid", required = true) String cid
+    ) {
+        final Map<String, String> map = new HashMap<>();
+        map.put("mcc", mcc);
+        map.put("mnc", mnc);
+        map.put("lac", lac);
+        map.put("cid", cid);
+        return processingService.process(map);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/all")
+    public Response processRequestCommon(
+            @RequestParam(value = "mcc", required = true) String mcc,
+            @RequestParam(value = "mnc", required = true) String mnc,
+            @RequestParam(value = "lac", required = true) String lac,
+            @RequestParam(value = "lac", required = true) String cid,
+            @RequestParam(value = "bssid", required = true) String bssid,
+            @RequestParam(value = "signal", required = false) String signal,
+            @RequestParam(value = "age", required = false) String age
+
+    ){
+        final Map<String, String> map = new HashMap<>();
+        map.put("mcc", mcc);
+        map.put("mnc", mnc);
+        map.put("lac", lac);
+        map.put("cid", cid);
+        map.put("bssid",bssid);
+        map.put("signal", signal);
+        map.put("age", age);
+        return processingService.process(map);
     }
 }

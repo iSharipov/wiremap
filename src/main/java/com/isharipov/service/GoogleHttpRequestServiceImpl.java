@@ -3,6 +3,7 @@ package com.isharipov.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isharipov.domain.common.CommonRs;
+import com.isharipov.domain.google.loc.CellTower;
 import com.isharipov.domain.google.loc.GoogleRq;
 import com.isharipov.domain.google.loc.WifiAccessPoint;
 import com.isharipov.utils.ResponseUtil;
@@ -42,13 +43,44 @@ public class GoogleHttpRequestServiceImpl implements HttpRequestService {
     @Async
     @Override
     public Future<CommonRs> createHttpRequest(Map<String, String> params) {
-        WifiAccessPoint wifiAccessPoint = new WifiAccessPoint();
-        wifiAccessPoint.setMacAddress(StringUtils.getMac(params.get("bssid"), "-"));
-        wifiAccessPoint.setSignalStrength(params.get("sstrw"));
-        wifiAccessPoint.setAge(params.get("agew"));
-        List<WifiAccessPoint> wifiAccessPointsList = new ArrayList<>();
-        wifiAccessPointsList.add(wifiAccessPoint);
-        GoogleRq googleRq = GoogleRq.builder().considerIp(false).wifiAccessPoints(wifiAccessPointsList).build();
+        /*Wifi Networks*/
+        String bssid = params.get("bssid");
+        String age;
+        String signalStrength;
+        WifiAccessPoint wifiAccessPoint = null;
+        List<WifiAccessPoint> wifiAccessPointsList = null;
+        if (bssid != null) {
+            bssid = StringUtils.getMac(StringUtils.replaceSpecialsSymbolsAndUpperCase(bssid), "-");
+            age = params.get("age");
+            signalStrength = params.get("signal");
+            wifiAccessPoint = new WifiAccessPoint();
+            wifiAccessPoint.setMacAddress(bssid);
+            wifiAccessPoint.setAge(age);
+            wifiAccessPoint.setSignalStrength(signalStrength);
+            wifiAccessPointsList = new ArrayList<>();
+            wifiAccessPointsList.add(wifiAccessPoint);
+        }
+        /*GSM Cells*/
+        String mobileCountryCode = params.get("mcc");
+        String mobileNetworkCode;
+        String locationAreaCode;
+        String cellId;
+        CellTower cellTower = null;
+        List<CellTower> cellTowers = null;
+        if (mobileCountryCode != null) {
+            mobileNetworkCode = params.get("mnc");
+            locationAreaCode = params.get("lac");
+            cellId = params.get("cid");
+            cellTower = new CellTower();
+            cellTower.setMobileCountryCode(mobileCountryCode);
+            cellTower.setMobileNetworkCode(mobileNetworkCode);
+            cellTower.setLocationAreaCode(locationAreaCode);
+            cellTower.setCellId(cellId);
+            cellTowers = new ArrayList<>();
+            cellTowers.add(cellTower);
+        }
+
+        GoogleRq googleRq = GoogleRq.builder().considerIp(false).cellTowers(cellTowers).wifiAccessPoints(wifiAccessPointsList).build();
         String googleLocatorRqJsonString = null;
         try {
             googleLocatorRqJsonString = objectMapper.writeValueAsString(googleRq);

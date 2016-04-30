@@ -15,7 +15,4 @@ public class GsmCells {
     @JsonProperty("cellid")
     private String cellId;
     private String lac;
-    @JsonProperty("signal_strength")
-    private String signalStrength;
-    private String age;
 }

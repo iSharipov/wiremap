@@ -3,7 +3,10 @@ package com.isharipov.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isharipov.domain.common.CommonRs;
-import com.isharipov.domain.yandex.locator.*;
+import com.isharipov.domain.yandex.locator.Common;
+import com.isharipov.domain.yandex.locator.GsmCells;
+import com.isharipov.domain.yandex.locator.WifiNetworks;
+import com.isharipov.domain.yandex.locator.YandexLocatorRq;
 import com.isharipov.utils.ResponseUtil;
 import com.isharipov.utils.StringUtils;
 import org.slf4j.Logger;
@@ -46,38 +49,43 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
     @Async
     @Override
     public Future<CommonRs> createHttpRequest(Map<String, String> params) {
-        /*GSM Cells*/
-        String countryCode = params.get("ccode");
-        String operatorId = params.get("opid");
-        String cellId = params.get("cellid");
-        String lac = params.get("lac");
-        String signalStrengthCell = params.get("sstrc");
-        String ageCell = params.get("agec");
-        /*Wifi Networks*/
-        String mac = StringUtils.getMac(params.get("bssid"), "-");
-        String signalStrengthWifi = params.get("sstrw");
-        String ageWifi = params.get("agew");
-
+        /*Common*/
         Common common = new Common();
         common.setVersion(version);
         common.setApiKey(apiKey);
 
-        WifiNetworks wifiNetworks = new WifiNetworks();
-        wifiNetworks.setMac(mac);
-        wifiNetworks.setSignalStrength(signalStrengthWifi);
-        wifiNetworks.setAge(ageWifi);
-        List<WifiNetworks> wifiNetworksList = new ArrayList<>();
-        wifiNetworksList.add(wifiNetworks);
-        GsmCells gsmCells;
+        /*Wifi Networks*/
+        String bssid = params.get("bssid");
+        String signal;
+        String age;
+        WifiNetworks wifiNetworks;
+        List<WifiNetworks> wifiNetworksList = null;
+        if (bssid != null) {
+            bssid = StringUtils.getMac(StringUtils.replaceSpecialsSymbolsAndUpperCase(bssid), "-");
+            signal = params.get("signal");
+            age = params.get("age");
+            wifiNetworks = new WifiNetworks();
+            wifiNetworks.setMac(bssid);
+            wifiNetworks.setSignalStrength(signal);
+            wifiNetworks.setAge(age);
+            wifiNetworksList = new ArrayList<>();
+            wifiNetworksList.add(wifiNetworks);
+        }
+        String mcc = params.get("mcc");
+        String mnc;
+        String lac;
+        String cid;
+        GsmCells gsmCells = null;
         List<GsmCells> gsmCellsList = null;
-        if (signalStrengthCell != null) {
+        if (mcc != null) {
+            mnc = params.get("mnc");
+            lac = params.get("lac");
+            cid = params.get("cid");
             gsmCells = new GsmCells();
-            gsmCells.setCountryCode(countryCode);
-            gsmCells.setOperatorId(operatorId);
-            gsmCells.setCellId(cellId);
+            gsmCells.setCountryCode(mcc);
+            gsmCells.setOperatorId(mnc);
             gsmCells.setLac(lac);
-            gsmCells.setSignalStrength(signalStrengthCell);
-            gsmCells.setAge(ageCell);
+            gsmCells.setCellId(cid);
             gsmCellsList = new ArrayList<>();
             gsmCellsList.add(gsmCells);
         }
