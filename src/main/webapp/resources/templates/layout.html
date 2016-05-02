@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="common_header(title,links)">
+    <meta charset="UTF-8">
+    <title th:replace="${title}">The awesome application</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
+    <link rel="stylesheet" th:href="@{webjars/bootstrap/3.3.5/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/resources/assets/font-awesome/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/resources/assets/css/style.css}">
+    <th:block th:replace="${links}"/>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/webjars/html5shiv/3.7.0/html5shiv.min.js}"></script>
+    <script th:src="@{/webjars/respond/1.4.2/dest/respond.min.js}"></script>
+    <![endif]-->
+</head>
+<body>
+<header th:fragment="header">
+    <div class="right_buttons">
+        <div class="comp pull-right show-logout">
+            <a th:href="@{/login}" class="hdr-btn">
+                Войти
+            </a>
+        </div>
+        <div class="comp pull-right">
+            <a th:href="@{/register}" class="hdr-btn">
+                Регистрация
+            </a>
+        </div>
+        <button class="comp pull-right demo-button" th:disabled="${#authorization.expression('!isAuthenticated()')}">
+            <a th:href="@{/register}" class="hdr-btn">
+                Demo
+            </a>
+        </button>
+    </div>
+</header>
+<div th:fragment="common_scripts(scripts)">
+    <script th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/3.3.5/js/bootstrap.min.js}"></script>
+    <script th:src="@{/webjars/jquery-backstretch/2.0.4/jquery.backstretch.min.js}"></script>
+    <script th:src="@{/resources/assets/js/scripts.js}"></script>
+    <!--[if lt IE 10]>
+    <script th:src="@{/resources/assets/js/placeholder.js}"></script>
+    <![endif]-->
+</div>
+</body>
+</html>

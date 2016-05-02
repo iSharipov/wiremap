@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class StringUtils {
     public static String getMac(String unformattedMac, String divisionSymbol) {
+        
         return unformattedMac.replaceAll("(.{2})", "$1" + divisionSymbol).substring(0, 17);
     }
 

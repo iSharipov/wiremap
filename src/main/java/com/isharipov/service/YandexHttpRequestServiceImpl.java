@@ -75,7 +75,7 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
         String mnc;
         String lac;
         String cid;
-        GsmCells gsmCells = null;
+        GsmCells gsmCells;
         List<GsmCells> gsmCellsList = null;
         if (mcc != null) {
             mnc = params.get("mnc");

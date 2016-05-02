@@ -107,5 +107,6 @@
     <orderEntry type="library" name="Gradle: org.springframework:spring-oxm:4.2.5.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: net.sf.ehcache:ehcache:2.10.2" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-context-support:4.2.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.0.BETA02" level="project" />
   </component>
 </module>
