@@ -10,6 +10,7 @@ import com.isharipov.utils.StringUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,6 +30,7 @@ public class GoogleMozillaRequest {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Async
     public Future<CommonRs> getRequest(Map<String, String> params, String site, String apiKey, String radioType, Logger log) {
         /*Wifi Networks*/
         String bssid = params.get("bssid");

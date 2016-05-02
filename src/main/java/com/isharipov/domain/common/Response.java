@@ -1,12 +1,19 @@
 package com.isharipov.domain.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 /**
  * Created by Илья on 22.04.2016.
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Response {
-    private String name;
-    private String sirname;
+    private String lat;
+    private String lon;
+    private String provider;
+    private String error;
+    @JsonIgnore
+    private Float accuracy;
 }

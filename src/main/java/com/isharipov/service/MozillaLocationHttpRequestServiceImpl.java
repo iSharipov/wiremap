@@ -29,7 +29,6 @@ public class MozillaLocationHttpRequestServiceImpl implements HttpRequestService
     @Autowired
     private GoogleMozillaRequest googleMozillaRequest;
 
-    @Async
     @Override
     public Future<CommonRs> createHttpRequest(Map<String, String> params) {
         return googleMozillaRequest.getRequest(params, site, apiKey, "gsm", log);

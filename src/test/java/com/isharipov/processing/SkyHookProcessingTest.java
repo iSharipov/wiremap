@@ -78,7 +78,7 @@ public class SkyHookProcessingTest {
     private void getLocation(HttpRequestService httpRequestService) {
         //SkyHook bssid E01C413BD514
         Map<String, String> wifiParams = new HashMap<>();
-        wifiParams.put("bssid", "cc:5d:4e:50:8d:ac");
+        wifiParams.put("bssid", "E01C413BD514");
         Map<String, String> gsmParams = new HashMap<>();
         gsmParams.put("cid", "16655");
         gsmParams.put("lac", "27408");

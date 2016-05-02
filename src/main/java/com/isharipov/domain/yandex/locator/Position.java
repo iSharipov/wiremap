@@ -12,7 +12,7 @@ public class Position {
     private String latitude;
     private String longitude;
     private String altitude;
-    private String precision;
+    private Float precision;
     private String altitude_precision;
     private String type;
 }
