@@ -105,5 +105,7 @@
     <orderEntry type="library" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-csv:1.1" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework:spring-oxm:4.2.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Gradle: net.sf.ehcache:ehcache:2.10.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.springframework:spring-context-support:4.2.5.RELEASE" level="project" />
   </component>
 </module>

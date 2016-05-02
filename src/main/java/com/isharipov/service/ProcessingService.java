@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -43,36 +44,8 @@ public class ProcessingService {
     @Autowired
     private ResponseResolver responseResolver;
 
+    @Cacheable(value = "isharipovCache", key = "#params")
     public Response process(Map<String, String> params) {
-//        for (String mac : StringUtils.macList()) {
-//            Map<String, String> maps = new HashMap<>();
-//            maps.put("bssid", mac);
-//            maps.put("signal", params.get("sstrw"));
-//            maps.put("age", params.get("agew"));
-//            Future<CommonRs> yandexCommonRs = yandexHttpRequestService.createHttpRequest(maps);
-//            Future<CommonRs> googleCommonRs = googleHttpRequestService.createHttpRequest(maps);
-//            Future<CommonRs> skyHookCommonRs = skyHookHttpRequestService.createHttpRequest(maps);
-//            Future<CommonRs> combainCommonRs = combainHttpRequestService.createHttpRequest(maps);
-//            Future<CommonRs> mozillaCommonRs = mozillaHttpRequestService.createHttpRequest(maps);
-//
-//            Map<String, CommonRs> commons = new HashMap<>();
-//            try {
-//                while (!(yandexCommonRs.isDone() && googleCommonRs.isDone()
-//                        && skyHookCommonRs.isDone() && combainCommonRs.isDone()
-//                        && mozillaCommonRs.isDone()
-//                )) {
-//                    Thread.sleep(20);
-//                }
-//                commons.put("yandexCommonRs", yandexCommonRs.get());
-//                commons.put("googleCommonRs", googleCommonRs.get());
-//                commons.put("skyhookCommonRs", skyHookCommonRs.get());
-//                commons.put("mozillaCommonRs", mozillaCommonRs.get());
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            } catch (ExecutionException e) {
-//                e.printStackTrace();
-//            }
-//        }
         long start = System.currentTimeMillis();
         Future<CommonRs> yandexCommonRs = yandexHttpRequestService.createHttpRequest(params);
         Future<CommonRs> googleCommonRs = googleHttpRequestService.createHttpRequest(params);

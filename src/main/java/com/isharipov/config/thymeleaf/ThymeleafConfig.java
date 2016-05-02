@@ -19,7 +19,6 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
  * Created by Илья on 30.03.2016.
  */
 @Configuration
-@ComponentScan({"com.isharipov"})
 public class ThymeleafConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;

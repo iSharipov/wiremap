@@ -1,3 +1,5 @@
+import javax.swing.Spring
+
 group 'wiremap'
 version '1.0-SNAPSHOT'
 
@@ -38,6 +40,10 @@ dependencies {
     compile "org.springframework:spring-webmvc:$SPRING"
     compile "org.springframework:spring-oxm:$SPRING"
 
+    compile "org.springframework:spring-context:$SPRING"
+   compile "org.springframework:spring-context-support:$SPRING"
+
+
     compile "org.springframework:spring-test:$SPRING"
 
 
@@ -49,7 +55,7 @@ dependencies {
     compile "com.fasterxml.jackson.core:jackson-core:$JACKSON_VERSION"
     compile "com.fasterxml.jackson.core:jackson-annotations:$JACKSON_VERSION"
 
-   compile 'com.fasterxml:jackson-xml-databind:0.6.2'
+    compile 'com.fasterxml:jackson-xml-databind:0.6.2'
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.7.3'
 
     compile 'org.json:json:20160212'
@@ -80,6 +86,8 @@ dependencies {
     compile 'org.apache.httpcomponents:httpclient:4.5.2'
     compile 'org.apache.httpcomponents:httpasyncclient:4.1.1'
     compile 'org.apache.commons:commons-csv:1.1'
+
+    compile 'net.sf.ehcache:ehcache:2.10.2'
 
 
 }

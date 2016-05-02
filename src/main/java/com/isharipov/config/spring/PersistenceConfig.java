@@ -27,7 +27,6 @@ import java.io.IOException;
  * Created by Илья on 20.02.2016.
  */
 @Configuration
-@ComponentScan("com.isharipov")
 @EnableJpaRepositories("com.isharipov.repository")
 @EnableTransactionManagement
 @PropertySource("classpath:application.properties")
