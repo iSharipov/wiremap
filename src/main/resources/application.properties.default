@@ -1,41 +1,41 @@
 #MySQL properties
-jdbc.driverClassName = com.mysql.jdbc.Driver
-jdbc.url = jdbc:mysql://localhost:3306/wiremap
-jdbc.username = root
-jdbc.password = 1234
-jdbc.reconnect.max_tries_count = 0
-jdbc.reconnect.timeout = 1000
+jdbc.driverClassName =
+jdbc.url =
+jdbc.username =
+jdbc.password =
+jdbc.reconnect.max_tries_count =
+jdbc.reconnect.timeout =
 
 #Hiberante properties
 
 #Remote systems properties
 #Skyhook
-skyhook.site.address = https://api.skyhookwireless.com/wps2/location
-skyhook.email = prohodka67@gmail.com
-skyhook.apikey = eJwVwckNACAIALC3w5CIgIYncixl3N3YYsP-CU9sR62rD2OooAQSnRBsCbvEi3Qvw3EfFHoLVA
-skyhook.authentication.version = 2.2
-skyhook.version = 2.24
+skyhook.site.address =
+skyhook.email =
+skyhook.apikey =
+skyhook.authentication.version =
+skyhook.version =
 
 #Yandex Locator
-yandexlocator.version = 1.0
-yandexlocator.site.address = http://api.lbs.yandex.net/geolocation
-yandexlocator.apikey = AHrj7lYBAAAAUTkMHwIA6MuvduXQTrnv_pLH4lRYhJ2RxDsAAAAAAAAAAACTHacV8CkBA_xGvIdLhRGynl8dGw==
+yandexlocator.version =
+yandexlocator.site.address =
+yandexlocator.apikey =
 
 #Google Location
-google.loc.site.address = https://www.googleapis.com/geolocation/v1/geolocate?key=
-google.loc.apikey = AIzaSyA5wmyolsBqJfbZp4jTJOAqAqyUUmeJPKo
+google.loc.site.address =
+google.loc.apikey =
 
 #Combain Location
-combain.site.address = https://cps.combain.com?key=
-combain.apikey = qjobre8gva0rfbyr9wdy
+combain.site.address =
+combain.apikey =
 
 #LocationApi.org
-location.api.token = 9579749a4e145a
-location.api.site.asia = https://ap1.unwiredlabs.com/v2/process.php
-location.api.site.europe = https://eu1.unwiredlabs.com/v2/process.php
-location.api.site.us.west = https://us2.unwiredlabs.com/v2/process.php
-location.api.site.us.east = https://us1.unwiredlabs.com/v2/process.php
+location.api.token =
+location.api.site.asia =
+location.api.site.europe =
+location.api.site.us.west =
+location.api.site.us.east =
 
 #MozillaLocationService
-mozilla.location.apikey = test
-mozilla.location.site =  https://location.services.mozilla.com/v1/geolocate?key=
+mozilla.location.apikey =
+mozilla.location.site =
