@@ -21,6 +21,9 @@ repositories {
     jcenter()
 }
 
+//configurations {
+//    compile.exclude module: 'javassist'
+//}
 compileJava {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -62,9 +65,15 @@ dependencies {
     compile 'ch.qos.logback:logback-classic:1.1.7'
     compile 'org.slf4j:slf4j-api:1.7.20'
 
-    compile "org.thymeleaf:thymeleaf-spring4:$THYMELEAF_VERSION"
-    compile "org.thymeleaf:thymeleaf:$THYMELEAF_VERSION"
-    compile "org.thymeleaf.extras:thymeleaf-extras-springsecurity4:$THYMELEAF_VERSION"
+    compile("org.thymeleaf:thymeleaf-spring4:$THYMELEAF_VERSION"){
+        exclude module: 'javassist'
+    }
+    compile("org.thymeleaf:thymeleaf:$THYMELEAF_VERSION"){
+        exclude module: 'javassist'
+    }
+    compile("org.thymeleaf.extras:thymeleaf-extras-springsecurity4:$THYMELEAF_VERSION"){
+        exclude module: 'javassist'
+    }
 
 
 

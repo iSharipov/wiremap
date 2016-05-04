@@ -3,7 +3,7 @@ jQuery(document).ready(function() {
     /*
         Fullscreen background
     */
-    $.backstretch("/resources/assets/img/backgrounds/map.jpg");
+    $.backstretch("/resources/assets/img/backgrounds/map-min.jpg");
     
     /*
         Login form validation
