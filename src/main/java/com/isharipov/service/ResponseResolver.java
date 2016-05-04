@@ -19,6 +19,7 @@ public class ResponseResolver {
 
     public Response resolve(Map<String, CommonRs> commons) {
         Response response = new Response();
+        response.setAccuracy(Float.MAX_VALUE);
         CommonRs googleCommonRs = commons.get("googleCommonRs");
         if (googleCommonRs != null) {
             if (googleCommonRs.getErrorResponse() != null || googleCommonRs.getError() != null) {
@@ -43,6 +44,7 @@ public class ResponseResolver {
                 } else if (response.getLon() == null) {
                     response.setLat(mozillaCommonRs.getLocation().getLat());
                     response.setLon(mozillaCommonRs.getLocation().getLng());
+                    response.setAccuracy(mozillaCommonRs.getAccuracy());
                     response.setProvider("mozilla");
                 }
             }
@@ -71,6 +73,7 @@ public class ResponseResolver {
                     if (response.getLon() == null) {
                         response.setLon(yandexCommonRs.getPosition().getLongitude());
                         response.setLat(yandexCommonRs.getPosition().getLatitude());
+                        response.setAccuracy(yandexCommonRs.getAccuracy());
                         response.setProvider("yandex");
                     } else if (response.getLon() != null && response.getAccuracy() > yandexCommonRs.getPosition().getPrecision()) {
                         response.setLon(yandexCommonRs.getPosition().getLongitude());
