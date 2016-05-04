@@ -26,7 +26,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/").authenticated().and()
+                .antMatchers("/demo").authenticated().and()
                 .formLogin()
                 .loginPage("/login").failureUrl("/login?error")
                 .usernameParameter("username")

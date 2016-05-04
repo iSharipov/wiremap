@@ -316,16 +316,26 @@ footer a:hover, footer a:focus {
     padding: 0px 19px;
     color: #FFF;
 }
-.comp a{
+
+.comp a {
     background: none repeat scroll 0% 0% transparent;
 }
 
-.demo-button{
-   background-color: #FF5A5F;
+.demo-button {
+    background-color: #FF5A5F;
     height: 61px;
     line-height: 61px;
-    border:none;
+    border: none;
 }
-.disable-demo{
 
+.disable-demo {
+
+}
+
+.demo-button:disabled {
+    background-color: #dddddd;
+}
+
+.fadeLoginRegister {
+    display: none;
 }

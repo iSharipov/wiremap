@@ -20,18 +20,18 @@
 <body>
 <header th:fragment="header">
     <div class="right_buttons">
-        <div class="comp pull-right show-logout">
+        <div class="comp pull-right show-logout" th:classappend="${#authorization.expression('isAuthenticated()')}? fadeLoginRegister">
             <a th:href="@{/login}" class="hdr-btn">
                 Войти
             </a>
         </div>
-        <div class="comp pull-right">
+        <div class="comp pull-right" th:classappend="${#authorization.expression('isAuthenticated()')}? fadeLoginRegister">
             <a th:href="@{/register}" class="hdr-btn">
                 Регистрация
             </a>
         </div>
-        <button class="comp pull-right demo-button" th:disabled="${#authorization.expression('!isAuthenticated()')}">
-            <a th:href="@{/register}" class="hdr-btn">
+        <button class="comp pull-right demo-button">
+            <a th:href="@{/demo}" class="hdr-btn">
                 Demo
             </a>
         </button>
