@@ -1,7 +1,7 @@
 /*
  Fullscreen background
  */
-$.backstretch("/resources/assets/img/backgrounds/map-min-min.jpg");
+$.backstretch("/resources/assets/img/backgrounds/map1.jpg");
 
 jQuery(document).ready(function () {
 

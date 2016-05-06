@@ -2,13 +2,16 @@ package com.isharipov.service;
 
 import com.isharipov.domain.common.CommonRs;
 import com.isharipov.domain.common.Response;
+import com.isharipov.utils.Systems;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -19,6 +22,9 @@ import java.util.concurrent.Future;
 @Slf4j
 @Service
 public class ProcessingService {
+
+    @Value("${systems}")
+    private List<Systems> systems;
 
     @Autowired
     @Qualifier("yandexHttpRequestService")
@@ -47,18 +53,28 @@ public class ProcessingService {
     public Response process(Map<String, String> params) {
 
         long start = System.currentTimeMillis();
-        Future<CommonRs> yandexCommonRs = yandexHttpRequestService.createHttpRequest(params);
-        Future<CommonRs> googleCommonRs = googleHttpRequestService.createHttpRequest(params);
+        Future<CommonRs> yandexCommonRs = null;
+        if (systems.contains(Systems.YANDEX)) {
+            yandexCommonRs = yandexHttpRequestService.createHttpRequest(params);
+        }
+        Future<CommonRs> googleCommonRs = null;
+        if (systems.contains(Systems.GOOGLE)) {
+            googleCommonRs = googleHttpRequestService.createHttpRequest(params);
+        }
+
         Future<CommonRs> skyHookCommonRs = null;
-        if (params.get("bssid") != null) {
+        if (params.get("bssid") != null && systems.contains(Systems.SKYHOOK)) {
             skyHookCommonRs = skyHookHttpRequestService.createHttpRequest(params);
         }
-        Future<CommonRs> mozillaCommonRs = mozillaHttpRequestService.createHttpRequest(params);
+        Future<CommonRs> mozillaCommonRs = null;
+        if (systems.contains(Systems.MOZILLA)) {
+            mozillaCommonRs = mozillaHttpRequestService.createHttpRequest(params);
+        }
 
         Map<String, CommonRs> commons = new HashMap<>();
         try {
-            while (!(yandexCommonRs.isDone() && googleCommonRs.isDone()
-                    && mozillaCommonRs.isDone()
+            while (!((yandexCommonRs != null && yandexCommonRs.isDone()) && (googleCommonRs != null && googleCommonRs.isDone())
+                    && (mozillaCommonRs != null && mozillaCommonRs.isDone())
             )) {
                 Thread.sleep(5);
             }
@@ -69,9 +85,7 @@ public class ProcessingService {
                 commons.put("skyHookCommonRs", skyHookCommonRs.get());
             }
             commons.put("mozillaCommonRs", mozillaCommonRs.get());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return responseResolver.resolve(commons);

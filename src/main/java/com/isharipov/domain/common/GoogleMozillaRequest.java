@@ -42,7 +42,7 @@ public class GoogleMozillaRequest {
         String bssid = params.get("bssid");
         String age;
         String signalStrength;
-        WifiAccessPoint wifiAccessPoint = null;
+        WifiAccessPoint wifiAccessPoint;
         List<WifiAccessPoint> wifiAccessPointsList = null;
         if (bssid != null) {
             bssid = StringUtils.getMac(StringUtils.replaceSpecialsSymbolsAndUpperCase(bssid), "-");
@@ -60,7 +60,7 @@ public class GoogleMozillaRequest {
         String mobileNetworkCode;
         String locationAreaCode;
         String cellId;
-        CellTower cellTower = null;
+        CellTower cellTower;
         List<CellTower> cellTowers = null;
         if (mobileCountryCode != null) {
             mobileNetworkCode = params.get("mnc");

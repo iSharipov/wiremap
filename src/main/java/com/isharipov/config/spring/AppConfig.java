@@ -19,7 +19,6 @@ import org.springframework.web.client.RestTemplate;
  */
 @Configuration
 @EnableAsync
-@Import(CachingConfigurer.class)
 @ComponentScan({"com.isharipov"})
 public class AppConfig {
     @Bean
