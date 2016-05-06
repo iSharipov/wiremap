@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: common_header(~{::title}, ~{::link})">
+    <meta charset="UTF-8">
+    <title>Demo</title>
+    <link>
+</head>
+<body>
+<header th:replace="layout :: header"></header>
+<div>
+    <div style="float:left; width:70%;background-color:yellow">
+    </div>
+    <div style="float:right;width:30%;background-color:red">
+
+    </div>
+</div>
+<div th:replace="layout :: common_scripts(script)"></div>
+</body>
+</html>

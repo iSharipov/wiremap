@@ -2,8 +2,7 @@ package com.isharipov.service;
 
 import com.isharipov.domain.common.CommonRs;
 import com.isharipov.domain.common.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
@@ -17,10 +16,10 @@ import java.util.concurrent.Future;
 /**
  * Created by Илья on 22.04.2016.
  */
+@Slf4j
 @Service
 public class ProcessingService {
 
-    private static final Logger log = LoggerFactory.getLogger(ProcessingService.class);
     @Autowired
     @Qualifier("yandexHttpRequestService")
     private HttpRequestService yandexHttpRequestService;

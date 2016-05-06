@@ -15,4 +15,10 @@ public class MainController {
     public String getHomePage() {
         return "index";
     }
+
+
+    @RequestMapping("/demo")
+    public String getDemoPage() {
+        return "demo";
+    }
 }

@@ -2,8 +2,7 @@ package com.isharipov.service;
 
 import com.isharipov.domain.common.CommonRs;
 import com.isharipov.domain.common.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -11,9 +10,9 @@ import java.util.Map;
 /**
  * Created by Илья on 22.04.2016.
  */
+@Slf4j
 @Service
 public class ResponseResolver {
-    private static final Logger log = LoggerFactory.getLogger(ResponseResolver.class);
 
     private static final String ENABLE_TO_DETERMINE_LOCATION = "enable to determine location";
 

@@ -65,17 +65,15 @@ dependencies {
     compile 'ch.qos.logback:logback-classic:1.1.7'
     compile 'org.slf4j:slf4j-api:1.7.20'
 
-    compile("org.thymeleaf:thymeleaf-spring4:$THYMELEAF_VERSION"){
+    compile("org.thymeleaf:thymeleaf-spring4:$THYMELEAF_VERSION") {
         exclude module: 'javassist'
     }
-    compile("org.thymeleaf:thymeleaf:$THYMELEAF_VERSION"){
+    compile("org.thymeleaf:thymeleaf:$THYMELEAF_VERSION") {
         exclude module: 'javassist'
     }
-    compile("org.thymeleaf.extras:thymeleaf-extras-springsecurity4:$THYMELEAF_VERSION"){
+    compile("org.thymeleaf.extras:thymeleaf-extras-springsecurity4:$THYMELEAF_VERSION") {
         exclude module: 'javassist'
     }
-
-
 
     providedCompile 'org.projectlombok:lombok:1.16.8'
 
@@ -93,8 +91,7 @@ dependencies {
     testCompile 'org.mockito:mockito-core:2.0.44-beta'
 
     compile 'javax.el:javax.el-api:3.0.1-b04'
-    compile 'org.apache.httpcomponents:httpclient:4.5.2'
-    compile 'org.apache.httpcomponents:httpasyncclient:4.1.1'
+
     compile 'org.apache.commons:commons-csv:1.1'
 
     compile 'net.sf.ehcache:ehcache:2.10.2'
@@ -106,7 +103,4 @@ gretty {
     port = 8080
     contextPath = "/"
     inplaceMode = "hard"
-
-//    fastReload = true
-    managedClassReload=true
 }

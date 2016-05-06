@@ -8,9 +8,8 @@ import com.isharipov.domain.skyhook.Key;
 import com.isharipov.domain.skyhook.SkyhookLocationRq;
 import com.isharipov.utils.ResponseUtil;
 import com.isharipov.utils.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.json.XML;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -28,10 +27,9 @@ import java.util.concurrent.Future;
 /**
  * Created by Илья on 20.04.2016.
  */
+@Slf4j
 @Service("skyHookHttpRequestService")
 public class SkyHookHttpRequestServiceImpl implements HttpRequestService {
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private ObjectMapper objectMapper;

@@ -2,8 +2,7 @@ package com.isharipov.service;
 
 import com.isharipov.domain.common.CommonRs;
 import com.isharipov.domain.common.GoogleMozillaRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,10 +13,9 @@ import java.util.concurrent.Future;
 /**
  * Created by Илья on 21.04.2016.
  */
+@Slf4j
 @Service("googleHttpRequestService")
 public class GoogleHttpRequestServiceImpl implements HttpRequestService {
-
-    private Logger log = LoggerFactory.getLogger(getClass());
 
     @Value("${google.loc.site.address}")
     private String siteAddress;

@@ -8,8 +8,7 @@ import com.isharipov.domain.combain.WifiAccessPoint;
 import com.isharipov.domain.common.CommonRs;
 import com.isharipov.utils.ResponseUtil;
 import com.isharipov.utils.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -27,9 +26,9 @@ import java.util.concurrent.Future;
 /**
  * Created by Илья on 24.04.2016.
  */
+@Slf4j
 @Service("combainHttpRequestService")
 public class CombainHttpRequestServiceImpl implements HttpRequestService {
-    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -88,7 +87,7 @@ public class CombainHttpRequestServiceImpl implements HttpRequestService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(combainRqJsonString, headers);
 
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(siteAddress+apiKey, entity, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(siteAddress + apiKey, entity, String.class);
         String responseBody = responseEntity.getBody();
         return ResponseUtil.handleError(responseEntity, responseBody, objectMapper, log);
     }
