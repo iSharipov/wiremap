@@ -45,6 +45,7 @@ public class ProcessingService {
 
     @Cacheable(value = "isharipovCache", key = "#params")
     public Response process(Map<String, String> params) {
+
         long start = System.currentTimeMillis();
         Future<CommonRs> yandexCommonRs = yandexHttpRequestService.createHttpRequest(params);
         Future<CommonRs> googleCommonRs = googleHttpRequestService.createHttpRequest(params);

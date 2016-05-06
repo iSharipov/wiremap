@@ -39,3 +39,6 @@ location.api.site.us.east =
 #MozillaLocationService
 mozilla.location.apikey =
 mozilla.location.site =
+
+#enabled_systems
+systems = SKYHOOK,GOOGLE,MOZILLA,YANDEX

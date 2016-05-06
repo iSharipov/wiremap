@@ -7,8 +7,10 @@ import com.isharipov.domain.google.loc.GoogleRq;
 import com.isharipov.domain.google.loc.WifiAccessPoint;
 import com.isharipov.utils.ResponseUtil;
 import com.isharipov.utils.StringUtils;
+import com.isharipov.utils.Systems;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -30,8 +32,12 @@ public class GoogleMozillaRequest {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Value("${systems}")
+    private List<Systems> systems;
+
     @Async
     public Future<CommonRs> getRequest(Map<String, String> params, String site, String apiKey, String radioType, Logger log) {
+        log.info("{}", systems);
         /*Wifi Networks*/
         String bssid = params.get("bssid");
         String age;
