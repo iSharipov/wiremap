@@ -14,7 +14,7 @@ public class Location {
     private String lap;
     private String ncell;
     private String nap;
-    private String hpe;
+    private Float hpe;
     private String age;
     private String longitude;
 }

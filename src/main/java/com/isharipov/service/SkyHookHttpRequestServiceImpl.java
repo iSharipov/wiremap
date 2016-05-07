@@ -7,7 +7,6 @@ import com.isharipov.domain.skyhook.AuthenticationParameters;
 import com.isharipov.domain.skyhook.Key;
 import com.isharipov.domain.skyhook.SkyhookLocationRq;
 import com.isharipov.utils.ResponseUtil;
-import com.isharipov.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.json.XML;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,13 +53,10 @@ public class SkyHookHttpRequestServiceImpl implements HttpRequestService {
 
     @Async
     @Override
-    public Future<CommonRs> createHttpRequest(Map<String, String> params) {
-        String bssid = params.get("bssid");
-        bssid = StringUtils.replaceSpecialsSymbolsAndUpperCase(bssid);
-        String signal = params.get("signal");
-        if (signal == null) {
-            signal = "-60";
-        }
+    public Future<CommonRs> createHttpRequest(Map<String, String[]> params) {
+        String[] bssid = params.get("bssid");
+        String[] signal = params.get("signal");
+
 
         SkyhookLocationRq skyhookLocationRq = new SkyhookLocationRq();
         Key key = new Key();
@@ -72,10 +68,22 @@ public class SkyHookHttpRequestServiceImpl implements HttpRequestService {
 
         skyhookLocationRq.setAuthentication(authenticationParameters);
         skyhookLocationRq.setVersion(version);
-        AccessPoint accessPoint = new AccessPoint();
-        accessPoint.setMac(bssid);
-        accessPoint.setSignalStrength(signal);
-        skyhookLocationRq.setAccessPoint(accessPoint);
+        AccessPoint[] accessPoints = new AccessPoint[bssid.length];
+
+        for (int i = 0; i < accessPoints.length; i++) {
+            accessPoints[i] = new AccessPoint();
+            accessPoints[i].setMac(bssid[i]);
+            accessPoints[i].setSignalStrength("-60");
+        }
+
+        if (signal != null) {
+            for (int i = 0; i < signal.length && i < accessPoints.length; i++) {
+                accessPoints[i].setSignalStrength(signal[i]);
+            }
+        }
+
+        skyhookLocationRq.setAccessPoint(accessPoints);
+
         JAXBContext jaxbContext;
         try {
             jaxbContext = JAXBContext.newInstance(SkyhookLocationRq.class);

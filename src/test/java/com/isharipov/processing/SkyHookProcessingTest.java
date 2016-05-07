@@ -4,7 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.isharipov.config.spring.AppConfig;
 import com.isharipov.config.spring.WebConfig;
 import com.isharipov.domain.common.CommonRs;
+import com.isharipov.repository.ResponseRepsitory;
 import com.isharipov.service.HttpRequestService;
+import com.isharipov.service.ResponseResolver;
+import com.isharipov.utils.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -16,6 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -50,6 +54,12 @@ public class SkyHookProcessingTest {
     @Qualifier("mozillaLocationHttpReuqest")
     private HttpRequestService mozillaLocationHttpRequest;
 
+    @Autowired
+    private ResponseResolver responseResolver;
+
+    @Autowired
+    private ResponseRepsitory responseRepository;
+
     @Test
     public void getSkyHookLocation() {
         getLocation(skyHookHttpRequestService);
@@ -75,40 +85,72 @@ public class SkyHookProcessingTest {
         getLocation(mozillaLocationHttpRequest);
     }
 
+
     private void getLocation(HttpRequestService httpRequestService) {
-        //SkyHook bssid E01C413BD514
-        Map<String, String> wifiParams = new HashMap<>();
-        wifiParams.put("bssid", "E01C413BD514");
-        Map<String, String> gsmParams = new HashMap<>();
-        gsmParams.put("cid", "16655");
-        gsmParams.put("lac", "27408");
-        gsmParams.put("mnc", "99");
-        gsmParams.put("mcc", "250");
-        Map<String, String> commonParams = new HashMap<>();
-        commonParams.put("bssid", "cc:5d:4e:50:8d:ac");
-        commonParams.put("cid", "16655");
-        commonParams.put("lac", "27408");
-        commonParams.put("mnc", "99");
-        commonParams.put("mcc", "250");
-        long start = System.currentTimeMillis();
-        Future<CommonRs> httpRequestWifi = httpRequestService.createHttpRequest(wifiParams);
-        Future<CommonRs> httpRequestGsm = httpRequestService.createHttpRequest(gsmParams);
-        Future<CommonRs> httpRequestCommon = httpRequestService.createHttpRequest(commonParams);
-        try {
-            while (!(httpRequestWifi.isDone() && httpRequestGsm.isDone() && httpRequestCommon.isDone())) {
-                Thread.sleep(10); //10-millisecond pause between each check
+//        //SkyHook bssid E01C413BD514
+//        Map<String, String> wifiParams = new HashMap<>();
+//        wifiParams.put("bssid", "E01C413BD514");
+//        Map<String, String> gsmParams = new HashMap<>();
+//        gsmParams.put("cid", "16655");
+//        gsmParams.put("lac", "27408");
+//        gsmParams.put("mnc", "99");
+//        gsmParams.put("mcc", "250");
+//        Map<String, String> commonParams = new HashMap<>();
+//        commonParams.put("bssid", "cc:5d:4e:50:8d:ac");
+//        commonParams.put("cid", "16655");
+//        commonParams.put("lac", "27408");
+//        commonParams.put("mnc", "99");
+//        commonParams.put("mcc", "250");
+//        long start = System.currentTimeMillis();
+//        Future<CommonRs> httpRequestWifi = httpRequestService.createHttpRequest(wifiParams);
+//        Future<CommonRs> httpRequestGsm = httpRequestService.createHttpRequest(gsmParams);
+//        Future<CommonRs> httpRequestCommon = httpRequestService.createHttpRequest(commonParams);
+//        try {
+//            while (!(httpRequestWifi.isDone() && httpRequestGsm.isDone() && httpRequestCommon.isDone())) {
+//                Thread.sleep(10); //10-millisecond pause between each check
+//            }
+//            CommonRs commonRsWifi = httpRequestWifi.get();
+//            CommonRs commonRsGsm = httpRequestGsm.get();
+//            CommonRs commonRsCommon = httpRequestCommon.get();
+//            log.info("{}", "Elapsed time: " + (System.currentTimeMillis() - start));
+//            log.info("{}", commonRsWifi);
+//            log.info("{}", commonRsGsm);
+//            log.info("{}", commonRsCommon);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
+    }
+
+    @Test
+    public void coverageTest() throws ExecutionException, InterruptedException {
+
+        List<String> list = StringUtils.macList("2");
+        for (int i = 1; i < list.size(); i += 2) {
+            Map<String, String[]> params = new HashMap<>();
+            String[] s = StringUtils.replaceSpecialsSymbolsAndUpperCase(new String[]{list.get(i), list.get(i - 1)});
+            params.put("bssid", s);
+            Future<CommonRs> yandexCommonRs = yandexHttpRequestService.createHttpRequest(params);
+            Future<CommonRs> googleCommonRs = googleHttpRequestService.createHttpRequest(params);
+            Future<CommonRs> skyHookCommonRs = skyHookHttpRequestService.createHttpRequest(params);
+            Future<CommonRs> mozillaCommonRs = mozillaLocationHttpRequest.createHttpRequest(params);
+
+            Map<String, CommonRs> commons = new HashMap<>();
+
+            while (!(yandexCommonRs.isDone() && googleCommonRs.isDone()
+                    && skyHookCommonRs.isDone()
+                    && mozillaCommonRs.isDone()
+            )) {
+                Thread.sleep(10);
             }
-            CommonRs commonRsWifi = httpRequestWifi.get();
-            CommonRs commonRsGsm = httpRequestGsm.get();
-            CommonRs commonRsCommon = httpRequestCommon.get();
-            log.info("{}", "Elapsed time: " + (System.currentTimeMillis() - start));
-            log.info("{}", commonRsWifi);
-            log.info("{}", commonRsGsm);
-            log.info("{}", commonRsCommon);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+            commons.put("yandexCommonRs", yandexCommonRs.get());
+            commons.put("googleCommonRs", googleCommonRs.get());
+            commons.put("skyHookCommonRs", skyHookCommonRs.get());
+            commons.put("mozillaCommonRs", mozillaCommonRs.get());
+
+            responseResolver.resolve(commons, s);
+
         }
     }
 }

@@ -6,7 +6,6 @@ import com.isharipov.domain.google.loc.CellTower;
 import com.isharipov.domain.google.loc.GoogleRq;
 import com.isharipov.domain.google.loc.WifiAccessPoint;
 import com.isharipov.utils.ResponseUtil;
-import com.isharipov.utils.StringUtils;
 import com.isharipov.utils.Systems;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,44 +35,62 @@ public class GoogleMozillaRequest {
     private List<Systems> systems;
 
     @Async
-    public Future<CommonRs> getRequest(Map<String, String> params, String site, String apiKey, String radioType, Logger log) {
-        log.info("{}", systems);
+    public Future<CommonRs> getRequest(Map<String, String[]> params, String site, String apiKey, String radioType, Logger log) {
         /*Wifi Networks*/
-        String bssid = params.get("bssid");
-        String age;
-        String signalStrength;
+        String[] bssid = params.get("bssid");
+        String[] age;
+        String[] signalStrength;
         WifiAccessPoint wifiAccessPoint;
         List<WifiAccessPoint> wifiAccessPointsList = null;
         if (bssid != null) {
-            bssid = StringUtils.getMac(StringUtils.replaceSpecialsSymbolsAndUpperCase(bssid), "-");
-            age = params.get("age");
-            signalStrength = params.get("signal");
-            wifiAccessPoint = new WifiAccessPoint();
-            wifiAccessPoint.setMacAddress(bssid);
-            wifiAccessPoint.setAge(age);
-            wifiAccessPoint.setSignalStrength(signalStrength);
             wifiAccessPointsList = new ArrayList<>();
-            wifiAccessPointsList.add(wifiAccessPoint);
+            for (String mac : bssid) {
+                wifiAccessPoint = new WifiAccessPoint();
+                wifiAccessPoint.setMacAddress(mac);
+                wifiAccessPointsList.add(wifiAccessPoint);
+            }
+
+            signalStrength = params.get("signal");
+            if (signalStrength != null) {
+                for (int i = 0; i < signalStrength.length && i < bssid.length; i++) {
+                    wifiAccessPointsList.get(i).setSignalStrength(signalStrength[i]);
+                }
+            }
+
+            age = params.get("age");
+            if (age != null) {
+                for (int i = 0; i < age.length && i < age.length; i++) {
+                    wifiAccessPointsList.get(i).setAge(age[i]);
+                }
+            }
         }
     /*GSM Cells*/
-        String mobileCountryCode = params.get("mcc");
-        String mobileNetworkCode;
-        String locationAreaCode;
-        String cellId;
+        String[] mobileCountryCode = params.get("mcc");
+        String[] mobileNetworkCode;
+        String[] locationAreaCode;
+        String[] cellId;
         CellTower cellTower;
         List<CellTower> cellTowers = null;
         if (mobileCountryCode != null) {
-            mobileNetworkCode = params.get("mnc");
-            locationAreaCode = params.get("lac");
-            cellId = params.get("cid");
-            cellTower = new CellTower();
-            cellTower.setRadioType(radioType);
-            cellTower.setMobileCountryCode(mobileCountryCode);
-            cellTower.setMobileNetworkCode(mobileNetworkCode);
-            cellTower.setLocationAreaCode(locationAreaCode);
-            cellTower.setCellId(cellId);
             cellTowers = new ArrayList<>();
-            cellTowers.add(cellTower);
+            for (String m : mobileCountryCode) {
+                cellTower = new CellTower();
+                cellTower.setMobileCountryCode(m);
+                cellTower.setRadioType(radioType);
+                cellTowers.add(cellTower);
+            }
+            mobileNetworkCode = params.get("mnc");
+            for (int i = 0; i < mobileNetworkCode.length && i < mobileCountryCode.length; i++) {
+                cellTowers.get(i).setMobileNetworkCode(mobileNetworkCode[i]);
+            }
+            locationAreaCode = params.get("lac");
+            for (int i = 0; i < locationAreaCode.length && i < mobileCountryCode.length; i++) {
+                cellTowers.get(i).setLocationAreaCode(locationAreaCode[i]);
+            }
+            cellId = params.get("cid");
+            for (int i = 0; i < cellId.length && i < mobileCountryCode.length; i++) {
+                cellTowers.get(i).setCellId(cellId[i]);
+            }
         }
 
         GoogleRq googleRq = GoogleRq.builder().considerIp(false).cellTowers(cellTowers).wifiAccessPoints(wifiAccessPointsList).build();

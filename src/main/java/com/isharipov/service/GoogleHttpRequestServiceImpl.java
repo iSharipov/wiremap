@@ -27,7 +27,7 @@ public class GoogleHttpRequestServiceImpl implements HttpRequestService {
     private GoogleMozillaRequest googleMozillaRequest;
 
     @Override
-    public Future<CommonRs> createHttpRequest(Map<String, String> params) {
+    public Future<CommonRs> createHttpRequest(Map<String, String[]> params) {
         return googleMozillaRequest.getRequest(params, siteAddress, apiKey, null, log);
     }
 }

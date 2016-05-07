@@ -48,46 +48,76 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
 
     @Async
     @Override
-    public Future<CommonRs> createHttpRequest(Map<String, String> params) {
+    public Future<CommonRs> createHttpRequest(Map<String, String[]> params) {
         /*Common*/
         Common common = new Common();
         common.setVersion(version);
         common.setApiKey(apiKey);
 
         /*Wifi Networks*/
-        String bssid = params.get("bssid");
-        String signal;
-        String age;
-        WifiNetworks wifiNetworks;
+        String[] bssid = params.get("bssid");
+        String[] signal;
+        String[] age;
         List<WifiNetworks> wifiNetworksList = null;
+        WifiNetworks wifiNetworks;
         if (bssid != null) {
-            bssid = StringUtils.getMac(StringUtils.replaceSpecialsSymbolsAndUpperCase(bssid), "-");
-            signal = params.get("signal");
-            age = params.get("age");
-            wifiNetworks = new WifiNetworks();
-            wifiNetworks.setMac(bssid);
-            wifiNetworks.setSignalStrength(signal);
-            wifiNetworks.setAge(age);
             wifiNetworksList = new ArrayList<>();
-            wifiNetworksList.add(wifiNetworks);
+            for (String aBssid : bssid) {
+                wifiNetworks = new WifiNetworks();
+                wifiNetworks.setMac(StringUtils.getMac(aBssid, "-"));
+                wifiNetworksList.add(wifiNetworks);
+            }
+
+            signal = params.get("signal");
+            if (signal != null) {
+                for (int i = 0; i < signal.length && i < bssid.length; i++) {
+                    wifiNetworksList.get(i).setSignalStrength(signal[i]);
+                }
+            } else {
+                for (WifiNetworks w : wifiNetworksList) {
+                    w.setSignalStrength(null);
+                }
+            }
+
+            age = params.get("age");
+            if (age != null) {
+                for (int i = 0; i < age.length && i < bssid.length; i++) {
+                    wifiNetworksList.get(i).setAge(age[i]);
+                }
+            } else {
+                for (WifiNetworks w : wifiNetworksList) {
+                    w.setAge(null);
+                }
+            }
         }
-        String mcc = params.get("mcc");
-        String mnc;
-        String lac;
-        String cid;
+
+        String[] mcc = params.get("mcc");
+        String[] mnc;
+        String[] lac;
+        String[] cid;
         GsmCells gsmCells;
         List<GsmCells> gsmCellsList = null;
         if (mcc != null) {
-            mnc = params.get("mnc");
-            lac = params.get("lac");
-            cid = params.get("cid");
-            gsmCells = new GsmCells();
-            gsmCells.setCountryCode(mcc);
-            gsmCells.setOperatorId(mnc);
-            gsmCells.setLac(lac);
-            gsmCells.setCellId(cid);
             gsmCellsList = new ArrayList<>();
-            gsmCellsList.add(gsmCells);
+            for (String m : mcc) {
+                gsmCells = new GsmCells();
+                gsmCells.setCountryCode(m);
+                gsmCellsList.add(gsmCells);
+            }
+            mnc = params.get("mnc");
+            for (int i = 0; i < mnc.length && i < mcc.length; i++) {
+                gsmCellsList.get(i).setOperatorId(mnc[i]);
+            }
+
+            lac = params.get("lac");
+            for (int i = 0; i < lac.length && i < mcc.length; i++) {
+                gsmCellsList.get(i).setOperatorId(lac[i]);
+            }
+            cid = params.get("cid");
+
+            for (int i = 0; i < cid.length && i < mcc.length; i++) {
+                gsmCellsList.get(i).setCellId(cid[i]);
+            }
         }
 
         YandexLocatorRq yandexLocatorRq = YandexLocatorRq.builder().common(common)

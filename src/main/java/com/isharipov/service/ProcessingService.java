@@ -50,7 +50,7 @@ public class ProcessingService {
     private ResponseResolver responseResolver;
 
     @Cacheable(value = "isharipovCache", key = "#params")
-    public Response process(Map<String, String> params) {
+    public Response process(Map<String, String[]> params) {
 
         long start = System.currentTimeMillis();
         Future<CommonRs> yandexCommonRs = null;
@@ -74,20 +74,19 @@ public class ProcessingService {
         Map<String, CommonRs> commons = new HashMap<>();
         try {
             while (!((yandexCommonRs != null && yandexCommonRs.isDone()) && (googleCommonRs != null && googleCommonRs.isDone())
-                    && (mozillaCommonRs != null && mozillaCommonRs.isDone())
+                    && (mozillaCommonRs != null && mozillaCommonRs.isDone()) && (skyHookCommonRs != null && skyHookCommonRs.isDone())
             )) {
                 Thread.sleep(5);
             }
             log.info("{}", "Elapsed time: " + (System.currentTimeMillis() - start));
             commons.put("yandexCommonRs", yandexCommonRs.get());
             commons.put("googleCommonRs", googleCommonRs.get());
-            if (skyHookCommonRs != null) {
-                commons.put("skyHookCommonRs", skyHookCommonRs.get());
-            }
+            commons.put("skyHookCommonRs", skyHookCommonRs.get());
             commons.put("mozillaCommonRs", mozillaCommonRs.get());
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        return responseResolver.resolve(commons);
+        String[] bssidParams = params.get("bssid");
+        return responseResolver.resolve(commons, bssidParams);
     }
 }
