@@ -28,4 +28,6 @@ public class Response implements Serializable {
     private String error;
     @JsonIgnore
     private Float accuracy;
+    @JsonIgnore
+    private Long elapsedTime;
 }

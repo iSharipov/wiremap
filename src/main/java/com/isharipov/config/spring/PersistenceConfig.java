@@ -29,7 +29,6 @@ import java.io.IOException;
 @Configuration
 @EnableJpaRepositories("com.isharipov.repository")
 @EnableTransactionManagement
-@PropertySource("classpath:application.properties")
 public class PersistenceConfig {
 
     @Value("${jdbc.driverClassName}")

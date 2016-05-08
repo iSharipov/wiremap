@@ -75,18 +75,19 @@ public class ProcessingService {
         if (systems.contains(Systems.MOZILLA)) {
             mozillaCommonRs = mozillaHttpRequestService.createHttpRequest(params);
         }
-
+        long elapsedTime = 0;
         Map<String, CommonRs> commons = new HashMap<>();
         try {
             while (!((yandexCommonRs != null && yandexCommonRs.isDone()) && (googleCommonRs != null && googleCommonRs.isDone())
-                    && (mozillaCommonRs != null && mozillaCommonRs.isDone()) && (skyHookCommonRs != null && skyHookCommonRs.isDone())
-            )) {
+                    && ((mozillaCommonRs != null && mozillaCommonRs.isDone()) && (skyHookCommonRs == null || skyHookCommonRs.isDone())
+            ))) {
                 Thread.sleep(5);
             }
-            log.info("{}", "Elapsed time: " + (System.currentTimeMillis() - start));
+            elapsedTime = System.currentTimeMillis() - start;
+            log.info("{}", "Elapsed time: " + elapsedTime);
             commons.put("yandexCommonRs", yandexCommonRs.get());
             commons.put("googleCommonRs", googleCommonRs.get());
-            commons.put("skyHookCommonRs", skyHookCommonRs.get());
+            commons.put("skyHookCommonRs", skyHookCommonRs != null ? skyHookCommonRs.get() : null);
             commons.put("mozillaCommonRs", mozillaCommonRs.get());
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -97,6 +98,6 @@ public class ProcessingService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return responseResolver.resolve(commons, jsonStringParams);
+        return responseResolver.resolve(commons, jsonStringParams, elapsedTime);
     }
 }

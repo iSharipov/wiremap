@@ -136,9 +136,10 @@ public class SkyHookProcessingTest {
             Map<String, List<String>> params = new HashMap<>();
             List<String> list1 = new ArrayList<>();
             list1.add(list.get(i));
-            list1.add(list.get(i-1));
+            list1.add(list.get(i - 1));
             List<String> s = StringUtils.replaceSpecialsSymbolsAndUpperCase(list1);
             params.put("bssid", s);
+            long start = System.currentTimeMillis();
             Future<CommonRs> yandexCommonRs = yandexHttpRequestService.createHttpRequest(params);
             Future<CommonRs> googleCommonRs = googleHttpRequestService.createHttpRequest(params);
             Future<CommonRs> skyHookCommonRs = skyHookHttpRequestService.createHttpRequest(params);
@@ -152,6 +153,7 @@ public class SkyHookProcessingTest {
             )) {
                 Thread.sleep(10);
             }
+            long elapsedTime = System.currentTimeMillis() - start;
             commons.put("yandexCommonRs", yandexCommonRs.get());
             commons.put("googleCommonRs", googleCommonRs.get());
             commons.put("skyHookCommonRs", skyHookCommonRs.get());
@@ -162,7 +164,7 @@ public class SkyHookProcessingTest {
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
-            responseResolver.resolve(commons, paramsString);
+            responseResolver.resolve(commons, paramsString, elapsedTime);
         }
     }
 }

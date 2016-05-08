@@ -5,6 +5,7 @@ import com.isharipov.domain.common.Response;
 import com.isharipov.repository.ResponseRepsitory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -19,9 +20,9 @@ public class ResponseResolver {
     private static final String ENABLE_TO_DETERMINE_LOCATION = "enable to determine location";
 
     @Autowired
-    private ResponseRepsitory responseRepsitory;
+    private ResponseRepsitory responseRepository;
 
-    public Response resolve(Map<String, CommonRs> commons, String params) {
+    public Response resolve(Map<String, CommonRs> commons, String params, long elapsedTime) {
         Response response = new Response();
         response.setAccuracy(Float.MAX_VALUE);
         CommonRs googleCommonRs = commons.get("googleCommonRs");
@@ -34,7 +35,8 @@ public class ResponseResolver {
                 response.setAccuracy(googleCommonRs.getAccuracy());
                 response.setProvider("google");
                 response.setParams(params);
-                responseRepsitory.save(response);
+                response.setElapsedTime(elapsedTime);
+                saveToDb(response);
             }
         }
 
@@ -48,8 +50,9 @@ public class ResponseResolver {
                 statiscticResponse.setLng(mozillaCommonRs.getLocation().getLng());
                 statiscticResponse.setAccuracy(mozillaCommonRs.getAccuracy());
                 statiscticResponse.setProvider("mozilla");
+                statiscticResponse.setElapsedTime(elapsedTime);
                 statiscticResponse.setParams(params);
-                responseRepsitory.save(statiscticResponse);
+                saveToDb(statiscticResponse);
                 if ((response.getLng() != null) && (response.getAccuracy() > mozillaCommonRs.getAccuracy())) {
                     response.setLat(mozillaCommonRs.getLocation().getLat());
                     response.setLng(mozillaCommonRs.getLocation().getLng());
@@ -75,7 +78,8 @@ public class ResponseResolver {
                 statiscticResponse.setAccuracy(skyHookCommonRs.getLocationRs().getLocation().getHpe());
                 statiscticResponse.setProvider("skyhook");
                 statiscticResponse.setParams(params);
-                responseRepsitory.save(statiscticResponse);
+                statiscticResponse.setElapsedTime(elapsedTime);
+                saveToDb(statiscticResponse);
                 if (response.getLng() == null) {
                     response.setLat(skyHookCommonRs.getLocationRs().getLocation().getLatitude());
                     response.setLng(skyHookCommonRs.getLocationRs().getLocation().getLongitude());
@@ -106,7 +110,8 @@ public class ResponseResolver {
                     statisticResponse.setAccuracy(yandexCommonRs.getPosition().getPrecision());
                     statisticResponse.setProvider("yandex");
                     statisticResponse.setParams(params);
-                    responseRepsitory.save(statisticResponse);
+                    statisticResponse.setElapsedTime(elapsedTime);
+                    saveToDb(statisticResponse);
                     if (response.getLng() == null) {
                         response.setLng(yandexCommonRs.getPosition().getLongitude());
                         response.setLat(yandexCommonRs.getPosition().getLatitude());
@@ -128,5 +133,10 @@ public class ResponseResolver {
             response.setError(ENABLE_TO_DETERMINE_LOCATION);
         }
         return response;
+    }
+
+    @Async
+    private Response saveToDb(Response response) {
+        return responseRepository.save(response);
     }
 }

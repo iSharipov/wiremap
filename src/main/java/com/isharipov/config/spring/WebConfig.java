@@ -17,7 +17,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  */
 @EnableWebMvc
 @Configuration
-@Import({ThymeleafConfig.class})
 @ComponentScan("com.isharipov.controllers")
 public class WebConfig extends WebMvcConfigurerAdapter {
 

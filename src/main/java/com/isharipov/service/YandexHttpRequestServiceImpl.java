@@ -111,7 +111,7 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
 
             lac = params.get("lac");
             for (int i = 0; i < lac.size() && i < mcc.size(); i++) {
-                gsmCellsList.get(i).setOperatorId(lac.get(i));
+                gsmCellsList.get(i).setLac(lac.get(i));
             }
             cid = params.get("cid");
 
