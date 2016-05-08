@@ -1,6 +1,7 @@
 package com.isharipov.processing;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isharipov.config.spring.AppConfig;
 import com.isharipov.config.spring.WebConfig;
 import com.isharipov.domain.common.CommonRs;
@@ -18,6 +19,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +61,9 @@ public class SkyHookProcessingTest {
 
     @Autowired
     private ResponseRepsitory responseRepository;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     public void getSkyHookLocation() {
@@ -126,10 +131,13 @@ public class SkyHookProcessingTest {
     @Test
     public void coverageTest() throws ExecutionException, InterruptedException {
 
-        List<String> list = StringUtils.macList("3");
+        List<String> list = StringUtils.macList("2");
         for (int i = 1; i < list.size(); i += 2) {
-            Map<String, String[]> params = new HashMap<>();
-            String[] s = StringUtils.replaceSpecialsSymbolsAndUpperCase(new String[]{list.get(i), list.get(i - 1)});
+            Map<String, List<String>> params = new HashMap<>();
+            List<String> list1 = new ArrayList<>();
+            list1.add(list.get(i));
+            list1.add(list.get(i-1));
+            List<String> s = StringUtils.replaceSpecialsSymbolsAndUpperCase(list1);
             params.put("bssid", s);
             Future<CommonRs> yandexCommonRs = yandexHttpRequestService.createHttpRequest(params);
             Future<CommonRs> googleCommonRs = googleHttpRequestService.createHttpRequest(params);
@@ -148,9 +156,13 @@ public class SkyHookProcessingTest {
             commons.put("googleCommonRs", googleCommonRs.get());
             commons.put("skyHookCommonRs", skyHookCommonRs.get());
             commons.put("mozillaCommonRs", mozillaCommonRs.get());
-
-            responseResolver.resolve(commons, s);
-
+            String paramsString = null;
+            try {
+                paramsString = objectMapper.writeValueAsString(params);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            responseResolver.resolve(commons, paramsString);
         }
     }
 }

@@ -6,10 +6,9 @@ import com.isharipov.domain.google.loc.CellTower;
 import com.isharipov.domain.google.loc.GoogleRq;
 import com.isharipov.domain.google.loc.WifiAccessPoint;
 import com.isharipov.utils.ResponseUtil;
-import com.isharipov.utils.Systems;
+import com.isharipov.utils.StringUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -31,9 +30,6 @@ public class GoogleMozillaRequest {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Value("${systems}")
-    private List<Systems> systems;
-
     @Async
     public Future<CommonRs> getRequest(Map<String, List<String>> params, String site, String apiKey, String radioType, Logger log) {
         /*Wifi Networks*/
@@ -46,7 +42,7 @@ public class GoogleMozillaRequest {
             wifiAccessPointsList = new ArrayList<>();
             for (String mac : bssid) {
                 wifiAccessPoint = new WifiAccessPoint();
-                wifiAccessPoint.setMacAddress(mac);
+                wifiAccessPoint.setMacAddress(StringUtils.getMac(mac, ":"));
                 wifiAccessPointsList.add(wifiAccessPoint);
             }
 
