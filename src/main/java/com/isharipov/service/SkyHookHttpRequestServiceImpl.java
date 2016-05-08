@@ -20,6 +20,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import java.io.StringWriter;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
@@ -53,10 +54,9 @@ public class SkyHookHttpRequestServiceImpl implements HttpRequestService {
 
     @Async
     @Override
-    public Future<CommonRs> createHttpRequest(Map<String, String[]> params) {
-        String[] bssid = params.get("bssid");
-        String[] signal = params.get("signal");
-
+    public Future<CommonRs> createHttpRequest(Map<String, List<String>> params) {
+        List<String> bssid = params.get("bssid");
+        List<String> signal = params.get("signal");
 
         SkyhookLocationRq skyhookLocationRq = new SkyhookLocationRq();
         Key key = new Key();
@@ -68,17 +68,17 @@ public class SkyHookHttpRequestServiceImpl implements HttpRequestService {
 
         skyhookLocationRq.setAuthentication(authenticationParameters);
         skyhookLocationRq.setVersion(version);
-        AccessPoint[] accessPoints = new AccessPoint[bssid.length];
+        AccessPoint[] accessPoints = new AccessPoint[bssid.size()];
 
         for (int i = 0; i < accessPoints.length; i++) {
             accessPoints[i] = new AccessPoint();
-            accessPoints[i].setMac(bssid[i]);
+            accessPoints[i].setMac(bssid.get(i));
             accessPoints[i].setSignalStrength("-60");
         }
 
         if (signal != null) {
-            for (int i = 0; i < signal.length && i < accessPoints.length; i++) {
-                accessPoints[i].setSignalStrength(signal[i]);
+            for (int i = 0; i < signal.size() && i < accessPoints.length; i++) {
+                accessPoints[i].setSignalStrength(signal.get(i));
             }
         }
 
@@ -96,8 +96,14 @@ public class SkyHookHttpRequestServiceImpl implements HttpRequestService {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.TEXT_XML);
             HttpEntity<String> entity = new HttpEntity<>(xmlString, headers);
-            ResponseEntity<String> responseEntity = restTemplate.exchange(siteAddress, HttpMethod.POST, entity, String.class);
-            String responseBody = XML.toJSONObject(responseEntity.getBody()).toString();
+            ResponseEntity<String> responseEntity;
+            String responseBody;
+            try {
+                responseEntity = restTemplate.exchange(siteAddress, HttpMethod.POST, entity, String.class);
+                responseBody = XML.toJSONObject(responseEntity.getBody()).toString();
+            } catch (Exception e) {
+                return null;
+            }
             return ResponseUtil.handleError(responseEntity, responseBody, objectMapper, log);
         } catch (JAXBException e) {
             e.printStackTrace();

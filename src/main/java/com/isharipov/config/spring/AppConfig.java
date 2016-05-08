@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -20,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @Configuration
 @EnableAsync
+@Import(CachingConfigurer.class)
 @ComponentScan({"com.isharipov"})
 public class AppConfig {
     @Bean

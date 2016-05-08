@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,7 +22,7 @@ public class ResponseResolver {
     @Autowired
     private ResponseRepsitory responseRepsitory;
 
-    public Response resolve(Map<String, CommonRs> commons, String[] bssidParams) {
+    public Response resolve(Map<String, CommonRs> commons, List<String> bssidParams) {
         Response response = new Response();
         response.setAccuracy(Float.MAX_VALUE);
         CommonRs googleCommonRs = commons.get("googleCommonRs");
@@ -33,8 +34,8 @@ public class ResponseResolver {
                 response.setLng(googleCommonRs.getLocation().getLng());
                 response.setAccuracy(googleCommonRs.getAccuracy());
                 response.setProvider("google");
-                response.setMac1(bssidParams[0]);
-                response.setMac2(bssidParams[1]);
+                response.setMac1(bssidParams.get(0));
+                response.setMac2(bssidParams.get(1));
                 responseRepsitory.save(response);
             }
         }
@@ -49,8 +50,8 @@ public class ResponseResolver {
                 statiscticResponse.setLng(mozillaCommonRs.getLocation().getLng());
                 statiscticResponse.setAccuracy(mozillaCommonRs.getAccuracy());
                 statiscticResponse.setProvider("mozilla");
-                statiscticResponse.setMac1(bssidParams[0]);
-                statiscticResponse.setMac2(bssidParams[1]);
+                statiscticResponse.setMac1(bssidParams.get(0));
+                statiscticResponse.setMac2(bssidParams.get(1));
                 responseRepsitory.save(statiscticResponse);
                 if ((response.getLng() != null) && (response.getAccuracy() > mozillaCommonRs.getAccuracy())) {
                     response.setLat(mozillaCommonRs.getLocation().getLat());
@@ -61,6 +62,7 @@ public class ResponseResolver {
                     response.setLat(mozillaCommonRs.getLocation().getLat());
                     response.setLng(mozillaCommonRs.getLocation().getLng());
                     response.setAccuracy(mozillaCommonRs.getAccuracy());
+                    response.setProvider("mozilla");
                 }
             }
         }
@@ -75,8 +77,8 @@ public class ResponseResolver {
                 statiscticResponse.setLng(skyHookCommonRs.getLocationRs().getLocation().getLongitude());
                 statiscticResponse.setAccuracy(skyHookCommonRs.getLocationRs().getLocation().getHpe());
                 statiscticResponse.setProvider("skyhook");
-                statiscticResponse.setMac1(bssidParams[0]);
-                statiscticResponse.setMac2(bssidParams[1]);
+                statiscticResponse.setMac1(bssidParams.get(0));
+                statiscticResponse.setMac2(bssidParams.get(1));
                 responseRepsitory.save(statiscticResponse);
                 if (response.getLng() == null) {
                     response.setLat(skyHookCommonRs.getLocationRs().getLocation().getLatitude());
@@ -107,8 +109,8 @@ public class ResponseResolver {
                     statisticResponse.setLng(yandexCommonRs.getPosition().getLongitude());
                     statisticResponse.setAccuracy(yandexCommonRs.getPosition().getPrecision());
                     statisticResponse.setProvider("yandex");
-                    statisticResponse.setMac1(bssidParams[0]);
-                    statisticResponse.setMac2(bssidParams[1]);
+                    statisticResponse.setMac1(bssidParams.get(0));
+                    statisticResponse.setMac2(bssidParams.get(1));
                     responseRepsitory.save(statisticResponse);
                     if (response.getLng() == null) {
                         response.setLng(yandexCommonRs.getPosition().getLongitude());
@@ -130,7 +132,6 @@ public class ResponseResolver {
             response.setAccuracy(null);
             response.setError(ENABLE_TO_DETERMINE_LOCATION);
         }
-
         return response;
     }
 }

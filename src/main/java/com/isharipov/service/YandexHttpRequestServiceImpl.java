@@ -48,16 +48,16 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
 
     @Async
     @Override
-    public Future<CommonRs> createHttpRequest(Map<String, String[]> params) {
+    public Future<CommonRs> createHttpRequest(Map<String, List<String>> params) {
         /*Common*/
         Common common = new Common();
         common.setVersion(version);
         common.setApiKey(apiKey);
 
         /*Wifi Networks*/
-        String[] bssid = params.get("bssid");
-        String[] signal;
-        String[] age;
+        List<String> bssid = params.get("bssid");
+        List<String> signal;
+        List<String> age;
         List<WifiNetworks> wifiNetworksList = null;
         WifiNetworks wifiNetworks;
         if (bssid != null) {
@@ -70,8 +70,8 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
 
             signal = params.get("signal");
             if (signal != null) {
-                for (int i = 0; i < signal.length && i < bssid.length; i++) {
-                    wifiNetworksList.get(i).setSignalStrength(signal[i]);
+                for (int i = 0; i < signal.size() && i < bssid.size(); i++) {
+                    wifiNetworksList.get(i).setSignalStrength(signal.get(i));
                 }
             } else {
                 for (WifiNetworks w : wifiNetworksList) {
@@ -81,8 +81,8 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
 
             age = params.get("age");
             if (age != null) {
-                for (int i = 0; i < age.length && i < bssid.length; i++) {
-                    wifiNetworksList.get(i).setAge(age[i]);
+                for (int i = 0; i < age.size() && i < bssid.size(); i++) {
+                    wifiNetworksList.get(i).setAge(age.get(i));
                 }
             } else {
                 for (WifiNetworks w : wifiNetworksList) {
@@ -91,10 +91,10 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
             }
         }
 
-        String[] mcc = params.get("mcc");
-        String[] mnc;
-        String[] lac;
-        String[] cid;
+        List<String> mcc = params.get("mcc");
+        List<String> mnc;
+        List<String> lac;
+        List<String> cid;
         GsmCells gsmCells;
         List<GsmCells> gsmCellsList = null;
         if (mcc != null) {
@@ -105,18 +105,18 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
                 gsmCellsList.add(gsmCells);
             }
             mnc = params.get("mnc");
-            for (int i = 0; i < mnc.length && i < mcc.length; i++) {
-                gsmCellsList.get(i).setOperatorId(mnc[i]);
+            for (int i = 0; i < mnc.size() && i < mcc.size(); i++) {
+                gsmCellsList.get(i).setOperatorId(mnc.get(i));
             }
 
             lac = params.get("lac");
-            for (int i = 0; i < lac.length && i < mcc.length; i++) {
-                gsmCellsList.get(i).setOperatorId(lac[i]);
+            for (int i = 0; i < lac.size() && i < mcc.size(); i++) {
+                gsmCellsList.get(i).setOperatorId(lac.get(i));
             }
             cid = params.get("cid");
 
-            for (int i = 0; i < cid.length && i < mcc.length; i++) {
-                gsmCellsList.get(i).setCellId(cid[i]);
+            for (int i = 0; i < cid.size() && i < mcc.size(); i++) {
+                gsmCellsList.get(i).setCellId(cid.get(i));
             }
         }
 
@@ -133,8 +133,14 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
         }
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
         requestParams.add("json", yandexLocatorRqJsonString);
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(siteAddress, requestParams, String.class);
-        String responseBody = responseEntity.getBody();
+        ResponseEntity<String> responseEntity;
+        String responseBody;
+        try {
+            responseEntity = restTemplate.postForEntity(siteAddress, requestParams, String.class);
+            responseBody = responseEntity.getBody();
+        } catch (Exception e) {
+            return null;
+        }
         return ResponseUtil.handleError(responseEntity, responseBody, objectMapper, log);
     }
 }

@@ -35,11 +35,11 @@ public class GoogleMozillaRequest {
     private List<Systems> systems;
 
     @Async
-    public Future<CommonRs> getRequest(Map<String, String[]> params, String site, String apiKey, String radioType, Logger log) {
+    public Future<CommonRs> getRequest(Map<String, List<String>> params, String site, String apiKey, String radioType, Logger log) {
         /*Wifi Networks*/
-        String[] bssid = params.get("bssid");
-        String[] age;
-        String[] signalStrength;
+        List<String> bssid = params.get("bssid");
+        List<String> age;
+        List<String> signalStrength;
         WifiAccessPoint wifiAccessPoint;
         List<WifiAccessPoint> wifiAccessPointsList = null;
         if (bssid != null) {
@@ -52,23 +52,23 @@ public class GoogleMozillaRequest {
 
             signalStrength = params.get("signal");
             if (signalStrength != null) {
-                for (int i = 0; i < signalStrength.length && i < bssid.length; i++) {
-                    wifiAccessPointsList.get(i).setSignalStrength(signalStrength[i]);
+                for (int i = 0; i < signalStrength.size() && i < bssid.size(); i++) {
+                    wifiAccessPointsList.get(i).setSignalStrength(signalStrength.get(i));
                 }
             }
 
             age = params.get("age");
             if (age != null) {
-                for (int i = 0; i < age.length && i < age.length; i++) {
-                    wifiAccessPointsList.get(i).setAge(age[i]);
+                for (int i = 0; i < age.size() && i < age.size(); i++) {
+                    wifiAccessPointsList.get(i).setAge(age.get(i));
                 }
             }
         }
     /*GSM Cells*/
-        String[] mobileCountryCode = params.get("mcc");
-        String[] mobileNetworkCode;
-        String[] locationAreaCode;
-        String[] cellId;
+        List<String> mobileCountryCode = params.get("mcc");
+        List<String> mobileNetworkCode;
+        List<String> locationAreaCode;
+        List<String> cellId;
         CellTower cellTower;
         List<CellTower> cellTowers = null;
         if (mobileCountryCode != null) {
@@ -80,16 +80,16 @@ public class GoogleMozillaRequest {
                 cellTowers.add(cellTower);
             }
             mobileNetworkCode = params.get("mnc");
-            for (int i = 0; i < mobileNetworkCode.length && i < mobileCountryCode.length; i++) {
-                cellTowers.get(i).setMobileNetworkCode(mobileNetworkCode[i]);
+            for (int i = 0; i < mobileNetworkCode.size() && i < mobileCountryCode.size(); i++) {
+                cellTowers.get(i).setMobileNetworkCode(mobileNetworkCode.get(i));
             }
             locationAreaCode = params.get("lac");
-            for (int i = 0; i < locationAreaCode.length && i < mobileCountryCode.length; i++) {
-                cellTowers.get(i).setLocationAreaCode(locationAreaCode[i]);
+            for (int i = 0; i < locationAreaCode.size() && i < mobileCountryCode.size(); i++) {
+                cellTowers.get(i).setLocationAreaCode(locationAreaCode.get(i));
             }
             cellId = params.get("cid");
-            for (int i = 0; i < cellId.length && i < mobileCountryCode.length; i++) {
-                cellTowers.get(i).setCellId(cellId[i]);
+            for (int i = 0; i < cellId.size() && i < mobileCountryCode.size(); i++) {
+                cellTowers.get(i).setCellId(cellId.get(i));
             }
         }
 
@@ -104,9 +104,14 @@ public class GoogleMozillaRequest {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(googleLocatorRqJsonString, headers);
-
-        ResponseEntity<String> responseEntity = restTemplate.exchange(site + apiKey, HttpMethod.POST, entity, String.class);
-        String responseBody = responseEntity.getBody();
+        ResponseEntity<String> responseEntity;
+        String responseBody;
+        try {
+            responseEntity = restTemplate.exchange(site + apiKey, HttpMethod.POST, entity, String.class);
+            responseBody = responseEntity.getBody();
+        } catch (Exception e) {
+            return null;
+        }
         return ResponseUtil.handleError(responseEntity, responseBody, objectMapper, log);
     }
 

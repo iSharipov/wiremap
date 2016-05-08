@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
@@ -33,7 +34,7 @@ public class LocationApiHttpRequestService implements HttpRequestService {
 
     @Async
     @Override
-    public Future<CommonRs> createHttpRequest(Map<String, String[]> params) {
+    public Future<CommonRs> createHttpRequest(Map<String, List<String>> params) {
 //
 //        /*WiFi*/
 //        String bssid = params.get("bssid");

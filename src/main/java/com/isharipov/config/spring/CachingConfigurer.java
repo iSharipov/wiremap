@@ -1,7 +1,6 @@
 package com.isharipov.config.spring;
 
 import net.sf.ehcache.management.ManagementService;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
@@ -24,7 +23,6 @@ import java.lang.management.ManagementFactory;
 @Configuration
 @EnableCaching
 public class CachingConfigurer implements org.springframework.cache.annotation.CachingConfigurer {
-    private static final Logger log = org.slf4j.LoggerFactory.getLogger(CachingConfigurer.class);
 
     @Override
     @Bean

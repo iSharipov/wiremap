@@ -50,7 +50,7 @@ public class ProcessingService {
     private ResponseResolver responseResolver;
 
     @Cacheable(value = "isharipovCache", key = "#params")
-    public Response process(Map<String, String[]> params) {
+    public Response process(Map<String, List<String>> params) {
 
         long start = System.currentTimeMillis();
         Future<CommonRs> yandexCommonRs = null;
@@ -86,7 +86,7 @@ public class ProcessingService {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        String[] bssidParams = params.get("bssid");
+        List<String> bssidParams = params.get("bssid");
         return responseResolver.resolve(commons, bssidParams);
     }
 }

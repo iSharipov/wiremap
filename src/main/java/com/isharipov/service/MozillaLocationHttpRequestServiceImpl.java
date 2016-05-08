@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
@@ -27,7 +28,7 @@ public class MozillaLocationHttpRequestServiceImpl implements HttpRequestService
     private GoogleMozillaRequest googleMozillaRequest;
 
     @Override
-    public Future<CommonRs> createHttpRequest(Map<String, String[]> params) {
+    public Future<CommonRs> createHttpRequest(Map<String, List<String>> params) {
         return googleMozillaRequest.getRequest(params, site, apiKey, "gsm", log);
     }
 }

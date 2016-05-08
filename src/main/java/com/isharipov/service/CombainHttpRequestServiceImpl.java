@@ -43,10 +43,10 @@ public class CombainHttpRequestServiceImpl implements HttpRequestService {
     private String apiKey;
 
     @Override
-    public Future<CommonRs> createHttpRequest(Map<String, String[]> params) {
+    public Future<CommonRs> createHttpRequest(Map<String, List<String>> params) {
         /*Wifi Networks*/
-        String[] bssid = params.get("bssid");
-        String[] signalStrengthWifi;
+        List<String> bssid = params.get("bssid");
+        List<String> signalStrengthWifi;
         WifiAccessPoint wifiAccessPoint;
         List<WifiAccessPoint> wifiAccessPointList = null;
         if (bssid != null) {
@@ -59,17 +59,17 @@ public class CombainHttpRequestServiceImpl implements HttpRequestService {
 
             signalStrengthWifi = params.get("sstrw");
             if (signalStrengthWifi != null) {
-                for (int i = 0; i < signalStrengthWifi.length && i < bssid.length; i++) {
-                    wifiAccessPointList.get(i).setSignalStrength(signalStrengthWifi[i]);
+                for (int i = 0; i < signalStrengthWifi.size() && i < bssid.size(); i++) {
+                    wifiAccessPointList.get(i).setSignalStrength(signalStrengthWifi.get(i));
                 }
             }
         }
 
          /*GSM Cells*/
-        String[] countryCode = params.get("mcc");
-        String[] operatorId;
-        String[] lac;
-        String[] cellId;
+        List<String> countryCode = params.get("mcc");
+        List<String> operatorId;
+        List<String> lac;
+        List<String> cellId;
         CellTower cellTower;
         List<CellTower> cellTowersList = null;
         if (countryCode != null) {
@@ -82,22 +82,22 @@ public class CombainHttpRequestServiceImpl implements HttpRequestService {
 
             operatorId = params.get("mnc");
             if (operatorId != null) {
-                for (int i = 0; i < operatorId.length && i < countryCode.length; i++) {
-                    cellTowersList.get(i).setMobileNetworkCode(operatorId[i]);
+                for (int i = 0; i < operatorId.size() && i < countryCode.size(); i++) {
+                    cellTowersList.get(i).setMobileNetworkCode(operatorId.get(i));
                 }
             }
 
             lac = params.get("lac");
             if (lac != null) {
-                for (int i = 0; i < lac.length && i < countryCode.length; i++) {
-                    cellTowersList.get(i).setLocationAreaCode(lac[i]);
+                for (int i = 0; i < lac.size() && i < countryCode.size(); i++) {
+                    cellTowersList.get(i).setLocationAreaCode(lac.get(i));
                 }
             }
 
             cellId = params.get("cid");
             if (cellId != null) {
-                for (int i = 0; i < cellId.length && i < countryCode.length; i++) {
-                    cellTowersList.get(i).setLocationAreaCode(cellId[i]);
+                for (int i = 0; i < cellId.size() && i < countryCode.size(); i++) {
+                    cellTowersList.get(i).setLocationAreaCode(cellId.get(i));
                 }
             }
         }

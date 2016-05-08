@@ -20,10 +20,10 @@ public class StringUtils {
         return unformattedMac.replaceAll("(.{2})", "$1" + divisionSymbol).substring(0, 17);
     }
 
-    public static String[] replaceSpecialsSymbolsAndUpperCase(String[] inputMac) {
-        String[] temp = new String[inputMac.length];
-        for (int i = 0; i < inputMac.length; i++) {
-            temp[i] = inputMac[i].replaceAll("[^a-zA-Z0-9]+", "").toUpperCase();
+    public static List<String> replaceSpecialsSymbolsAndUpperCase(List<String> inputMac) {
+        List<String> temp = new ArrayList<>(inputMac.size());
+        for (String anInputMac : inputMac) {
+            temp.add(anInputMac.replaceAll("[^a-zA-Z0-9]+", "").toUpperCase());
         }
         return temp;
     }
