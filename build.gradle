@@ -103,4 +103,5 @@ gretty {
     port = 8080
     contextPath = "/"
     inplaceMode = "hard"
+    fastReload = true
 }

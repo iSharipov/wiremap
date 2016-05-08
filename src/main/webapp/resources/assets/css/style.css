@@ -339,3 +339,26 @@ footer a:hover, footer a:focus {
 .fadeLoginRegister {
     display: none;
 }
+
+.entry-wifi:not(:first-of-type)
+{
+    margin-top: 10px;
+}
+
+.glyphicon
+{
+    font-size: 12px;
+}
+
+.entry-cell:not(:first-of-type)
+{
+    margin-top: 10px;
+}
+
+#location-fields label{
+    color: #FFFFFF;
+}
+
+#location-fields small{
+    color: #FFFFFF;
+}

@@ -35,6 +35,7 @@ public class ThymeleafConfig extends WebMvcConfigurerAdapter implements Applicat
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         resolver.setTemplateEngine(templateEngine());
         resolver.setCharacterEncoding("UTF-8");
+        resolver.setCache(false);
         return resolver;
     }
 
