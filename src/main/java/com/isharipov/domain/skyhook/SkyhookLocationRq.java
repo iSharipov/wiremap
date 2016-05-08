@@ -3,7 +3,6 @@ package com.isharipov.domain.skyhook;
 import lombok.Data;
 
 import javax.xml.bind.annotation.*;
-import java.util.List;
 
 /**
  * Created by Илья on 17.04.2016.
@@ -14,7 +13,6 @@ import java.util.List;
 public class SkyhookLocationRq {
     @XmlElement
     private AuthenticationParameters authentication;
-
 
     @XmlElements(value = {
             @XmlElement(name = "access-point",

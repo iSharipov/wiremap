@@ -1,5 +1,7 @@
 package com.isharipov.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isharipov.domain.common.CommonRs;
 import com.isharipov.domain.common.Response;
 import com.isharipov.utils.Systems;
@@ -49,6 +51,9 @@ public class ProcessingService {
     @Autowired
     private ResponseResolver responseResolver;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Cacheable(value = "isharipovCache", key = "#params")
     public Response process(Map<String, List<String>> params) {
 
@@ -86,7 +91,12 @@ public class ProcessingService {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        List<String> bssidParams = params.get("bssid");
-        return responseResolver.resolve(commons, bssidParams);
+        String jsonStringParams = null;
+        try {
+            jsonStringParams = objectMapper.writeValueAsString(params);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return responseResolver.resolve(commons, jsonStringParams);
     }
 }

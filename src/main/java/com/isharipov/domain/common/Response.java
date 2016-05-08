@@ -21,9 +21,7 @@ public class Response implements Serializable {
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
     @JsonIgnore
-    private String mac1;
-    @JsonIgnore
-    private String mac2;
+    private String params;
     private String lat;
     private String lng;
     private String provider;
