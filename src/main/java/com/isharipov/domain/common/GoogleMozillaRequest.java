@@ -46,7 +46,7 @@ public class GoogleMozillaRequest {
                 wifiAccessPointsList.add(wifiAccessPoint);
             }
 
-            signalStrength = params.get("signal");
+            signalStrength = params.get("ssw");
             if (signalStrength != null) {
                 for (int i = 0; i < signalStrength.size() && i < bssid.size(); i++) {
                     wifiAccessPointsList.get(i).setSignalStrength(signalStrength.get(i));
@@ -65,6 +65,7 @@ public class GoogleMozillaRequest {
         List<String> mobileNetworkCode;
         List<String> locationAreaCode;
         List<String> cellId;
+        List<String> ssc;
         CellTower cellTower;
         List<CellTower> cellTowers = null;
         if (mobileCountryCode != null) {
@@ -75,17 +76,27 @@ public class GoogleMozillaRequest {
                 cellTower.setRadioType(radioType);
                 cellTowers.add(cellTower);
             }
+
             mobileNetworkCode = params.get("mnc");
             for (int i = 0; i < mobileNetworkCode.size() && i < mobileCountryCode.size(); i++) {
                 cellTowers.get(i).setMobileNetworkCode(mobileNetworkCode.get(i));
             }
+
             locationAreaCode = params.get("lac");
             for (int i = 0; i < locationAreaCode.size() && i < mobileCountryCode.size(); i++) {
                 cellTowers.get(i).setLocationAreaCode(locationAreaCode.get(i));
             }
+
             cellId = params.get("cid");
             for (int i = 0; i < cellId.size() && i < mobileCountryCode.size(); i++) {
                 cellTowers.get(i).setCellId(cellId.get(i));
+            }
+
+            ssc = params.get("ssc");
+            if (ssc != null) {
+                for (int i = 0; i < cellId.size() && i < mobileCountryCode.size(); i++) {
+                    cellTowers.get(i).setSignalStrength(ssc.get(i));
+                }
             }
         }
 

@@ -56,7 +56,7 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
 
         /*Wifi Networks*/
         List<String> bssid = params.get("bssid");
-        List<String> signal;
+        List<String> ssw;
         List<String> age;
         List<WifiNetworks> wifiNetworksList = null;
         WifiNetworks wifiNetworks;
@@ -68,10 +68,10 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
                 wifiNetworksList.add(wifiNetworks);
             }
 
-            signal = params.get("signal");
-            if (signal != null) {
-                for (int i = 0; i < signal.size() && i < bssid.size(); i++) {
-                    wifiNetworksList.get(i).setSignalStrength(signal.get(i));
+            ssw = params.get("ssw");
+            if (ssw != null) {
+                for (int i = 0; i < ssw.size() && i < bssid.size(); i++) {
+                    wifiNetworksList.get(i).setSignalStrength(ssw.get(i));
                 }
             } else {
                 for (WifiNetworks w : wifiNetworksList) {
@@ -95,6 +95,7 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
         List<String> mnc;
         List<String> lac;
         List<String> cid;
+        List<String> ssc;
         GsmCells gsmCells;
         List<GsmCells> gsmCellsList = null;
         if (mcc != null) {
@@ -104,6 +105,7 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
                 gsmCells.setCountryCode(m);
                 gsmCellsList.add(gsmCells);
             }
+
             mnc = params.get("mnc");
             for (int i = 0; i < mnc.size() && i < mcc.size(); i++) {
                 gsmCellsList.get(i).setOperatorId(mnc.get(i));
@@ -113,10 +115,17 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
             for (int i = 0; i < lac.size() && i < mcc.size(); i++) {
                 gsmCellsList.get(i).setLac(lac.get(i));
             }
-            cid = params.get("cid");
 
+            cid = params.get("cid");
             for (int i = 0; i < cid.size() && i < mcc.size(); i++) {
                 gsmCellsList.get(i).setCellId(cid.get(i));
+            }
+
+            ssc = params.get("ssc");
+            if (ssc != null) {
+                for (int i = 0; i < ssc.size() && i < mcc.size(); i++) {
+                    gsmCellsList.get(i).setSsc(ssc.get(i));
+                }
             }
         }
 

@@ -25,7 +25,7 @@ public class RestController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/mac", produces = "application/json")
     public Response processRequestMac(@RequestParam(value = "bssid", required = true) List<String> bssid,
-                                      @RequestParam(value = "signal", required = false) List<String> signal,
+                                      @RequestParam(value = "ssw", required = false) List<String> ssw,
                                       @RequestParam(value = "age", required = false) List<String> age
     ) {
         bssid = StringUtils.replaceSpecialsSymbolsAndUpperCase(bssid);
@@ -39,7 +39,7 @@ public class RestController {
 
         final Map<String, List<String>> map = new HashMap<>();
         map.put("bssid", bssid);
-        map.put("signal", signal);
+        map.put("signal", ssw);
         map.put("age", age);
 
         return processingService.process(map);
@@ -49,13 +49,15 @@ public class RestController {
     public Response processRequestSsid(@RequestParam(value = "mcc", required = true) List<String> mcc,
                                        @RequestParam(value = "mnc", required = true) List<String> mnc,
                                        @RequestParam(value = "lac", required = true) List<String> lac,
-                                       @RequestParam(value = "cid", required = true) List<String> cid
+                                       @RequestParam(value = "cid", required = true) List<String> cid,
+                                       @RequestParam(value = "ssc", required = false) List<String> ssc
     ) {
         final Map<String, List<String>> map = new HashMap<>();
         map.put("mcc", mcc);
         map.put("mnc", mnc);
         map.put("lac", lac);
         map.put("cid", cid);
+        map.put("ssc", ssc);
 
         return processingService.process(map);
     }
@@ -66,8 +68,9 @@ public class RestController {
             @RequestParam(value = "mnc", required = true) List<String> mnc,
             @RequestParam(value = "lac", required = true) List<String> lac,
             @RequestParam(value = "lac", required = true) List<String> cid,
+            @RequestParam(value = "ssc", required = false) List<String> ssc,
             @RequestParam(value = "bssid", required = true) List<String> bssid,
-            @RequestParam(value = "signal", required = false) List<String> signal,
+            @RequestParam(value = "ssw", required = false) List<String> ssw,
             @RequestParam(value = "age", required = false) List<String> age
 
     ) {
@@ -84,8 +87,9 @@ public class RestController {
         map.put("mnc", mnc);
         map.put("lac", lac);
         map.put("cid", cid);
+        map.put("cid", ssc);
         map.put("bssid", bssid);
-        map.put("signal", signal);
+        map.put("signal", ssw);
         map.put("age", age);
 
         return processingService.process(map);

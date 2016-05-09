@@ -14,4 +14,5 @@ public class CellTower {
     private String locationAreaCode;
     private String mobileCountryCode;
     private String mobileNetworkCode;
+    private String signalStrength;
 }
