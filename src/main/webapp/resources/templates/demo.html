@@ -13,13 +13,13 @@
         <div id="map" style="width: 600px; height: 500px; opacity: 0.7"></div>
     </div>
     <div style="float:right;width:50%">
-        <form role="form" th:action="@{demo}" th:object="${demoform} autocomplete="off">
+        <form role="form" autocomplete="off">
             <div style="float: left;width: 50%">
                 <div class="control-group" id="wifi-fields">
                     <label class="control-label" for="wifi-field1">WiFi Fields</label>
                     <div class="controls-wifi">
                         <div class="entry-wifi input-group col-xs-10">
-                            <input class="form-control" th:field="*{wifi}" name="wifi-fields[]" type="text"
+                            <input class="form-control" name="wifi-fields[]" type="text"
                                    placeholder="Type something"/>
                     	<span class="input-group-btn">
                             <button class="btn btn-success btn-add-wifi" type="button">
@@ -39,7 +39,7 @@
                     <div class="controls-cell">
 
                         <div class="entry-cell input-group col-xs-10">
-                            <input class="form-control" th:field="*{cell}" name="cell-fields[]" type="text"
+                            <input class="form-control" name="cell-fields[]" type="text"
                                    placeholder="Type something"/>
                     	<span class="input-group-btn">
                             <button class="btn btn-success btn-add-cell" type="button">
