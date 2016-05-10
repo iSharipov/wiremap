@@ -56,7 +56,7 @@ public class SkyHookHttpRequestServiceImpl implements HttpRequestService {
     @Override
     public Future<CommonRs> createHttpRequest(Map<String, List<String>> params) {
         List<String> bssid = params.get("bssid");
-        List<String> signal = params.get("signal");
+        List<String> signal = params.get("ssw");
 
         SkyhookLocationRq skyhookLocationRq = new SkyhookLocationRq();
         Key key = new Key();

@@ -131,6 +131,9 @@ public class ResponseResolver {
         if (response.getLng() == null) {
             response.setAccuracy(null);
             response.setError(ENABLE_TO_DETERMINE_LOCATION);
+            response.setParams(params);
+            response.setElapsedTime(elapsedTime);
+            saveToDb(response);
         }
         return response;
     }

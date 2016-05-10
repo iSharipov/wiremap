@@ -131,7 +131,7 @@ public class SkyHookProcessingTest {
     @Test
     public void coverageTest() throws ExecutionException, InterruptedException {
 
-        List<String> list = StringUtils.macList("2");
+        List<String> list = StringUtils.macList("3");
         for (int i = 1; i < list.size(); i += 2) {
             Map<String, List<String>> params = new HashMap<>();
             List<String> list1 = new ArrayList<>();
