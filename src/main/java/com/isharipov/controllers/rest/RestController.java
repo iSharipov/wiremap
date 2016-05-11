@@ -4,6 +4,10 @@ import com.isharipov.domain.common.Response;
 import com.isharipov.service.ProcessingService;
 import com.isharipov.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jmx.export.annotation.ManagedOperation;
+import org.springframework.jmx.export.annotation.ManagedOperationParameter;
+import org.springframework.jmx.export.annotation.ManagedOperationParameters;
+import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,11 +21,19 @@ import java.util.Map;
  * Created by Илья on 22.04.2016.
  */
 @org.springframework.web.bind.annotation.RestController
+@ManagedResource(objectName = "RestController:name=RestControllerBean")
 @RequestMapping("/rest")
 public class RestController {
 
     @Autowired
     private ProcessingService processingService;
+
+    @ManagedOperation(description = "Returns location by mac")
+    @ManagedOperationParameters({
+            @ManagedOperationParameter(name = "bssid", description = "BSSID"),
+            @ManagedOperationParameter(name = "ssw", description = "Signal Strength"),
+            @ManagedOperationParameter(name = "age", description = "Age")
+    })
 
     @RequestMapping(method = RequestMethod.GET, value = "/mac", produces = "application/json")
     public Response processRequestMac(@RequestParam(value = "bssid", required = true) List<String> bssid,
@@ -89,7 +101,6 @@ public class RestController {
         map.put("cid", cid);
         map.put("ssc", ssc);
         map.put("bssid", bssid);
-        map.put("ssw", ssw);
         map.put("age", age);
 
         return processingService.process(map);

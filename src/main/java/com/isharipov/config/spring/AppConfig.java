@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isharipov.handler.JacksonHandlerInstantiator;
 import com.isharipov.handler.MainResponseErrorHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -19,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @Configuration
 @EnableAsync
+@EnableMBeanExport
 @PropertySource(value = {"classpath:application.properties"})
 @ComponentScan({"com.isharipov"})
 public class AppConfig {

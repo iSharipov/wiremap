@@ -8,10 +8,10 @@
 
     <cache name="isharipovCache"
            maxEntriesLocalHeap="10000"
-           maxEntriesLocalDisk="1000"
+           maxEntriesLocalDisk="10000"
            eternal="false"
            diskSpoolBufferSizeMB="20"
-           timeToIdleSeconds="300" timeToLiveSeconds="600"
+           timeToIdleSeconds="30" timeToLiveSeconds="60"
            memoryStoreEvictionPolicy="LFU"
            transactionalMode="off">
         <persistence strategy="localTempSwap" />
