@@ -58,36 +58,25 @@ public class ProcessingService {
     public Response process(Map<String, List<String>> params) {
 
         long start = System.currentTimeMillis();
-        Future<CommonRs> yandexCommonRs = null;
-        if (systems.contains(Systems.YANDEX)) {
-            yandexCommonRs = yandexHttpRequestService.createHttpRequest(params);
-        }
-        Future<CommonRs> googleCommonRs = null;
-        if (systems.contains(Systems.GOOGLE)) {
-            googleCommonRs = googleHttpRequestService.createHttpRequest(params);
-        }
 
-        Future<CommonRs> skyHookCommonRs = null;
-        if (params.get("bssid") != null && systems.contains(Systems.SKYHOOK)) {
-            skyHookCommonRs = skyHookHttpRequestService.createHttpRequest(params);
-        }
-        Future<CommonRs> mozillaCommonRs = null;
-        if (systems.contains(Systems.MOZILLA)) {
-            mozillaCommonRs = mozillaHttpRequestService.createHttpRequest(params);
-        }
+        Future<CommonRs> yandexCommonRs = yandexHttpRequestService.createHttpRequest(params);
+        Future<CommonRs> googleCommonRs = googleHttpRequestService.createHttpRequest(params);
+        Future<CommonRs> skyHookCommonRs = skyHookHttpRequestService.createHttpRequest(params);
+        Future<CommonRs> mozillaCommonRs = mozillaHttpRequestService.createHttpRequest(params);
+
         long elapsedTime = 0;
         Map<String, CommonRs> commons = new HashMap<>();
         try {
-            while (!((yandexCommonRs != null && yandexCommonRs.isDone()) && (googleCommonRs != null && googleCommonRs.isDone())
-                    && ((mozillaCommonRs != null && mozillaCommonRs.isDone()) && (skyHookCommonRs == null || skyHookCommonRs.isDone())
-            ))) {
+            while (!(yandexCommonRs.isDone() && googleCommonRs.isDone()
+                    && mozillaCommonRs.isDone() && skyHookCommonRs.isDone()
+            )) {
                 Thread.sleep(5);
             }
             elapsedTime = System.currentTimeMillis() - start;
             log.info("{}", "Elapsed time: " + elapsedTime);
             commons.put("yandexCommonRs", yandexCommonRs.get());
             commons.put("googleCommonRs", googleCommonRs.get());
-            commons.put("skyHookCommonRs", skyHookCommonRs != null ? skyHookCommonRs.get() : null);
+            commons.put("skyHookCommonRs", skyHookCommonRs.get());
             commons.put("mozillaCommonRs", mozillaCommonRs.get());
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();

@@ -7,12 +7,14 @@ import com.isharipov.domain.skyhook.AuthenticationParameters;
 import com.isharipov.domain.skyhook.Key;
 import com.isharipov.domain.skyhook.SkyhookLocationRq;
 import com.isharipov.utils.ResponseUtil;
+import com.isharipov.utils.Systems;
 import lombok.extern.slf4j.Slf4j;
 import org.json.XML;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -52,10 +54,16 @@ public class SkyHookHttpRequestServiceImpl implements HttpRequestService {
     @Value("${skyhook.version}")
     private String version;
 
+    @Value("${systems}")
+    private List<Systems> systems;
+
     @Async
     @Override
     public Future<CommonRs> createHttpRequest(Map<String, List<String>> params) {
         List<String> bssid = params.get("bssid");
+        if (bssid == null || !systems.contains(Systems.SKYHOOK)) {
+            return new AsyncResult<>(null);
+        }
         List<String> signal = params.get("ssw");
 
         SkyhookLocationRq skyhookLocationRq = new SkyhookLocationRq();

@@ -39,7 +39,7 @@ public class RestController {
 
         final Map<String, List<String>> map = new HashMap<>();
         map.put("bssid", bssid);
-        map.put("signal", ssw);
+        map.put("ssw", ssw);
         map.put("age", age);
 
         return processingService.process(map);
@@ -87,9 +87,9 @@ public class RestController {
         map.put("mnc", mnc);
         map.put("lac", lac);
         map.put("cid", cid);
-        map.put("cid", ssc);
+        map.put("ssc", ssc);
         map.put("bssid", bssid);
-        map.put("signal", ssw);
+        map.put("ssw", ssw);
         map.put("age", age);
 
         return processingService.process(map);

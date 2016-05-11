@@ -9,11 +9,13 @@ import com.isharipov.domain.yandex.locator.WifiNetworks;
 import com.isharipov.domain.yandex.locator.YandexLocatorRq;
 import com.isharipov.utils.ResponseUtil;
 import com.isharipov.utils.StringUtils;
+import com.isharipov.utils.Systems;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -46,9 +48,15 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
     @Value("${yandexlocator.site.address}")
     private String siteAddress;
 
+    @Value("${systems}")
+    private List<Systems> systems;
+
     @Async
     @Override
     public Future<CommonRs> createHttpRequest(Map<String, List<String>> params) {
+        if (!systems.contains(Systems.YANDEX)) {
+            return new AsyncResult<>(null);
+        }
         /*Common*/
         Common common = new Common();
         common.setVersion(version);

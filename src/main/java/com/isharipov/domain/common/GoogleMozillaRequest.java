@@ -7,10 +7,13 @@ import com.isharipov.domain.google.loc.GoogleRq;
 import com.isharipov.domain.google.loc.WifiAccessPoint;
 import com.isharipov.utils.ResponseUtil;
 import com.isharipov.utils.StringUtils;
+import com.isharipov.utils.Systems;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -30,8 +33,14 @@ public class GoogleMozillaRequest {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Value("${systems}")
+    private List<Systems> systems;
+
     @Async
     public Future<CommonRs> getRequest(Map<String, List<String>> params, String site, String apiKey, String radioType, Logger log) {
+        if (!systems.contains(Systems.MOZILLA) || !systems.contains(Systems.GOOGLE)) {
+            return new AsyncResult<>(null);
+        }
         /*Wifi Networks*/
         List<String> bssid = params.get("bssid");
         List<String> age;
@@ -94,7 +103,7 @@ public class GoogleMozillaRequest {
 
             ssc = params.get("ssc");
             if (ssc != null) {
-                for (int i = 0; i < cellId.size() && i < mobileCountryCode.size(); i++) {
+                for (int i = 0; i < ssc.size() && i < mobileCountryCode.size(); i++) {
                     cellTowers.get(i).setSignalStrength(ssc.get(i));
                 }
             }
@@ -121,5 +130,4 @@ public class GoogleMozillaRequest {
         }
         return ResponseUtil.handleError(responseEntity, responseBody, objectMapper, log);
     }
-
 }
