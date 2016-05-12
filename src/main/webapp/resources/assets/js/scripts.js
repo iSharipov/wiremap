@@ -55,6 +55,7 @@ jQuery(document).ready(function () {
             zoom: 7
         });
     }
+
     var circleGeometry;
     var circleGeoObject;
     $("#getButtonWifi").click(function () {
@@ -69,7 +70,7 @@ jQuery(document).ready(function () {
         //});
 
         $.ajax({
-            url: "http://localhost:8080/rest/mac?callback=?bssid=" + values[0] + "&ssw=" + values[1] + "&bssid="
+            url: "http://localhost:8080/rest/mac?callback=?bssid&bssid=" + values[0] + "&ssw=" + values[1] + "&bssid="
             + values[2] + "&ssw=" + values[3] + "&bssid=" + values[4] + "&ssw=" + values[5],
             crossDomain: true,
             type: 'GET',
@@ -86,14 +87,22 @@ jQuery(document).ready(function () {
                 console.log(circleGeometry === undefined);
                 if (circleGeometry === undefined) {
                     circleGeometry = new ymaps.geometry.Circle([data.lat, data.lng], data.accuracy);
-                    circleGeoObject = new ymaps.GeoObject({geometry: circleGeometry});
+                    circleGeoObject = new ymaps.GeoObject({
+                        geometry: circleGeometry,
+                        properties: {
+                            hintContent: data.provider,
+                            balloonContentHeader: data.provider,
+                            balloonContentBody: data.accuracy,
+                            population: 11848762
+                        }
+                    });
                 } else {
-                    console.log(circleGeometry);
                     circleGeometry.setCoordinates([data.lat, data.lng]);
                     circleGeometry.setRadius(data.accuracy);
-                    console.log(circleGeometry);
+                    circleGeoObject.properties.set("hintContent", data.provider);
+                    circleGeoObject.properties.set("balloonContentHeader", data.provider);
+                    circleGeoObject.properties.set("balloonContentBody", data.accuracy);
                 }
-
 
                 myMap.geoObjects.add(circleGeoObject);
                 myMap.setCenter([data.lat, data.lng], 15, {

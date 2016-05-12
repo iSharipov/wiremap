@@ -2,6 +2,7 @@ package com.isharipov.controllers.rest;
 
 import com.isharipov.domain.common.Response;
 import com.isharipov.service.ProcessingService;
+import com.isharipov.service.ValidationService;
 import com.isharipov.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jmx.export.annotation.ManagedOperation;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.constraints.Size;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +29,9 @@ public class RestController {
     @Autowired
     private ProcessingService processingService;
 
+    @Autowired
+    private ValidationService validationService;
+
     @ManagedOperation(description = "Returns location by mac")
     @ManagedOperationParameters({
             @ManagedOperationParameter(name = "bssid", description = "BSSID"),
@@ -41,14 +44,20 @@ public class RestController {
                                       @RequestParam(value = "ssw", required = false) List<String> ssw,
                                       @RequestParam(value = "age", required = false) List<String> age
     ) {
-        bssid = StringUtils.replaceSpecialsSymbolsAndUpperCase(bssid);
-        for (String mac : bssid) {
-            if (mac.length() < 12) {
-                Response response = new Response();
-                response.setError("bad query");
-                return response;
+
+        bssid = validationService.replaceSpecialSymbolsMacAndUpperCase(validationService.emptyList(bssid));
+        ssw = validationService.emptyList(ssw);
+        age = validationService.emptyList(age);
+        if (bssid != null) {
+            for (String mac : bssid) {
+                if (mac.length() < 12) {
+                    Response response = new Response();
+                    response.setError("bad query");
+                    return response;
+                }
             }
         }
+
 
         final Map<String, List<String>> map = new HashMap<>();
         map.put("bssid", bssid);
