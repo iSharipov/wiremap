@@ -9,6 +9,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -16,7 +17,6 @@ import java.util.List;
  */
 public class StringUtils {
     public static String getMac(String unformattedMac, String divisionSymbol) {
-
         return unformattedMac.replaceAll("(.{2})", "$1" + divisionSymbol).substring(0, 17);
     }
 
@@ -25,6 +25,15 @@ public class StringUtils {
         for (String anInputMac : inputMac) {
             temp.add(anInputMac.replaceAll("[^a-zA-Z0-9]+", "").toUpperCase());
         }
+
+//        for (Iterator<String> inputMacIter = inputMac.iterator(); inputMacIter.hasNext(); ) {
+//            String s = inputMacIter.next();
+//            if (s.equals("")) {
+//                inputMacIter.remove();
+//            } else {
+//                temp.add(s.replaceAll("[^a-zA-Z0-9]+", "").toUpperCase());
+//            }
+//        }
         return temp;
     }
 

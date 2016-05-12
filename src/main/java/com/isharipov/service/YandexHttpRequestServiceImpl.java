@@ -68,7 +68,7 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
         List<String> age;
         List<WifiNetworks> wifiNetworksList = null;
         WifiNetworks wifiNetworks;
-        if (bssid != null) {
+        if (bssid != null && !bssid.isEmpty()) {
             wifiNetworksList = new ArrayList<>();
             for (String aBssid : bssid) {
                 wifiNetworks = new WifiNetworks();
@@ -77,7 +77,7 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
             }
 
             ssw = params.get("ssw");
-            if (ssw != null) {
+            if (ssw != null && !ssw.isEmpty()) {
                 for (int i = 0; i < ssw.size() && i < bssid.size(); i++) {
                     wifiNetworksList.get(i).setSignalStrength(ssw.get(i));
                 }
@@ -88,7 +88,7 @@ public class YandexHttpRequestServiceImpl implements HttpRequestService {
             }
 
             age = params.get("age");
-            if (age != null) {
+            if (age != null && !age.isEmpty()) {
                 for (int i = 0; i < age.size() && i < bssid.size(); i++) {
                     wifiNetworksList.get(i).setAge(age.get(i));
                 }

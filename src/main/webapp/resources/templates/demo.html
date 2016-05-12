@@ -9,7 +9,7 @@
 <body>
 <header style="overflow: hidden" th:replace="layout :: header"></header>
 <div id="location-fields">
-    <div style="float:left; width:50%">
+    <div style="float:left; width:50%;margin-top:10px;">
         <div id="map" style="width: 600px; height: 500px; opacity: 0.7"></div>
     </div>
     <div style="float:right;width:50%">
@@ -17,40 +17,66 @@
             <div style="float: left;width: 50%">
                 <div class="control-group" id="wifi-fields">
                     <label class="control-label" for="wifi-field1">WiFi Fields</label>
-                    <div class="controls-wifi">
-                        <div class="entry-wifi input-group col-xs-10">
-                            <input class="form-control" name="wifi-fields[]" type="text"
-                                   placeholder="Type something"/>
-                    	<span class="input-group-btn">
-                            <button class="btn btn-success btn-add-wifi" type="button">
-                                <span class="glyphicon glyphicon-plus"></span>
-                            </button>
-                        </span>
+
+                    <div id='TextBoxesGroupBssid' style="padding:8px">
+                        <div id="TextBoxBssid1">
+                            <label for="bssid1"></label><input placeholder="BSSID" type='text' id='bssid1' >
                         </div>
-                        <br>
-                        <small>Press <span class="glyphicon glyphicon-plus gs"></span> to add another form field :)
-                        </small>
+                        <div id="TextBoxSsw1">
+                            <label for="ssw1"></label><input placeholder="RSSI" type='text' id='ssw1' >
+                        </div>
+                        <div id="TextBoxBssid2">
+                            <label for="bssid2"></label><input placeholder="BSSID" type='text' id='bssid2' >
+                        </div>
+                        <div id="TextBoxSsw2">
+                            <label for="ssw2"></label><input placeholder="RSSI" type='text' id='ssw2' >
+                        </div>
+                        <div id="TextBoxBssid3">
+                            <label for="bssid3"></label><input placeholder="BSSID" type='text' id='bssid3' >
+                        </div>
+                        <div id="TextBoxSsw3">
+                            <label for="ssw3"></label><input placeholder="RSSI" type='text' id='ssw3' >
+                        </div>
                     </div>
+                    <input type='button' value='Get TextBox Value' id='getButtonWifi'>
                 </div>
             </div>
             <div style="float: right; width: 50%">
                 <div class="control-group" id="cell-fields">
                     <label class="control-label" for="cell-field1">Cell Fields</label>
-                    <div class="controls-cell">
-
-                        <div class="entry-cell input-group col-xs-10">
-                            <input class="form-control" name="cell-fields[]" type="text"
-                                   placeholder="Type something"/>
-                    	<span class="input-group-btn">
-                            <button class="btn btn-success btn-add-cell" type="button">
-                                <span class="glyphicon glyphicon-plus"></span>
-                            </button>
-                        </span>
+                    <div id='TextBoxesGroupSsid' style="padding:8px">
+                        <div id="TextBoxMcc1">
+                            <label for="mcc1"></label><input type='text' id='mcc1' >
                         </div>
-                        <br>
-                        <small>Press <span class="glyphicon glyphicon-plus gs"></span> to add another form field :)
-                        </small>
+                        <div id="TextBoxMnc1">
+                            <label for="mnc1"></label><input type='text' id='mnc1' >
+                        </div>
+                        <div id="TextBoxLac1">
+                            <label for="lac1"></label><input type='text' id='lac1' >
+                        </div>
+                        <div id="TextBoxCid1">
+                            <label for="cid1"></label><input type='text' id='cid1' >
+                        </div>
+                        <div id="TextBoxSsc1">
+                            <label for="ssc1"></label><input type='text' id='ssc1' >
+                        </div>
+                        <div id="TextBoxMcc2">
+                            <label for="mcc2"></label><input type='text' id='mcc2' >
+                        </div>
+                        <div id="TextBoxMnc2">
+                            <label for="mnc2"></label><input type='text' id='mnc2' >
+                        </div>
+                        <div id="TextBoxLac2">
+                            <label for="lac2"></label><input type='text' id='lac2' >
+                        </div>
+                        <div id="TextBoxCid2">
+                            <label for="cid2"></label><input type='text' id='cid2' >
+                        </div>
+                        <div id="TextBoxSsc2">
+                            <label for="ssc2"></label><input type='text' id='ssc2' >
+                        </div>
                     </div>
+                    <input type='button' value='Get TextBox Value' id='getButtonSsid'>
                 </div>
             </div>
         </form>

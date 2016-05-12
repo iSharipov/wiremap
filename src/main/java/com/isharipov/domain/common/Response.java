@@ -26,7 +26,6 @@ public class Response implements Serializable {
     private String lng;
     private String provider;
     private String error;
-    @JsonIgnore
     private Float accuracy;
     @JsonIgnore
     private Long elapsedTime;

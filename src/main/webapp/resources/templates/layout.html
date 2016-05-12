@@ -20,28 +20,42 @@
 <body>
 <header style="overflow: hidden" th:fragment="header">
     <div class="right_buttons">
-        <div class="comp pull-right show-logout" style="width: 150px; ">
+        <div class="comp pull-right show-logout" style="width: 100px; ">
             <div
                     th:classappend="${#authorization.expression('isAuthenticated()')}? fadeLoginRegister">
                 <a th:href="@{/login}" class="hdr-btn">
-                    Войти
+                    Login
                 </a>
             </div>
         </div>
 
-        <div class="comp pull-right" style="width: 150px;">
+        <div class="comp pull-right" style="width: 100px;">
             <div th:classappend="${#authorization.expression('isAuthenticated()')}? fadeLoginRegister">
                 <a th:href="@{/register}" class="hdr-btn">
-                    Регистрация
+                    Register
                 </a>
             </div>
         </div>
-        <div class="comp pull-right" style="width: 150px">
+        <div class="comp pull-right" style="width: 100px">
+            <form id="logoutForm" method="post" th:action="@{/logout}">
+                <button class="hdr-btn" style="display:inline;border:none;background-color: transparent">Logout</button>
+                <input type="hidden"
+                       name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            </form>
+        </div>
+        <div class="comp pull-right" style="width: 100px">
             <button class="demo-button">
                 <a th:href="@{/demo}" class="hdr-btn">
                     Demo
                 </a>
             </button>
+        </div>
+        <div class="comp pull-right show-logout" style="width: 100px; ">
+            <div>
+                <a th:href="@{/}" class="hdr-btn">
+                    Home
+                </a>
+            </div>
         </div>
     </div>
 </header>

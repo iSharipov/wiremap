@@ -340,25 +340,52 @@ footer a:hover, footer a:focus {
     display: none;
 }
 
-.entry-wifi:not(:first-of-type)
-{
-    margin-top: 10px;
-}
+/*.entry-wifi:not(:first-of-type)*/
+/*{*/
+/*margin-top: 10px;*/
+/*}*/
 
-.glyphicon
-{
-    font-size: 12px;
-}
+/*.glyphicon*/
+/*{*/
+/*font-size: 12px;*/
+/*}*/
 
-.entry-cell:not(:first-of-type)
-{
-    margin-top: 10px;
-}
+/*.entry-cell:not(:first-of-type)*/
+/*{*/
+/*margin-top: 10px;*/
+/*}*/
 
-#location-fields label{
+#location-fields label {
     color: #FFFFFF;
 }
 
-#location-fields small{
+#location-fields small {
     color: #FFFFFF;
+}
+
+#logoutForm button {
+    display: inline;
+    border: none;
+    background-color: transparent;
+}
+#logoutForm button:hover {
+    color:#19b9e7;
+}
+
+#TextBoxesGroupBssid div{
+    padding-bottom: 8px;
+}
+
+#TextBoxesGroupSsid div{
+    padding-bottom: 8px;
+}
+
+#TextBoxesGroupBssid div input{
+    height:30px;
+    padding: 2px;
+}
+
+#TextBoxesGroupSsid div input{
+    height:30px;
+    padding: 2px;
 }

@@ -55,46 +55,59 @@ jQuery(document).ready(function () {
             zoom: 7
         });
     }
+    var circleGeometry;
+    var circleGeoObject;
+    $("#getButtonWifi").click(function () {
+        var wifiArr = $('#TextBoxesGroupBssid').children().find('input').toArray();
+        var values = [];
+        wifiArr.forEach(function (item, i, arr) {
+            values.push(item.value);
+        });
+        //$.get("http://isharipov.com/rest/mac?bssid=" + values[0] + "&ssw=" + values[1] + "&bssid="
+        //    + values[2] + "&ssw=" + values[3] + "&bssid=" + values[4] + "&ssw=" + values[5], function (data) {
+        //    console.log(data);
+        //});
 
-    $(document).on('click', '.btn-add-wifi', function(e)
-    {
-        e.preventDefault();
+        $.ajax({
+            url: "http://localhost:8080/rest/mac?callback=?bssid=" + values[0] + "&ssw=" + values[1] + "&bssid="
+            + values[2] + "&ssw=" + values[3] + "&bssid=" + values[4] + "&ssw=" + values[5],
+            crossDomain: true,
+            type: 'GET',
+            dataType: 'json',
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (data) {
+                data = callback(data);
+                //var myPlacemark = new ymaps.Placemark([data.lat, data.lng], {
+                //     hintContent: data.provider
+                // console.log(myPlacemark);
+                // myMap.geoObjects.add(myPlacemark);
+                console.log(circleGeometry === undefined);
+                if (circleGeometry === undefined) {
+                    circleGeometry = new ymaps.geometry.Circle([data.lat, data.lng], data.accuracy);
+                    circleGeoObject = new ymaps.GeoObject({geometry: circleGeometry});
+                } else {
+                    console.log(circleGeometry);
+                    circleGeometry.setCoordinates([data.lat, data.lng]);
+                    circleGeometry.setRadius(data.accuracy);
+                    console.log(circleGeometry);
+                }
 
-        var controlForm = $('.controls-wifi form:first'),
-            currentEntry = $(this).parents('.entry-wifi:first'),
-            newEntry = $(currentEntry.clone()).appendTo(controlForm);
 
-        newEntry.find('input').val('');
-        controlForm.find('.entry-wifi:not(:last) .btn-add-wifi')
-            .removeClass('btn-add-wifi').addClass('btn-remove')
-            .removeClass('btn-success').addClass('btn-danger')
-            .html('<span class="glyphicon glyphicon-minus"></span>');
-    }).on('click', '.btn-remove', function(e)
-    {
-        $(this).parents('.entry-wifi:first').remove();
-
-        e.preventDefault();
-        return false;
+                myMap.geoObjects.add(circleGeoObject);
+                myMap.setCenter([data.lat, data.lng], 15, {
+                    checkZoomRange: true
+                });
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
     });
-
-    $(document).on('click', '.btn-add-cell', function(e)
-    {
-        e.preventDefault();
-
-        var controlForm = $('.controls-cell form:first'),
-            currentEntry = $(this).parents('.entry-cell:first'),
-            newEntry = $(currentEntry.clone()).appendTo(controlForm);
-
-        newEntry.find('input').val('');
-        controlForm.find('.entry-cell:not(:last) .btn-add-cell')
-            .removeClass('btn-add-cell').addClass('btn-remove')
-            .removeClass('btn-success').addClass('btn-danger')
-            .html('<span class="glyphicon glyphicon-minus"></span>');
-    }).on('click', '.btn-remove', function(e)
-    {
-        $(this).parents('.entry-cell:first').remove();
-
-        e.preventDefault();
-        return false;
-    });
+    function callback(data) {
+        return data;
+    }
 });
+
+
