@@ -70,7 +70,7 @@ jQuery(document).ready(function () {
         //});
 
         $.ajax({
-            url: "http://localhost:8080/rest/mac?callback=?bssid&bssid=" + values[0] + "&ssw=" + values[1] + "&bssid="
+            url: "http://isharipov.com/rest/mac?callback=?bssid&bssid=" + values[0] + "&ssw=" + values[1] + "&bssid="
             + values[2] + "&ssw=" + values[3] + "&bssid=" + values[4] + "&ssw=" + values[5],
             crossDomain: true,
             type: 'GET',
@@ -93,7 +93,6 @@ jQuery(document).ready(function () {
                             hintContent: data.provider,
                             balloonContentHeader: data.provider,
                             balloonContentBody: data.accuracy,
-                            population: 11848762
                         }
                     });
                 } else {
