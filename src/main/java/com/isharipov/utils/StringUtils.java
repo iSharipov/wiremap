@@ -3,19 +3,22 @@ package com.isharipov.utils;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * Created by Илья on 23.04.2016.
  */
 public class StringUtils {
+    private static final Logger log = LoggerFactory.getLogger(StringUtils.class);
+
     public static String getMac(String unformattedMac, String divisionSymbol) {
         return unformattedMac.replaceAll("(.{2})", "$1" + divisionSymbol).substring(0, 17);
     }
@@ -25,15 +28,6 @@ public class StringUtils {
         for (String anInputMac : inputMac) {
             temp.add(anInputMac.replaceAll("[^a-zA-Z0-9]+", "").toUpperCase());
         }
-
-//        for (Iterator<String> inputMacIter = inputMac.iterator(); inputMacIter.hasNext(); ) {
-//            String s = inputMacIter.next();
-//            if (s.equals("")) {
-//                inputMacIter.remove();
-//            } else {
-//                temp.add(s.replaceAll("[^a-zA-Z0-9]+", "").toUpperCase());
-//            }
-//        }
         return temp;
     }
 
@@ -47,23 +41,21 @@ public class StringUtils {
         return new String(encoded, encoding);
     }
 
-    public static List<String> macList(String fileName) {
+    public static Pair<List<String>, List<String>> macList(String fileName) {
 
-        String csvFile = "src/main/resources/" + fileName + ".csv";
+        String csvFile = "src/main/resources/xml/" + fileName + ".csv";
         CSVParser parser = null;
-        List<String> list = new ArrayList<>();
+        List<String> macList = new ArrayList();
+        List<String> levelList = new ArrayList<>();
         try {
             parser = CSVParser.parse(StringUtils.fileToString(csvFile, Charset.defaultCharset()), CSVFormat.DEFAULT.withQuote(null));
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         for (CSVRecord csvRecord : parser) {
-            if (csvRecord.toString().contains("BSSID")) {
-                int index = csvRecord.toString().indexOf("BSSID");
-                list.add(csvRecord.toString().substring(index + 8, index + 25));
-            }
+            macList.add(csvRecord.get(0).substring(11, 28));
+            levelList.add(csvRecord.get(7).substring(8, 11));
         }
-        return list;
+        return new Pair<>(macList, levelList);
     }
 }

@@ -6,14 +6,14 @@ apply plugin: 'java'
 apply plugin: 'war'
 
 ext {
-    SPRING = "4.2.5.RELEASE"
+    SPRING = "4.2.6.RELEASE"
     HIBERNATE = "5.1.0.Final"
-    MYSQL = "5.1.37"
-    SPRING_DATA_JPA = "1.9.4.RELEASE"
-    SPRING_SECURITY = "4.0.4.RELEASE"
+    MYSQL = "5.1.39"
+    SPRING_DATA_JPA = "1.10.1.RELEASE"
+    SPRING_SECURITY = "4.1.0.RELEASE"
     THYMELEAF_VERSION = "3.0.0.BETA02"
-    JACKSON_VERSION = "2.7.3"
-    HIBERNATE_VALIDATOR = "5.3.0.Alpha1"
+    JACKSON_VERSION = "2.7.4"
+    HIBERNATE_VALIDATOR = "5.2.4.Final"
 }
 
 repositories {
@@ -21,9 +21,6 @@ repositories {
     jcenter()
 }
 
-//configurations {
-//    compile.exclude module: 'javassist'
-//}
 compileJava {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -44,9 +41,7 @@ dependencies {
     compile "org.springframework:spring-context:$SPRING"
     compile "org.springframework:spring-context-support:$SPRING"
 
-
     compile "org.springframework:spring-test:$SPRING"
-
 
     compile "org.springframework.security:spring-security-core:$SPRING_SECURITY"
     compile "org.springframework.security:spring-security-web:$SPRING_SECURITY"
@@ -60,7 +55,6 @@ dependencies {
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.7.3'
 
     compile 'org.json:json:20160212'
-
 
     compile 'ch.qos.logback:logback-classic:1.1.7'
     compile 'org.slf4j:slf4j-api:1.7.20'
@@ -83,9 +77,14 @@ dependencies {
     compile 'com.mchange:c3p0:0.9.5.2'
 
     compile 'org.webjars:bootstrap:3.3.5'
-    compile 'org.webjars:jquery-backstretch:2.0.4'
+    compile('org.webjars:jquery-backstretch:2.0.4'){
+        exclude module: 'jquery'
+    }
+
     compile 'org.webjars:html5shiv:3.7.0'
     compile 'org.webjars:respond:1.4.2'
+    compile 'org.webjars:jquery:2.2.3'
+
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.0.44-beta'
@@ -95,8 +94,6 @@ dependencies {
     compile 'org.apache.commons:commons-csv:1.1'
 
     compile 'net.sf.ehcache:ehcache:2.10.2'
-
-
 }
 
 gretty {

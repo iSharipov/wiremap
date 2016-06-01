@@ -1,11 +1,8 @@
-/*
- Fullscreen background
- */
-$.backstretch("/resources/assets/img/backgrounds/map1.jpg");
-
 jQuery(document).ready(function () {
-
-
+    /*
+     Fullscreen background
+     */
+    $.backstretch("/resources/assets/img/backgrounds/map1.jpg");
     /*
      Login form validation
      */
@@ -64,26 +61,15 @@ jQuery(document).ready(function () {
         wifiArr.forEach(function (item, i, arr) {
             values.push(item.value);
         });
-        //$.get("http://isharipov.com/rest/mac?bssid=" + values[0] + "&ssw=" + values[1] + "&bssid="
-        //    + values[2] + "&ssw=" + values[3] + "&bssid=" + values[4] + "&ssw=" + values[5], function (data) {
-        //    console.log(data);
-        //});
 
         $.ajax({
-            url: "http://isharipov.com/rest/mac?callback=?bssid&bssid=" + values[0] + "&ssw=" + values[1] + "&bssid="
+            url: "http://isharipov.com/rest/mac?bssid=" + values[0] + "&ssw=" + values[1] + "&bssid="
             + values[2] + "&ssw=" + values[3] + "&bssid=" + values[4] + "&ssw=" + values[5],
             crossDomain: true,
             type: 'GET',
-            dataType: 'json',
-            xhrFields: {
-                withCredentials: true
-            },
+            dataType: 'jsonp',
             success: function (data) {
-                data = callback(data);
-                //var myPlacemark = new ymaps.Placemark([data.lat, data.lng], {
-                //     hintContent: data.provider
-                // console.log(myPlacemark);
-                // myMap.geoObjects.add(myPlacemark);
+                //data = callback(data);
                 console.log(circleGeometry === undefined);
                 if (circleGeometry === undefined) {
                     circleGeometry = new ymaps.geometry.Circle([data.lat, data.lng], data.accuracy);
@@ -92,7 +78,7 @@ jQuery(document).ready(function () {
                         properties: {
                             hintContent: data.provider,
                             balloonContentHeader: data.provider,
-                            balloonContentBody: data.accuracy,
+                            balloonContentBody: data.accuracy
                         }
                     });
                 } else {
@@ -113,9 +99,6 @@ jQuery(document).ready(function () {
             }
         });
     });
-    function callback(data) {
-        return data;
-    }
 });
 
 

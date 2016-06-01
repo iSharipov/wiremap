@@ -5,9 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isharipov.config.spring.AppConfig;
 import com.isharipov.config.spring.WebConfig;
 import com.isharipov.domain.common.CommonRs;
+import com.isharipov.domain.common.Response;
 import com.isharipov.repository.ResponseRepsitory;
 import com.isharipov.service.HttpRequestService;
 import com.isharipov.service.ResponseResolver;
+import com.isharipov.utils.Pair;
 import com.isharipov.utils.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -66,79 +68,24 @@ public class SkyHookProcessingTest {
     private ObjectMapper objectMapper;
 
     @Test
-    public void getSkyHookLocation() {
-        getLocation(skyHookHttpRequestService);
-    }
-
-    @Test
-    public void getYandexLocation() throws JsonProcessingException {
-        getLocation(yandexHttpRequestService);
-    }
-
-    @Test
-    public void getGoogleLocation() throws JsonProcessingException {
-        getLocation(googleHttpRequestService);
-    }
-
-    @Test
-    public void getLocationApiLocation() {
-        getLocation(locationApiHttpRequest);
-    }
-
-    @Test
-    public void getLocationMozillaLocation() {
-        getLocation(mozillaLocationHttpRequest);
-    }
-
-
-    private void getLocation(HttpRequestService httpRequestService) {
-//        //SkyHook bssid E01C413BD514
-//        Map<String, String> wifiParams = new HashMap<>();
-//        wifiParams.put("bssid", "E01C413BD514");
-//        Map<String, String> gsmParams = new HashMap<>();
-//        gsmParams.put("cid", "16655");
-//        gsmParams.put("lac", "27408");
-//        gsmParams.put("mnc", "99");
-//        gsmParams.put("mcc", "250");
-//        Map<String, String> commonParams = new HashMap<>();
-//        commonParams.put("bssid", "cc:5d:4e:50:8d:ac");
-//        commonParams.put("cid", "16655");
-//        commonParams.put("lac", "27408");
-//        commonParams.put("mnc", "99");
-//        commonParams.put("mcc", "250");
-//        long start = System.currentTimeMillis();
-//        Future<CommonRs> httpRequestWifi = httpRequestService.createHttpRequest(wifiParams);
-//        Future<CommonRs> httpRequestGsm = httpRequestService.createHttpRequest(gsmParams);
-//        Future<CommonRs> httpRequestCommon = httpRequestService.createHttpRequest(commonParams);
-//        try {
-//            while (!(httpRequestWifi.isDone() && httpRequestGsm.isDone() && httpRequestCommon.isDone())) {
-//                Thread.sleep(10); //10-millisecond pause between each check
-//            }
-//            CommonRs commonRsWifi = httpRequestWifi.get();
-//            CommonRs commonRsGsm = httpRequestGsm.get();
-//            CommonRs commonRsCommon = httpRequestCommon.get();
-//            log.info("{}", "Elapsed time: " + (System.currentTimeMillis() - start));
-//            log.info("{}", commonRsWifi);
-//            log.info("{}", commonRsGsm);
-//            log.info("{}", commonRsCommon);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        }
-    }
-
-    @Test
     public void coverageTest() throws ExecutionException, InterruptedException {
 
-        List<String> list = StringUtils.macList("3");
-        for (int i = 1; i < list.size(); i += 2) {
+        Pair<List<String>, List<String>> pair = StringUtils.macList("586");
+        List<String> macList = pair.getMacList();
+        List<String> levelList = pair.getLevelListl();
+        for (int i = 2; i < macList.size(); i += 3) {
             Map<String, List<String>> params = new HashMap<>();
             List<String> list1 = new ArrayList<>();
-            list1.add(list.get(i));
-            list1.add(list.get(i - 1));
+            List<String> list2 = new ArrayList<>();
+            list1.add(macList.get(i));
+            list1.add(macList.get(i - 1));
+            list1.add(macList.get(i - 2));
+            list2.add(levelList.get(i));
+            list2.add(levelList.get(i - 1));
+            list2.add(levelList.get(i - 2));
             List<String> s = StringUtils.replaceSpecialsSymbolsAndUpperCase(list1);
             params.put("bssid", s);
+            params.put("ssw", list2);
             long start = System.currentTimeMillis();
             Future<CommonRs> yandexCommonRs = yandexHttpRequestService.createHttpRequest(params);
             Future<CommonRs> googleCommonRs = googleHttpRequestService.createHttpRequest(params);
@@ -166,5 +113,11 @@ public class SkyHookProcessingTest {
             }
             responseResolver.resolve(commons, paramsString, elapsedTime);
         }
+    }
+
+    @Test
+    public void showResponsesByProviderName() {
+        List<Response> responseList = responseRepository.findResponsesByProviderLike("skyhook");
+        log.info("{}", responseList);
     }
 }
