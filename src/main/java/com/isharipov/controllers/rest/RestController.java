@@ -3,7 +3,6 @@ package com.isharipov.controllers.rest;
 import com.isharipov.domain.common.Response;
 import com.isharipov.service.ProcessingService;
 import com.isharipov.service.ValidationService;
-import com.isharipov.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedOperationParameter;
@@ -36,18 +35,15 @@ public class RestController {
     @ManagedOperationParameters({
             @ManagedOperationParameter(name = "bssid", description = "BSSID"),
             @ManagedOperationParameter(name = "ssw", description = "Signal Strength"),
-            @ManagedOperationParameter(name = "age", description = "Age")
     })
 
     @RequestMapping(method = RequestMethod.GET, value = "/mac", produces = "application/json")
     public Response processRequestMac(@RequestParam(value = "bssid", required = true) List<String> bssid,
-                                      @RequestParam(value = "ssw", required = false) List<String> ssw,
-                                      @RequestParam(value = "age", required = false) List<String> age
-    ) {
+                                      @RequestParam(value = "ssw", required = false) List<String> ssw
+                                      ) {
 
         bssid = validationService.replaceSpecialSymbolsMacAndUpperCase(validationService.emptyList(bssid));
         ssw = validationService.emptyList(ssw);
-        age = validationService.emptyList(age);
         if (bssid != null) {
             for (String mac : bssid) {
                 if (mac.length() < 12) {
@@ -62,7 +58,6 @@ public class RestController {
         final Map<String, List<String>> map = new HashMap<>();
         map.put("bssid", bssid);
         map.put("ssw", ssw);
-        map.put("age", age);
 
         return processingService.process(map);
     }
@@ -92,12 +87,11 @@ public class RestController {
             @RequestParam(value = "lac", required = true) List<String> cid,
             @RequestParam(value = "ssc", required = false) List<String> ssc,
             @RequestParam(value = "bssid", required = true) List<String> bssid,
-            @RequestParam(value = "ssw", required = false) List<String> ssw,
-            @RequestParam(value = "age", required = false) List<String> age
+            @RequestParam(value = "ssw", required = false) List<String> ssw
 
     ) {
         final Map<String, List<String>> map = new HashMap<>();
-        bssid = StringUtils.replaceSpecialsSymbolsAndUpperCase(bssid);
+        bssid = validationService.replaceSpecialSymbolsMacAndUpperCase(validationService.emptyList(bssid));
         for (String mac : bssid) {
             if (mac.length() < 12) {
                 Response response = new Response();
@@ -105,13 +99,14 @@ public class RestController {
                 return response;
             }
         }
-        map.put("mcc", mcc);
-        map.put("mnc", mnc);
-        map.put("lac", lac);
-        map.put("cid", cid);
-        map.put("ssc", ssc);
+
+        map.put("mcc", validationService.emptyList(mcc));
+        map.put("mnc", validationService.emptyList(mnc));
+        map.put("lac", validationService.emptyList(lac));
+        map.put("cid", validationService.emptyList(cid));
+        map.put("ssc", validationService.emptyList(ssc));
         map.put("bssid", bssid);
-        map.put("age", age);
+        map.put("ssw", ssw);
 
         return processingService.process(map);
     }

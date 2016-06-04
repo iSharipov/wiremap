@@ -49,13 +49,14 @@ public class StringUtils {
         List<String> levelList = new ArrayList<>();
         try {
             parser = CSVParser.parse(StringUtils.fileToString(csvFile, Charset.defaultCharset()), CSVFormat.DEFAULT.withQuote(null));
+            for (CSVRecord csvRecord : parser) {
+                macList.add(csvRecord.get(0).substring(11, 28));
+                levelList.add(csvRecord.get(7).substring(8, 11));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for (CSVRecord csvRecord : parser) {
-            macList.add(csvRecord.get(0).substring(11, 28));
-            levelList.add(csvRecord.get(7).substring(8, 11));
-        }
+
         return new Pair<>(macList, levelList);
     }
 }

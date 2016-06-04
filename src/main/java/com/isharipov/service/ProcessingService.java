@@ -41,10 +41,6 @@ public class ProcessingService {
     private HttpRequestService skyHookHttpRequestService;
 
     @Autowired
-    @Qualifier("combainHttpRequestService")
-    private HttpRequestService combainHttpRequestService;
-
-    @Autowired
     @Qualifier("mozillaLocationHttpReuqest")
     private HttpRequestService mozillaHttpRequestService;
 

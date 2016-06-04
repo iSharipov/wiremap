@@ -56,20 +56,28 @@ jQuery(document).ready(function () {
     var circleGeometry;
     var circleGeoObject;
     $("#getButtonWifi").click(function () {
+        console.log(1);
         var wifiArr = $('#TextBoxesGroupBssid').children().find('input').toArray();
-        var values = [];
+        var cellArr = $('#TextBoxesGroupSsid').children().find('input').toArray();
+        var wifiValues = [];
+        var cellValues = [];
         wifiArr.forEach(function (item, i, arr) {
-            values.push(item.value);
+            wifiValues.push(item.value);
+        });
+
+        cellArr.forEach(function(item, i, arr){
+            cellValues.push(item.value);
         });
 
         $.ajax({
-            url: "http://isharipov.com/rest/mac?bssid=" + values[0] + "&ssw=" + values[1] + "&bssid="
-            + values[2] + "&ssw=" + values[3] + "&bssid=" + values[4] + "&ssw=" + values[5],
+            url: "http://isharipov/rest/all?bssid=" + wifiValues[0] + "&ssw=" + wifiValues[1] + "&bssid="
+            + wifiValues[2] + "&ssw=" + wifiValues[3] + "&bssid=" + wifiValues[4] + "&ssw=" + wifiValues[5]
+            + "&mcc="+cellValues[0]+ "&mnc="+cellValues[1]+ "&lac="+cellValues[2]+ "&cid="+cellValues[3]+ "&ssc="+cellValues[4]
+            + "&mcc="+cellValues[6]+ "&mnc="+cellValues[7]+ "&lac="+cellValues[8]+ "&cid="+cellValues[9]+ "&ssc="+cellValues[10],
             crossDomain: true,
             type: 'GET',
-            dataType: 'jsonp',
+            dataType: 'json',
             success: function (data) {
-                //data = callback(data);
                 console.log(circleGeometry === undefined);
                 if (circleGeometry === undefined) {
                     circleGeometry = new ymaps.geometry.Circle([data.lat, data.lng], data.accuracy);
