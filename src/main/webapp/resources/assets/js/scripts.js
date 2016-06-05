@@ -55,60 +55,64 @@ jQuery(document).ready(function () {
         });
     }
 
+    var coverageMap;
+    var myCircle;
     if ($("#coverageMap")[0]) {
         ymaps.ready(initCoverage);
-        var coverageMap;
-        var myCircle;
     }
 
     function initCoverage() {
         coverageMap = new ymaps.Map($("#coverageMap")[0], {
-            center: [55.76, 37.64],
-            zoom: 11
-        });
+                center: [55.76, 37.64],
+                zoom: 11
+            }
+        );
 
         $.ajax({
-            url: "http://isharipov.com/rest/map",
-            crossDomain: true,
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                data.forEach(function (item, i, arr) {
-                    var providerColor;
-                    switch (item.provider) {
-                        case 'yandex':
-                            providerColor = '#FFFF0077';
-                            break;
-                        case 'google':
-                            providerColor = '#FF000077';
-                            break;
-                        case 'mozilla' :
-                            providerColor = '#00FF0077';
-                            break;
-                        case 'skyhook' :
-                            providerColor = '#0000FF77';
-                            break;
-                    }
-                    myCircle = new ymaps.Circle(
-                        [[
-                            item.lat,
-                            item.lng
-                        ], item.accuracy],
-                        {
-                            hintContent: item.provider,
-                            balloonContentHeader: item.provider,
-                            balloonContentBody: item.accuracy
-                        },
-                        {
-                            fillColor: providerColor,
-                            strokeWidth: 0
+                url: "http://isharipov.com/rest/map",
+                crossDomain: true,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    data.forEach(function (item, i, arr) {
+                            var providerColor;
+                            switch (item.provider) {
+                                case 'yandex':
+                                    providerColor = '#FFFF0077';
+                                    break;
+                                case 'google':
+                                    providerColor = '#FF000077';
+                                    break;
+                                case 'mozilla' :
+                                    providerColor = '#00FF0077';
+                                    break;
+                                case 'skyhook' :
+                                    providerColor = '#0000FF77';
+                                    break;
+                            }
+                            myCircle = new ymaps.Circle(
+                                [[
+                                    item.lat,
+                                    item.lng
+                                ], item.accuracy],
+                                {
+                                    hintContent: item.provider,
+                                    balloonContentHeader: item.provider,
+                                    balloonContentBody: item.accuracy
+                                },
+                                {
+                                    fillColor: providerColor,
+                                    strokeWidth: 0
+                                }
+                            );
+                            coverageMap.geoObjects.add(myCircle);
                         }
-                    );
-                    coverageMap.geoObjects.add(myCircle);
-                })
-            }
-        })
 
+                    );
+                }
+            }
+        );
+        $("#cover").css("display", "none")
     }
 
     var circleGeometry;
