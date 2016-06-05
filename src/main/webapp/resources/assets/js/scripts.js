@@ -54,7 +54,6 @@ jQuery(document).ready(function () {
     }
 
     $("#coverage-map").click(function () {
-        var providers = ['yandex', 'google', 'skyhook', 'mozilla'];
         $.ajax({
             url: "http://localhost:8080/rest/map",
             crossDomain: true,
@@ -103,7 +102,6 @@ jQuery(document).ready(function () {
     var circleGeoObject;
     var myCircle;
     $("#getButtonWifi").click(function () {
-        console.log(1);
         var wifiArr = $('#TextBoxesGroupBssid').children().find('input').toArray();
         var cellArr = $('#TextBoxesGroupSsid').children().find('input').toArray();
         var wifiValues = [];
@@ -117,7 +115,7 @@ jQuery(document).ready(function () {
         });
 
         $.ajax({
-            url: "http://localhost:8080/rest/cell?bssid=" + wifiValues[0] + "&ssw=" + wifiValues[1] + "&bssid="
+            url: "http://isharipov.com:8080/rest/cell?bssid=" + wifiValues[0] + "&ssw=" + wifiValues[1] + "&bssid="
             + wifiValues[2] + "&ssw=" + wifiValues[3] + "&bssid=" + wifiValues[4] + "&ssw=" + wifiValues[5]
             + "&mcc=" + cellValues[0] + "&mnc=" + cellValues[1] + "&lac=" + cellValues[2] + "&cid=" + cellValues[3] + "&ssc=" + cellValues[4]
             + "&mcc=" + cellValues[5] + "&mnc=" + cellValues[6] + "&lac=" + cellValues[7] + "&cid=" + cellValues[8] + "&ssc=" + cellValues[9],
@@ -125,7 +123,6 @@ jQuery(document).ready(function () {
             type: 'GET',
             dataType: 'json',
             success: function (data) {
-                console.log(circleGeometry === undefined);
                 if (circleGeometry === undefined) {
                     circleGeometry = new ymaps.geometry.Circle([data.lat, data.lng], data.accuracy);
                     circleGeoObject = new ymaps.GeoObject({
@@ -137,7 +134,6 @@ jQuery(document).ready(function () {
                         }
                     });
                 } else {
-                    console.log(1);
                     circleGeometry.setCoordinates([data.lat, data.lng]);
                     circleGeometry.setRadius(data.accuracy);
                     circleGeoObject.properties.set("hintContent", data.provider);
