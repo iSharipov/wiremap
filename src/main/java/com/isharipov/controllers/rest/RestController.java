@@ -1,6 +1,7 @@
 package com.isharipov.controllers.rest;
 
 import com.isharipov.domain.common.Response;
+import com.isharipov.service.CoverageMapService;
 import com.isharipov.service.ProcessingService;
 import com.isharipov.service.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class RestController {
     @Autowired
     private ValidationService validationService;
 
+    @Autowired
+    private CoverageMapService coverageMapService;
+
     @ManagedOperation(description = "Returns location by mac")
     @ManagedOperationParameters({
             @ManagedOperationParameter(name = "bssid", description = "BSSID"),
@@ -40,7 +44,7 @@ public class RestController {
     @RequestMapping(method = RequestMethod.GET, value = "/mac", produces = "application/json")
     public Response processRequestMac(@RequestParam(value = "bssid", required = true) List<String> bssid,
                                       @RequestParam(value = "ssw", required = false) List<String> ssw
-                                      ) {
+    ) {
 
         bssid = validationService.replaceSpecialSymbolsMacAndUpperCase(validationService.emptyList(bssid));
         ssw = validationService.emptyList(ssw);
@@ -70,11 +74,11 @@ public class RestController {
                                        @RequestParam(value = "ssc", required = false) List<String> ssc
     ) {
         final Map<String, List<String>> map = new HashMap<>();
-        map.put("mcc", mcc);
-        map.put("mnc", mnc);
-        map.put("lac", lac);
-        map.put("cid", cid);
-        map.put("ssc", ssc);
+        map.put("mcc", validationService.emptyList(mcc));
+        map.put("mnc", validationService.emptyList(mnc));
+        map.put("lac", validationService.emptyList(lac));
+        map.put("cid", validationService.emptyList(cid));
+        map.put("ssc", validationService.emptyList(ssc));
 
         return processingService.process(map);
     }
@@ -84,7 +88,7 @@ public class RestController {
             @RequestParam(value = "mcc", required = true) List<String> mcc,
             @RequestParam(value = "mnc", required = true) List<String> mnc,
             @RequestParam(value = "lac", required = true) List<String> lac,
-            @RequestParam(value = "lac", required = true) List<String> cid,
+            @RequestParam(value = "cid", required = true) List<String> cid,
             @RequestParam(value = "ssc", required = false) List<String> ssc,
             @RequestParam(value = "bssid", required = true) List<String> bssid,
             @RequestParam(value = "ssw", required = false) List<String> ssw
@@ -106,8 +110,12 @@ public class RestController {
         map.put("cid", validationService.emptyList(cid));
         map.put("ssc", validationService.emptyList(ssc));
         map.put("bssid", bssid);
-        map.put("ssw", ssw);
+        map.put("ssw", validationService.emptyList(ssw));
 
         return processingService.process(map);
+    }
+    @RequestMapping(method = RequestMethod.GET, value = "/map", produces = "application/json")
+    public List<Response> getAll() {
+        return coverageMapService.getAllResponses();
     }
 }

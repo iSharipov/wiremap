@@ -7,6 +7,18 @@
 </head>
 <body>
 <header th:replace="layout :: header"></header>
+<div class="common-font">
+    <p>Open API to determine location</p>
+    <p>MAC</p>
+    <p>Request - http://isharipov.com/rest/mac?bssid=F8:C0:91:17:13:F7&ssw=-90</p>
+    <p>Response - {"lat":"55.87533187866211","lng":"37.31166458129883","provider":"yandex","accuracy":140.0}</p>
+    <p>Cell</p>
+    <p >Request - http://isharipov.com/rest/cell?mcc=250&mnc=99&lac=26628&cid=149264175</p>
+    <p>Response - {"lat":"55.7569598","lng":"37.609668","provider":"google","accuracy":500.0}</p>
+    <p>All</p>
+    <p >Request - http://isharipov.com/rest/all?bssid=00:27:22:1a:74:95&ssw=-85&mcc=250&mnc=99&lac=26628&cid=149264175</p>
+    <p>Response - {"lat":"55.74773788452148","lng":"37.63919067382812","provider":"yandex","accuracy":140.0}</p>
+</div>
 <div th:replace="layout :: common_scripts(script)"></div>
 </body>
 </html>

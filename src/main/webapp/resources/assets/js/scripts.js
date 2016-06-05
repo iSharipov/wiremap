@@ -53,8 +53,55 @@ jQuery(document).ready(function () {
         });
     }
 
+    $("#coverage-map").click(function () {
+        var providers = ['yandex', 'google', 'skyhook', 'mozilla'];
+        $.ajax({
+            url: "http://localhost:8080/rest/map",
+            crossDomain: true,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                data.forEach(function (item, i, arr) {
+                    var providerColor;
+                    switch (item.provider) {
+                        case 'yandex':
+                            providerColor = '#FFFF0077';
+                            break;
+                        case 'google':
+                            providerColor = '#FF000077';
+                            break;
+                        case 'mozilla' :
+                            providerColor = '#00FF0077';
+                            break;
+                        case 'skyhook' :
+                            providerColor = '#00FFFF77';
+                            break;
+                    }
+                    myCircle = new ymaps.Circle(
+                        [[
+                            item.lat,
+                            item.lng
+                        ], item.accuracy],
+                        {
+                            hintContent: item.provider,
+                            balloonContentHeader: item.provider,
+                            balloonContentBody: item.accuracy
+                        },
+                        {
+                            fillColor: providerColor,
+                            strokeWidth:0
+                        }
+                    );
+
+                    myMap.geoObjects.add(myCircle);
+                })
+            }
+        })
+    });
+
     var circleGeometry;
     var circleGeoObject;
+    var myCircle;
     $("#getButtonWifi").click(function () {
         console.log(1);
         var wifiArr = $('#TextBoxesGroupBssid').children().find('input').toArray();
@@ -65,15 +112,15 @@ jQuery(document).ready(function () {
             wifiValues.push(item.value);
         });
 
-        cellArr.forEach(function(item, i, arr){
+        cellArr.forEach(function (item, i, arr) {
             cellValues.push(item.value);
         });
 
         $.ajax({
-            url: "http://isharipov/rest/all?bssid=" + wifiValues[0] + "&ssw=" + wifiValues[1] + "&bssid="
+            url: "http://localhost:8080/rest/cell?bssid=" + wifiValues[0] + "&ssw=" + wifiValues[1] + "&bssid="
             + wifiValues[2] + "&ssw=" + wifiValues[3] + "&bssid=" + wifiValues[4] + "&ssw=" + wifiValues[5]
-            + "&mcc="+cellValues[0]+ "&mnc="+cellValues[1]+ "&lac="+cellValues[2]+ "&cid="+cellValues[3]+ "&ssc="+cellValues[4]
-            + "&mcc="+cellValues[6]+ "&mnc="+cellValues[7]+ "&lac="+cellValues[8]+ "&cid="+cellValues[9]+ "&ssc="+cellValues[10],
+            + "&mcc=" + cellValues[0] + "&mnc=" + cellValues[1] + "&lac=" + cellValues[2] + "&cid=" + cellValues[3] + "&ssc=" + cellValues[4]
+            + "&mcc=" + cellValues[5] + "&mnc=" + cellValues[6] + "&lac=" + cellValues[7] + "&cid=" + cellValues[8] + "&ssc=" + cellValues[9],
             crossDomain: true,
             type: 'GET',
             dataType: 'json',
@@ -90,13 +137,13 @@ jQuery(document).ready(function () {
                         }
                     });
                 } else {
+                    console.log(1);
                     circleGeometry.setCoordinates([data.lat, data.lng]);
                     circleGeometry.setRadius(data.accuracy);
                     circleGeoObject.properties.set("hintContent", data.provider);
                     circleGeoObject.properties.set("balloonContentHeader", data.provider);
                     circleGeoObject.properties.set("balloonContentBody", data.accuracy);
                 }
-
                 myMap.geoObjects.add(circleGeoObject);
                 myMap.setCenter([data.lat, data.lng], 15, {
                     checkZoomRange: true

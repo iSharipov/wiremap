@@ -306,6 +306,10 @@ footer a:hover, footer a:focus {
 
 }
 
+.left-buttons{
+    float:left;
+}
+
 .comp {
     height: 61px;
     line-height: 61px;
@@ -391,4 +395,8 @@ footer a:hover, footer a:focus {
 #TextBoxesGroupSsid div input{
     height:30px;
     padding: 2px;
+}
+
+.common-font{
+    color: #fff;
 }

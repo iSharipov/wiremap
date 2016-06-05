@@ -11,6 +11,7 @@
 <div id="location-fields">
     <div style="float:left; width:50%;margin-top:10px;">
         <div id="map" style="width: 600px; height: 500px; opacity: 0.7"></div>
+        <input type='button' value='Coverage Map' id='coverage-map'>
     </div>
     <div style="float:right;width:50%">
         <form role="form" autocomplete="off">
@@ -82,6 +83,6 @@
     </div>
 </div>
 <div th:replace="layout :: common_scripts(script)"></div>
-<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+<script src="https://api-maps.yandex.ru/2.1/?load=package.standard,package.geoObjects&lang=ru_RU" type="text/javascript"></script>
 </body>
 </html>
