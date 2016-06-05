@@ -21,4 +21,9 @@ public class MainController {
     public String getDemoPage() {
         return "demo";
     }
+
+    @RequestMapping("/coverage")
+    public String getCoveragePage() {
+        return "coverage";
+    }
 }

@@ -96,11 +96,13 @@ public class RestController {
     ) {
         final Map<String, List<String>> map = new HashMap<>();
         bssid = validationService.replaceSpecialSymbolsMacAndUpperCase(validationService.emptyList(bssid));
-        for (String mac : bssid) {
-            if (mac.length() < 12) {
-                Response response = new Response();
-                response.setError("bad query");
-                return response;
+        if(bssid !=null){
+            for (String mac : bssid) {
+                if (mac.length() < 12) {
+                    Response response = new Response();
+                    response.setError("bad query");
+                    return response;
+                }
             }
         }
 

@@ -43,19 +43,32 @@ jQuery(document).ready(function () {
         });
     });
 
-    ymaps.ready(init);
-    var myMap;
+    if ($("#map")[0]) {
+        ymaps.ready(initDemo);
+        var myMap;
+    }
 
-    function init() {
-        myMap = new ymaps.Map("map", {
+    function initDemo() {
+        myMap = new ymaps.Map($("#map")[0], {
             center: [55.76, 37.64],
             zoom: 7
         });
     }
 
-    $("#coverage-map").click(function () {
+    if ($("#coverageMap")[0]) {
+        ymaps.ready(initCoverage);
+        var coverageMap;
+        var myCircle;
+    }
+
+    function initCoverage() {
+        coverageMap = new ymaps.Map($("#coverageMap")[0], {
+            center: [55.76, 37.64],
+            zoom: 11
+        });
+
         $.ajax({
-            url: "http://isharipov.com/rest/map",
+            url: "http://localhost:8080/rest/map",
             crossDomain: true,
             type: 'GET',
             dataType: 'json',
@@ -88,19 +101,18 @@ jQuery(document).ready(function () {
                         },
                         {
                             fillColor: providerColor,
-                            strokeWidth:0
+                            strokeWidth: 0
                         }
                     );
-
-                    myMap.geoObjects.add(myCircle);
+                    coverageMap.geoObjects.add(myCircle);
                 })
             }
         })
-    });
+
+    }
 
     var circleGeometry;
     var circleGeoObject;
-    var myCircle;
     $("#getButtonWifi").click(function () {
         var wifiArr = $('#TextBoxesGroupBssid').children().find('input').toArray();
         var cellArr = $('#TextBoxesGroupSsid').children().find('input').toArray();
@@ -115,7 +127,7 @@ jQuery(document).ready(function () {
         });
 
         $.ajax({
-            url: "http://isharipov.com/rest/all?bssid=" + wifiValues[0] + "&ssw=" + wifiValues[1] + "&bssid="
+            url: "http://localhost:8080/rest/all?bssid=" + wifiValues[0] + "&ssw=" + wifiValues[1] + "&bssid="
             + wifiValues[2] + "&ssw=" + wifiValues[3] + "&bssid=" + wifiValues[4] + "&ssw=" + wifiValues[5]
             + "&mcc=" + cellValues[0] + "&mnc=" + cellValues[1] + "&lac=" + cellValues[2] + "&cid=" + cellValues[3] + "&ssc=" + cellValues[4]
             + "&mcc=" + cellValues[5] + "&mnc=" + cellValues[6] + "&lac=" + cellValues[7] + "&cid=" + cellValues[8] + "&ssc=" + cellValues[9],
