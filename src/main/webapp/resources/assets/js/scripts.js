@@ -55,7 +55,7 @@ jQuery(document).ready(function () {
 
     $("#coverage-map").click(function () {
         $.ajax({
-            url: "http://localhost:8080/rest/map",
+            url: "http://isharipov.com/rest/map",
             crossDomain: true,
             type: 'GET',
             dataType: 'json',
@@ -115,7 +115,7 @@ jQuery(document).ready(function () {
         });
 
         $.ajax({
-            url: "http://isharipov.com:8080/rest/cell?bssid=" + wifiValues[0] + "&ssw=" + wifiValues[1] + "&bssid="
+            url: "http://isharipov.com/rest/cell?bssid=" + wifiValues[0] + "&ssw=" + wifiValues[1] + "&bssid="
             + wifiValues[2] + "&ssw=" + wifiValues[3] + "&bssid=" + wifiValues[4] + "&ssw=" + wifiValues[5]
             + "&mcc=" + cellValues[0] + "&mnc=" + cellValues[1] + "&lac=" + cellValues[2] + "&cid=" + cellValues[3] + "&ssc=" + cellValues[4]
             + "&mcc=" + cellValues[5] + "&mnc=" + cellValues[6] + "&lac=" + cellValues[7] + "&cid=" + cellValues[8] + "&ssc=" + cellValues[9],
